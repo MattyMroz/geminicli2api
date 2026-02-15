@@ -80,7 +80,8 @@ async def main():
     print(f"WYNIKI:")
     print(f"{'='*60}")
     for r in sorted(results, key=lambda x: x["id"]):
-        print(f"  Request #{r['id']}:  status={r['status']}  czas={r['time']:.2f}s  odpowiedź: {r['response']}")
+        print(
+            f"  Request #{r['id']}:  status={r['status']}  czas={r['time']:.2f}s  odpowiedź: {r['response']}")
 
     times = [r["time"] for r in results]
     print(f"\n  Najszybszy: {min(times):.2f}s")
@@ -91,9 +92,11 @@ async def main():
     # Jeśli równoległe: total ≈ max(times)
     sum_times = sum(times)
     if total_elapsed < sum_times * 0.7:
-        print(f"\n  ✓ WSPÓŁBIEŻNOŚĆ DZIAŁA! (total {total_elapsed:.1f}s << suma {sum_times:.1f}s)")
+        print(
+            f"\n  ✓ WSPÓŁBIEŻNOŚĆ DZIAŁA! (total {total_elapsed:.1f}s << suma {sum_times:.1f}s)")
     else:
-        print(f"\n  ✗ BRAK WSPÓŁBIEŻNOŚCI! (total {total_elapsed:.1f}s ≈ suma {sum_times:.1f}s)")
+        print(
+            f"\n  ✗ BRAK WSPÓŁBIEŻNOŚCI! (total {total_elapsed:.1f}s ≈ suma {sum_times:.1f}s)")
         print(f"    Requesty były przetwarzane sekwencyjnie!")
 
     print(f"{'='*60}\n")

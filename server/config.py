@@ -35,6 +35,7 @@ GEMINI_AUTH_PASSWORD = os.getenv("GEMINI_AUTH_PASSWORD", "123456")
 # Server
 HOST = os.getenv("HOST", "127.0.0.1")
 PORT = int(os.getenv("PORT", "8888"))
+OAUTH_CALLBACK_PORT = int(os.getenv("OAUTH_CALLBACK_PORT", "8080"))
 
 # Default Safety Settings for Google API
 DEFAULT_SAFETY_SETTINGS = [

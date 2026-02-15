@@ -13,7 +13,8 @@ import json
 import base64
 import time
 import logging
-from datetime import datetime
+import threading
+from datetime import datetime, timezone
 from fastapi import Request, HTTPException
 from fastapi.security import HTTPBasic
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -31,9 +32,11 @@ from server.config import (
     CREDENTIAL_FILE,
     CODE_ASSIST_ENDPOINT,
     GEMINI_AUTH_PASSWORD,
+    OAUTH_CALLBACK_PORT,
 )
 
-# --- Global State ---
+# --- Global State (protected by _auth_lock) ---
+_auth_lock = threading.Lock()
 credentials = None
 user_project_id = None
 onboarding_complete = False
@@ -158,16 +161,18 @@ def get_credentials(allow_oauth_flow=True):
     if _accounts_manager and _accounts_manager.count > 0:
         creds = _accounts_manager.get_credentials_sync()
         if creds:
-            credentials = creds
-            # Get cached project_id
-            pid = _accounts_manager.get_project_id(creds)
-            if pid:
-                user_project_id = pid
+            with _auth_lock:
+                credentials = creds
+                # Get cached project_id
+                pid = _accounts_manager.get_project_id(creds)
+                if pid:
+                    user_project_id = pid
             return creds
 
-    # Existing credentials in memory
-    if credentials and credentials.token:
-        return credentials
+    with _auth_lock:
+        # Existing credentials in memory
+        if credentials and credentials.token:
+            return credentials
 
     # Environment variable
     env_creds_json = os.getenv("GEMINI_CREDENTIALS")
@@ -182,17 +187,19 @@ def get_credentials(allow_oauth_flow=True):
                     creds_data["scopes"] = creds_data["scope"].split()
                 if "expiry" in creds_data:
                     _fix_expiry(creds_data)
-                credentials = Credentials.from_authorized_user_info(
+                creds = Credentials.from_authorized_user_info(
                     creds_data, SCOPES)
-                credentials_from_env = True
-                if data.get("project_id"):
-                    user_project_id = data["project_id"]
-                if credentials.expired and credentials.refresh_token:
+                if creds.expired and creds.refresh_token:
                     try:
-                        credentials.refresh(GoogleAuthRequest())
+                        creds.refresh(GoogleAuthRequest())
                     except Exception as e:
                         logging.warning(f"Env credentials refresh failed: {e}")
-                return credentials
+                with _auth_lock:
+                    credentials = creds
+                    credentials_from_env = True
+                    if data.get("project_id"):
+                        user_project_id = data["project_id"]
+                return creds
         except Exception as e:
             logging.error(f"Failed parsing GEMINI_CREDENTIALS: {e}")
 
@@ -209,18 +216,20 @@ def get_credentials(allow_oauth_flow=True):
                     creds_data["scopes"] = creds_data["scope"].split()
                 if "expiry" in creds_data:
                     _fix_expiry(creds_data)
-                credentials = Credentials.from_authorized_user_info(
+                creds = Credentials.from_authorized_user_info(
                     creds_data, SCOPES)
-                if credentials.expired and credentials.refresh_token:
+                if creds.expired and creds.refresh_token:
                     try:
-                        credentials.refresh(GoogleAuthRequest())
-                        save_credentials(credentials)
+                        creds.refresh(GoogleAuthRequest())
+                        save_credentials(creds)
                     except Exception as e:
                         logging.warning(
                             f"File credentials refresh failed: {e}")
-                if data.get("project_id"):
-                    user_project_id = data["project_id"]
-                return credentials
+                with _auth_lock:
+                    credentials = creds
+                    if data.get("project_id"):
+                        user_project_id = data["project_id"]
+                return creds
         except Exception as e:
             logging.error(f"Failed reading {CREDENTIAL_FILE}: {e}")
 
@@ -244,8 +253,8 @@ def _fix_expiry(creds_data: dict):
             else:
                 parsed = datetime.fromisoformat(expiry_str)
             ts = parsed.timestamp()
-            creds_data["expiry"] = datetime.utcfromtimestamp(
-                ts).strftime("%Y-%m-%dT%H:%M:%SZ")
+            creds_data["expiry"] = datetime.fromtimestamp(
+                ts, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         except Exception:
             del creds_data["expiry"]
 
@@ -263,7 +272,7 @@ def _run_oauth_flow():
     }
 
     flow = Flow.from_client_config(
-        client_config, scopes=SCOPES, redirect_uri="http://localhost:8080")
+        client_config, scopes=SCOPES, redirect_uri=f"http://localhost:{OAUTH_CALLBACK_PORT}")
     flow.oauth2session.scope = SCOPES
     auth_url, _ = flow.authorization_url(
         access_type="offline", prompt="consent", include_granted_scopes="true")
@@ -274,7 +283,7 @@ def _run_oauth_flow():
     print(f"Please open this URL in your browser:\n{auth_url}")
     print(f"{'=' * 80}\n")
 
-    server = HTTPServer(("", 8080), _OAuthCallbackHandler)
+    server = HTTPServer(("", OAUTH_CALLBACK_PORT), _OAuthCallbackHandler)
     server.handle_request()
 
     auth_code = _OAuthCallbackHandler.auth_code
@@ -303,10 +312,11 @@ def onboard_user(creds, project_id):
     """Ensures the user is onboarded (gemini-cli setupUser)."""
     global onboarding_complete
 
-    # Per-account onboarding tracking
+    # Per-account onboarding tracking (thread-safe check)
     account_key = id(creds)
-    if account_key in _onboarded_accounts:
-        return
+    with _auth_lock:
+        if account_key in _onboarded_accounts:
+            return
 
     if creds.expired and creds.refresh_token:
         try:
@@ -353,8 +363,9 @@ def onboard_user(creds, project_id):
                 "This account requires GOOGLE_CLOUD_PROJECT env var.")
 
         if data.get("currentTier"):
-            _onboarded_accounts.add(account_key)
-            onboarding_complete = True
+            with _auth_lock:
+                _onboarded_accounts.add(account_key)
+                onboarding_complete = True
             return
 
         onboard_payload = {
@@ -377,8 +388,9 @@ def onboard_user(creds, project_id):
             onboard_resp.raise_for_status()
             lro = onboard_resp.json()
             if lro.get("done"):
-                _onboarded_accounts.add(account_key)
-                onboarding_complete = True
+                with _auth_lock:
+                    _onboarded_accounts.add(account_key)
+                    onboarding_complete = True
                 break
             time.sleep(5)
 
@@ -394,7 +406,8 @@ def get_user_project_id(creds):
     if _accounts_manager:
         pid = _accounts_manager.get_project_id(creds)
         if pid:
-            user_project_id = pid
+            with _auth_lock:
+                user_project_id = pid
             return pid
         # When using AccountsManager, do NOT fall through to the global
         # user_project_id — each account needs its own project discovered.
@@ -403,15 +416,17 @@ def get_user_project_id(creds):
     # Environment variable
     env_pid = os.getenv("GOOGLE_CLOUD_PROJECT")
     if env_pid:
-        user_project_id = env_pid
+        with _auth_lock:
+            user_project_id = env_pid
         if _accounts_manager:
             _accounts_manager.set_project_id(creds, env_pid)
         else:
             save_credentials(creds, env_pid)
         return env_pid
 
-    if not _accounts_manager and user_project_id:
-        return user_project_id
+    with _auth_lock:
+        if not _accounts_manager and user_project_id:
+            return user_project_id
 
     # Credential file
     if os.path.exists(CREDENTIAL_FILE):
@@ -420,7 +435,8 @@ def get_user_project_id(creds):
                 data = json.load(f)
             cached = data.get("project_id")
             if cached:
-                user_project_id = cached
+                with _auth_lock:
+                    user_project_id = cached
                 return cached
         except Exception:
             pass
@@ -456,7 +472,8 @@ def get_user_project_id(creds):
         discovered = data.get("cloudaicompanionProject")
         if not discovered:
             raise ValueError("No cloudaicompanionProject in response")
-        user_project_id = discovered
+        with _auth_lock:
+            user_project_id = discovered
         if _accounts_manager:
             _accounts_manager.set_project_id(creds, discovered)
         else:

@@ -35,26 +35,23 @@ async def gemini_list_models(request: Request, username: str = Depends(authentic
         )
 
 
-@router.api_route("/{full_path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
-async def gemini_proxy(request: Request, full_path: str, username: str = Depends(authenticate_user)):
-    """Native Gemini API proxy endpoint — handles all native Gemini API calls."""
+@router.api_route("/v1beta/models/{model_name}:{action}", methods=["GET", "POST"])
+@router.api_route("/v1beta/models/{model_name}", methods=["GET", "POST"])
+@router.api_route("/v1/models/{model_name}:{action}", methods=["GET", "POST"])
+@router.api_route("/v1/models/{model_name}", methods=["GET", "POST"])
+async def gemini_proxy(
+    request: Request,
+    model_name: str,
+    action: str = "generateContent",
+    username: str = Depends(authenticate_user),
+):
+    """Native Gemini API proxy endpoint — handles Gemini model API calls."""
     try:
         post_data = await request.body()
-        is_streaming = "stream" in full_path.lower()
-        model_name = _extract_model_from_path(full_path)
+        is_streaming = action.lower().startswith("stream")
 
         logging.info(
-            f"Gemini proxy request: path={full_path}, model={model_name}, stream={is_streaming}")
-
-        if not model_name:
-            logging.error(
-                f"Could not extract model name from path: {full_path}")
-            return Response(
-                content=json.dumps({"error": {
-                                   "message": f"Could not extract model name from path: {full_path}", "code": 400}}),
-                status_code=400,
-                media_type="application/json"
-            )
+            f"Gemini proxy request: model={model_name}, action={action}, stream={is_streaming}")
 
         try:
             if post_data:
@@ -91,18 +88,3 @@ async def gemini_proxy(request: Request, full_path: str, username: str = Depends
             status_code=500,
             media_type="application/json"
         )
-
-
-def _extract_model_from_path(path: str) -> str:
-    """Extract model name from a Gemini API path."""
-    parts = path.split('/')
-    try:
-        models_index = parts.index('models')
-        if models_index + 1 < len(parts):
-            model_name = parts[models_index + 1]
-            if ':' in model_name:
-                model_name = model_name.split(':')[0]
-            return model_name
-    except ValueError:
-        pass
-    return None

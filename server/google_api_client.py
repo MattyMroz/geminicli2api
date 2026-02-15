@@ -6,6 +6,8 @@ import json
 import logging
 import uuid
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from fastapi import Response
 from fastapi.responses import StreamingResponse
 from google.auth.transport.requests import Request as GoogleAuthRequest
@@ -27,6 +29,25 @@ import asyncio
 CONNECT_TIMEOUT = 30
 READ_TIMEOUT = 300  # 5 min for long generations
 STREAM_READ_TIMEOUT = 600  # 10 min for streaming
+
+# --- Connection-pooled HTTP session ---
+_http_session: requests.Session = None
+
+
+def _get_session() -> requests.Session:
+    """Get or create a module-level requests.Session with connection pooling."""
+    global _http_session
+    if _http_session is None:
+        _http_session = requests.Session()
+        # Connection pool: up to 20 connections, 10 per host (Google API only)
+        adapter = HTTPAdapter(
+            pool_connections=10,
+            pool_maxsize=20,
+            pool_block=False,
+        )
+        _http_session.mount("https://", adapter)
+        _http_session.mount("http://", adapter)
+    return _http_session
 
 
 def _get_account_count() -> int:
@@ -119,13 +140,14 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, reque
     logging.info(f"[{rid}] Sending request to Google API: model={model_name}, stream={is_streaming}")
 
     try:
+        session = _get_session()
         if is_streaming:
-            resp = requests.post(
+            resp = session.post(
                 target_url, data=final_post_data, headers=request_headers,
                 stream=True, timeout=(CONNECT_TIMEOUT, STREAM_READ_TIMEOUT))
             return _handle_streaming_response(resp, rid)
         else:
-            resp = requests.post(
+            resp = session.post(
                 target_url, data=final_post_data, headers=request_headers,
                 timeout=(CONNECT_TIMEOUT, READ_TIMEOUT))
             return _handle_non_streaming_response(resp, rid)
@@ -251,32 +273,26 @@ def _handle_streaming_response(resp, rid: str = "") -> StreamingResponse:
 
     async def stream_generator():
         try:
-            import queue
             import threading
 
-            chunk_queue = queue.Queue()
+            loop = asyncio.get_running_loop()
+            chunk_queue = asyncio.Queue()
 
             def _read_stream():
-                """Read blocking iter_lines in a thread, push to queue."""
+                """Read blocking iter_lines in a thread, push to async queue."""
                 try:
                     with resp:
                         for chunk in resp.iter_lines():
-                            chunk_queue.put(chunk)
-                    chunk_queue.put(None)  # sentinel
+                            loop.call_soon_threadsafe(chunk_queue.put_nowait, chunk)
+                    loop.call_soon_threadsafe(chunk_queue.put_nowait, None)  # sentinel
                 except Exception as ex:
-                    chunk_queue.put(ex)
+                    loop.call_soon_threadsafe(chunk_queue.put_nowait, ex)
 
             thread = threading.Thread(target=_read_stream, daemon=True)
             thread.start()
 
             while True:
-                # Non-blocking poll so we don't block the event loop
-                while True:
-                    try:
-                        item = chunk_queue.get_nowait()
-                        break
-                    except queue.Empty:
-                        await asyncio.sleep(0.01)
+                item = await chunk_queue.get()
 
                 if item is None:
                     break

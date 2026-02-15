@@ -24,6 +24,7 @@ from server.config import (
     CLIENT_SECRET,
     CREDENTIAL_FILE,
     SCOPES,
+    OAUTH_CALLBACK_PORT,
 )
 
 logger = logging.getLogger(__name__)
@@ -49,7 +50,11 @@ class AccountsManager:
         return len(self._accounts)
 
     def get_credentials_sync(self) -> Optional[Credentials]:
-        """Synchronous version — returns next credentials (rotates). Thread-safe."""
+        """Synchronous version — returns next credentials (rotates). Thread-safe.
+
+        Token refresh and save are performed inside the lock to prevent
+        race conditions when multiple threads try to refresh the same account.
+        """
         if not self._accounts:
             return None
         with self._thread_lock:
@@ -57,17 +62,18 @@ class AccountsManager:
             idx = self._current_index
             self._current_index = (
                 self._current_index + 1) % len(self._accounts)
-        creds = account["creds"]
-        logger.info(f"Using account #{idx + 1} ({account['file'].name})")
-        if creds.expired and creds.refresh_token:
-            try:
-                creds.refresh(GoogleAuthRequest())
-                self._save_account(account)
-                logger.info(
-                    f"Refreshed credentials for {account['file'].name}")
-            except Exception as e:
-                logger.warning(
-                    f"Failed to refresh {account['file'].name}: {e}")
+            creds = account["creds"]
+            logger.info(f"Using account #{idx + 1} ({account['file'].name})")
+            # Refresh and save INSIDE the lock to prevent race conditions
+            if creds.expired and creds.refresh_token:
+                try:
+                    creds.refresh(GoogleAuthRequest())
+                    self._save_account(account)
+                    logger.info(
+                        f"Refreshed credentials for {account['file'].name}")
+                except Exception as e:
+                    logger.warning(
+                        f"Failed to refresh {account['file'].name}: {e}")
         return creds
 
     async def get_next_credentials(self) -> Optional[Credentials]:
@@ -138,7 +144,7 @@ class AccountsManager:
                 expiry_str = creds_data["expiry"]
                 if isinstance(expiry_str, str) and ("+00:00" in expiry_str or "Z" in expiry_str):
                     try:
-                        from datetime import datetime
+                        from datetime import datetime, timezone
                         if "+00:00" in expiry_str:
                             parsed = datetime.fromisoformat(expiry_str)
                         elif expiry_str.endswith("Z"):
@@ -146,10 +152,9 @@ class AccountsManager:
                                 expiry_str.replace("Z", "+00:00"))
                         else:
                             parsed = datetime.fromisoformat(expiry_str)
-                        import time as _time
                         ts = parsed.timestamp()
-                        creds_data["expiry"] = datetime.utcfromtimestamp(
-                            ts).strftime("%Y-%m-%dT%H:%M:%SZ")
+                        creds_data["expiry"] = datetime.fromtimestamp(
+                            ts, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
                     except Exception:
                         del creds_data["expiry"]
 
@@ -237,7 +242,7 @@ class AccountsManager:
         }
 
         flow = Flow.from_client_config(
-            client_config, scopes=SCOPES, redirect_uri="http://localhost:8080")
+            client_config, scopes=SCOPES, redirect_uri=f"http://localhost:{OAUTH_CALLBACK_PORT}")
         auth_url, _ = flow.authorization_url(
             access_type="offline", prompt="consent", include_granted_scopes="true")
 
@@ -247,7 +252,7 @@ class AccountsManager:
         print(f"Otwórz ten URL w przeglądarce:\n{auth_url}")
         print(f"{'=' * 60}\n")
 
-        server = HTTPServer(("", 8080), _Handler)
+        server = HTTPServer(("", OAUTH_CALLBACK_PORT), _Handler)
         server.handle_request()
 
         if not _Handler.auth_code:

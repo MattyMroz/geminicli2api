@@ -35,7 +35,8 @@ def list_models():
         print(f"  • {name:<45} in:{tokens_in:>10}  out:{tokens_out:>7}")
 
     # All variants
-    print(f"\n  ALL VARIANTS (incl. -search, -nothinking, -maxthinking): {len(SUPPORTED_MODELS)}")
+    print(
+        f"\n  ALL VARIANTS (incl. -search, -nothinking, -maxthinking): {len(SUPPORTED_MODELS)}")
     print(f"  {'─' * 66}")
     for m in SUPPORTED_MODELS:
         name = m["name"].replace("models/", "")
