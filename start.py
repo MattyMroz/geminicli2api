@@ -3,10 +3,10 @@ geminicli2api — Root launcher.
 
 Usage:
     uv run start.py                    → Start the proxy server
-    uv run start.py --add-account      → Add a new Google account (OAuth)
-    uv run start.py --translate        → Run Gemini Translator (auto-starts server)
-    uv run start.py --list-models      → List all supported models
-    uv run start.py --help             → Show help
+    uv run start.py --add-account (-a) → Add a new Google account (OAuth)
+    uv run start.py --translate   (-t) → Run Gemini Translator (auto-starts server)
+    uv run start.py --list-models (-l) → List all supported models
+    uv run start.py --help        (-h) → Show help
 """
 import sys
 import argparse
@@ -59,23 +59,28 @@ def main():
         epilog="""
 Examples:
   uv run start.py                  Start the proxy server on port 8888
-  uv run start.py --add-account    Add a Google OAuth account
-  uv run start.py --translate      Run the Gemini Translator CLI
-  uv run start.py --list-models    List all available models
+  uv run start.py -a               Add a Google OAuth account
+  uv run start.py -t               Run the Gemini Translator CLI
+  uv run start.py -l               List all available models
+
+Short aliases:
+  -a  =  --add-account
+  -t  =  --translate
+  -l  =  --list-models
         """,
     )
     parser.add_argument(
-        "--add-account",
+        "-a", "--add-account",
         action="store_true",
         help="Interactively add a new Google OAuth account",
     )
     parser.add_argument(
-        "--translate",
+        "-t", "--translate",
         action="store_true",
         help="Run the Gemini Translator (auto-starts server if needed)",
     )
     parser.add_argument(
-        "--list-models",
+        "-l", "--list-models",
         action="store_true",
         help="List all supported Gemini models and variants",
     )

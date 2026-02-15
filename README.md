@@ -25,7 +25,7 @@ uv sync
 ### 2. Dodanie konta Google (OAuth)
 
 ```bash
-uv run start.py --add-account
+uv run start.py --add-account   # lub: uv run start.py -a
 ```
 
 Otworzy się przeglądarka → zaloguj się na konto Google → gotowe.
@@ -44,7 +44,7 @@ Serwer startuje na `http://127.0.0.1:8888`.
 Wrzuć pliki `.txt` lub `.srt` do `working_space/input/`, potem:
 
 ```bash
-uv run start.py --translate
+uv run start.py --translate   # lub: uv run start.py -t
 ```
 
 Translator:
@@ -55,13 +55,15 @@ Translator:
 
 ## Komendy
 
-| Komenda | Opis |
-|---------|------|
-| `uv run start.py` | Uruchom serwer proxy (port 8888) |
-| `uv run start.py --add-account` | Dodaj konto Google (OAuth flow) |
-| `uv run start.py --translate` | Uruchom translator CLI |
-| `uv run start.py --list-models` | Wyświetl listę wszystkich dostępnych modeli |
-| `uv run start.py --help` | Pomoc |
+| Komenda | Skrót | Opis |
+|---------|-------|------|
+| `uv run start.py` | — | Uruchom serwer proxy (port 8888) |
+| `uv run start.py --add-account` | `-a` | Dodaj konto Google (OAuth flow) |
+| `uv run start.py --translate` | `-t` | Uruchom translator CLI |
+| `uv run start.py --list-models` | `-l` | Wyświetl listę wszystkich dostępnych modeli |
+| `uv run start.py --help` | `-h` | Pomoc |
+
+> **Tip**: Używaj skrótów dla szybszego wywołania, np. `uv run start.py -t` zamiast `uv run start.py --translate`.
 
 ## Konfiguracja translatora
 

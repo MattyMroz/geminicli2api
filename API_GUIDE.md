@@ -47,7 +47,7 @@ Zanim zaczniesz budować aplikację, upewnij się że:
 
 2. **Masz co najmniej 1 konto Google** dodane:
    ```bash
-   uv run start.py --add-account
+   uv run start.py --add-account   # lub: uv run start.py -a
    ```
 
 3. **Serwer odpowiada** — sprawdź health check:
@@ -308,7 +308,7 @@ Każdy model bazowy (oprócz `gemini-2.0-flash` i `gemini-2.5-flash-lite`) jest 
 | Najszybsza odpowiedź | `gemini-2.5-flash-lite` |
 | Najlepsza jakość (preview) | `gemini-3-pro-preview` |
 
-Pełna lista: `uv run start.py --list-models`
+Pełna lista: `uv run start.py --list-models` (skrót: `-l`)
 
 ---
 
@@ -885,7 +885,7 @@ Serwer obsługuje dowolną liczbę requestów — jest asynchroniczny (FastAPI +
 
 ### Czy muszę uruchamiać serwer proxy osobno?
 
-Tak, serwer musi działać w tle (`uv run start.py`). **Wyjątek**: Translator ma opcję `auto_start_server`, która automatycznie startuje serwer — możesz zaimplementować coś podobnego w swojej aplikacji.
+Tak, serwer musi działać w tle (`uv run start.py`). **Wyjątek**: Translator ma opcję `auto_start_server`, która automatycznie startuje serwer — możesz zaimplementować coś podobnego w swojej aplikacji. Możesz też szybko uruchomić translator skrótem: `uv run start.py -t`.
 
 ### Jak zmienić port serwera?
 
