@@ -60,6 +60,7 @@ Translator:
 | `uv run start.py` | Uruchom serwer proxy (port 8888) |
 | `uv run start.py --add-account` | Dodaj konto Google (OAuth flow) |
 | `uv run start.py --translate` | Uruchom translator CLI |
+| `uv run start.py --list-models` | Wyświetl listę wszystkich dostępnych modeli |
 | `uv run start.py --help` | Pomoc |
 
 ## Konfiguracja translatora
@@ -171,7 +172,8 @@ geminicli2api/
 | `gemini-2.5-pro-search` | Z wyszukiwaniem |
 | `gemini-2.5-flash-search` | Flash z wyszukiwaniem |
 
-Pełna lista: `GET /v1/models`
+Pełna lista z CLI: `uv run start.py --list-models`
+Pełna lista via API: `GET /v1/models`
 
 ## Autentykacja API
 
