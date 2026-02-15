@@ -33,8 +33,10 @@ class AccountsManager:
     """Manages multiple Google OAuth accounts with round-robin rotation."""
 
     def __init__(self, accounts_dir: Optional[str] = None):
-        self._accounts_dir = Path(accounts_dir) if accounts_dir else ACCOUNTS_DIR
-        self._accounts: List[dict] = []  # [{"file": Path, "creds": Credentials, "project_id": str|None}]
+        self._accounts_dir = Path(
+            accounts_dir) if accounts_dir else ACCOUNTS_DIR
+        # [{"file": Path, "creds": Credentials, "project_id": str|None}]
+        self._accounts: List[dict] = []
         self._current_index: int = 0
         self._lock = asyncio.Lock()
         self._thread_lock = threading.Lock()  # Thread-safe lock for sync rotation
@@ -53,16 +55,19 @@ class AccountsManager:
         with self._thread_lock:
             account = self._accounts[self._current_index]
             idx = self._current_index
-            self._current_index = (self._current_index + 1) % len(self._accounts)
+            self._current_index = (
+                self._current_index + 1) % len(self._accounts)
         creds = account["creds"]
         logger.info(f"Using account #{idx + 1} ({account['file'].name})")
         if creds.expired and creds.refresh_token:
             try:
                 creds.refresh(GoogleAuthRequest())
                 self._save_account(account)
-                logger.info(f"Refreshed credentials for {account['file'].name}")
+                logger.info(
+                    f"Refreshed credentials for {account['file'].name}")
             except Exception as e:
-                logger.warning(f"Failed to refresh {account['file'].name}: {e}")
+                logger.warning(
+                    f"Failed to refresh {account['file'].name}: {e}")
         return creds
 
     async def get_next_credentials(self) -> Optional[Credentials]:
@@ -106,7 +111,8 @@ class AccountsManager:
                 self._accounts.append(account)
                 logger.info(f"Loaded legacy credentials: {CREDENTIAL_FILE}")
 
-        logger.info(f"AccountsManager: {len(self._accounts)} account(s) loaded")
+        logger.info(
+            f"AccountsManager: {len(self._accounts)} account(s) loaded")
 
     def _load_single_account(self, filepath: Path) -> Optional[dict]:
         """Load a single credential JSON file."""
@@ -115,7 +121,8 @@ class AccountsManager:
                 data = json.load(f)
 
             if not data.get("refresh_token"):
-                logger.warning(f"No refresh_token in {filepath.name}, skipping")
+                logger.warning(
+                    f"No refresh_token in {filepath.name}, skipping")
                 return None
 
             creds_data = data.copy()
@@ -135,12 +142,14 @@ class AccountsManager:
                         if "+00:00" in expiry_str:
                             parsed = datetime.fromisoformat(expiry_str)
                         elif expiry_str.endswith("Z"):
-                            parsed = datetime.fromisoformat(expiry_str.replace("Z", "+00:00"))
+                            parsed = datetime.fromisoformat(
+                                expiry_str.replace("Z", "+00:00"))
                         else:
                             parsed = datetime.fromisoformat(expiry_str)
                         import time as _time
                         ts = parsed.timestamp()
-                        creds_data["expiry"] = datetime.utcfromtimestamp(ts).strftime("%Y-%m-%dT%H:%M:%SZ")
+                        creds_data["expiry"] = datetime.utcfromtimestamp(
+                            ts).strftime("%Y-%m-%dT%H:%M:%SZ")
                     except Exception:
                         del creds_data["expiry"]
 
@@ -198,6 +207,7 @@ class AccountsManager:
 
         class _Handler(BaseHTTPRequestHandler):
             auth_code = None
+
             def do_GET(self):
                 q = parse_qs(urlparse(self.path).query)
                 code = q.get("code", [None])[0]
@@ -206,12 +216,14 @@ class AccountsManager:
                     self.send_response(200)
                     self.send_header("Content-type", "text/html")
                     self.end_headers()
-                    self.wfile.write(b"<h1>OK! Account added. You can close this window.</h1>")
+                    self.wfile.write(
+                        b"<h1>OK! Account added. You can close this window.</h1>")
                 else:
                     self.send_response(400)
                     self.send_header("Content-type", "text/html")
                     self.end_headers()
                     self.wfile.write(b"<h1>Failed</h1>")
+
             def log_message(self, *args):
                 pass  # silence logs
 
@@ -224,8 +236,10 @@ class AccountsManager:
             }
         }
 
-        flow = Flow.from_client_config(client_config, scopes=SCOPES, redirect_uri="http://localhost:8080")
-        auth_url, _ = flow.authorization_url(access_type="offline", prompt="consent", include_granted_scopes="true")
+        flow = Flow.from_client_config(
+            client_config, scopes=SCOPES, redirect_uri="http://localhost:8080")
+        auth_url, _ = flow.authorization_url(
+            access_type="offline", prompt="consent", include_granted_scopes="true")
 
         print(f"\n{'=' * 60}")
         print("🔑 DODAWANIE NOWEGO KONTA GOOGLE")

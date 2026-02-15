@@ -28,7 +28,8 @@ async def openai_chat_completions(
 ):
     """OpenAI-compatible chat completions endpoint."""
     try:
-        logging.info(f"OpenAI chat completion request: model={request.model}, stream={request.stream}")
+        logging.info(
+            f"OpenAI chat completion request: model={request.model}, stream={request.stream}")
         gemini_request_data = openai_request_to_gemini(request)
         gemini_payload = build_gemini_payload_from_openai(gemini_request_data)
     except Exception as e:
@@ -60,7 +61,8 @@ async def openai_chat_completions(
                                 gemini_chunk = json.loads(chunk_data)
 
                                 if "error" in gemini_chunk:
-                                    logging.error(f"Error in streaming response: {gemini_chunk['error']}")
+                                    logging.error(
+                                        f"Error in streaming response: {gemini_chunk['error']}")
                                     error_data = {
                                         "error": {
                                             "message": gemini_chunk["error"].get("message", "Unknown error"),
@@ -81,7 +83,8 @@ async def openai_chat_completions(
                                 continue
 
                     yield "data: [DONE]\n\n"
-                    logging.info(f"Completed streaming response: {response_id}")
+                    logging.info(
+                        f"Completed streaming response: {response_id}")
                 else:
                     error_msg = "Streaming request failed"
                     status_code = 500
@@ -91,10 +94,12 @@ async def openai_chat_completions(
                         try:
                             error_body = response.body
                             if isinstance(error_body, bytes):
-                                error_body = error_body.decode('utf-8', "ignore")
+                                error_body = error_body.decode(
+                                    'utf-8', "ignore")
                             error_data = json.loads(error_body)
                             if "error" in error_data:
-                                error_msg = error_data["error"].get("message", error_msg)
+                                error_msg = error_data["error"].get(
+                                    "message", error_msg)
                         except Exception:
                             pass
                     error_data = {
@@ -117,7 +122,8 @@ async def openai_chat_completions(
             response = await send_gemini_request(gemini_payload, is_streaming=False)
 
             if isinstance(response, Response) and response.status_code != 200:
-                logging.error(f"Gemini API error: status={response.status_code}")
+                logging.error(
+                    f"Gemini API error: status={response.status_code}")
                 try:
                     error_body = response.body
                     if isinstance(error_body, bytes):
@@ -148,8 +154,10 @@ async def openai_chat_completions(
 
             try:
                 gemini_response = json.loads(response.body)
-                openai_response = gemini_response_to_openai(gemini_response, request.model)
-                logging.info(f"Successfully processed non-streaming response for model: {request.model}")
+                openai_response = gemini_response_to_openai(
+                    gemini_response, request.model)
+                logging.info(
+                    f"Successfully processed non-streaming response for model: {request.model}")
                 return openai_response
             except (json.JSONDecodeError, AttributeError) as e:
                 logging.error(f"Failed to parse Gemini response: {str(e)}")

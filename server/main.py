@@ -46,7 +46,8 @@ async def lifespan(app: FastAPI):
         set_accounts_manager(accounts_manager)
 
         if accounts_manager.count > 0:
-            logging.info(f"Loaded {accounts_manager.count} account(s) from {ACCOUNTS_DIR}")
+            logging.info(
+                f"Loaded {accounts_manager.count} account(s) from {ACCOUNTS_DIR}")
         else:
             logging.info("No accounts found in accounts/ directory.")
 
@@ -62,18 +63,23 @@ async def lifespan(app: FastAPI):
                         proj_id = get_user_project_id(creds)
                         if proj_id:
                             onboard_user(creds, proj_id)
-                            logging.info(f"Successfully onboarded with project ID: {proj_id}")
-                        logging.info("Server started successfully with existing credentials.")
+                            logging.info(
+                                f"Successfully onboarded with project ID: {proj_id}")
+                        logging.info(
+                            "Server started successfully with existing credentials.")
                     except Exception as e:
                         logging.error(f"Setup failed: {str(e)}")
-                        logging.warning("Server started but may not function properly.")
+                        logging.warning(
+                            "Server started but may not function properly.")
                 else:
-                    logging.warning("Could not load credentials. Will authenticate on first request.")
+                    logging.warning(
+                        "Could not load credentials. Will authenticate on first request.")
             except Exception as e:
                 logging.error(f"Credential loading error: {str(e)}")
         else:
             # No credentials found — run OAuth flow
-            logging.info("No credentials found. Starting OAuth authentication flow...")
+            logging.info(
+                "No credentials found. Starting OAuth authentication flow...")
             try:
                 creds = get_credentials(allow_oauth_flow=True)
                 if creds:
@@ -81,17 +87,19 @@ async def lifespan(app: FastAPI):
                         proj_id = get_user_project_id(creds)
                         if proj_id:
                             onboard_user(creds, proj_id)
-                            logging.info(f"Onboarded with project ID: {proj_id}")
+                            logging.info(
+                                f"Onboarded with project ID: {proj_id}")
                     except Exception as e:
                         logging.error(f"Setup failed: {str(e)}")
                 else:
-                    logging.error("Authentication failed. Server will not function until credentials are provided.")
+                    logging.error(
+                        "Authentication failed. Server will not function until credentials are provided.")
             except Exception as e:
                 logging.error(f"Authentication error: {str(e)}")
 
         from server.config import GEMINI_AUTH_PASSWORD, HOST, PORT
         logging.info(f"Server ready at http://{HOST}:{PORT}")
-        logging.info(f"Auth password: {GEMINI_AUTH_PASSWORD}")
+        logging.info(f"Auth password: {'*' * max(0, len(GEMINI_AUTH_PASSWORD) - 4)}{GEMINI_AUTH_PASSWORD[-4:] if len(GEMINI_AUTH_PASSWORD) > 4 else '****'}")
         logging.info(f"Accounts loaded: {accounts_manager.count}")
 
     except Exception as e:

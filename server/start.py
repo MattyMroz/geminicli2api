@@ -5,6 +5,7 @@ Usage:
     uv run server/start.py                  — Start the API server
     uv run server/start.py --add-account    — Add a new Google account via OAuth
 """
+from dotenv import load_dotenv
 import sys
 import os
 
@@ -13,7 +14,6 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-from dotenv import load_dotenv
 load_dotenv(os.path.join(ROOT_DIR, ".env"))
 
 

@@ -31,7 +31,7 @@ class TranslatorConfig:
 
     # --- Translation ---
     translated_line_count: int = 20
-    concurrent_requests: int = 16
+    concurrent_requests: int = 20
     mode: str = "text"  # text | image | manga | subtitle | ocr
 
     # --- Formatter / pre-processing ---
@@ -41,10 +41,14 @@ class TranslatorConfig:
     sentence_length: int = 750
 
     # --- Paths ---
-    input_folder: str = field(default_factory=lambda: str(ROOT_DIR / "working_space" / "input"))
-    output_folder: str = field(default_factory=lambda: str(ROOT_DIR / "working_space" / "output"))
-    output_txt_folder: str = field(default_factory=lambda: str(ROOT_DIR / "working_space" / "output_txt"))
-    prompts_folder: str = field(default_factory=lambda: str(APP_DIR / "prompts"))
+    input_folder: str = field(default_factory=lambda: str(
+        ROOT_DIR / "working_space" / "input"))
+    output_folder: str = field(default_factory=lambda: str(
+        ROOT_DIR / "working_space" / "output"))
+    output_txt_folder: str = field(default_factory=lambda: str(
+        ROOT_DIR / "working_space" / "output_txt"))
+    prompts_folder: str = field(
+        default_factory=lambda: str(APP_DIR / "prompts"))
 
     # --- Server management ---
     auto_start_server: bool = True
@@ -60,7 +64,8 @@ class TranslatorConfig:
     def display(self):
         """Print current config to console."""
         from apps.gemini_translator.src.utils.console import console
-        console.print("\n[blue_bold]═══ Konfiguracja translatora ═══[/blue_bold]")
+        console.print(
+            "\n[blue_bold]═══ Konfiguracja translatora ═══[/blue_bold]")
         console.print(f"  Model:              {self.model_name}")
         console.print(f"  Tryb:               {self.mode}")
         console.print(f"  Temperatura:        {self.temperature}")
@@ -77,4 +82,5 @@ class TranslatorConfig:
         console.print(f"  Output (SRT):       {self.output_folder}")
         console.print(f"  Output (TXT):       {self.output_txt_folder}")
         console.print(f"  Prompty:            {self.prompts_folder}")
-        console.print("[blue_bold]════════════════════════════════[/blue_bold]\n")
+        console.print(
+            "[blue_bold]════════════════════════════════[/blue_bold]\n")

@@ -4,6 +4,7 @@ Used by both OpenAI compatibility layer and native Gemini endpoints.
 """
 import json
 import logging
+import uuid
 import requests
 from fastapi import Response
 from fastapi.responses import StreamingResponse
@@ -17,9 +18,15 @@ from server.config import (
     get_base_model_name,
     is_search_model,
     get_thinking_budget,
-    should_include_thoughts
+    should_include_thoughts,
+    _has_thinking_support,
 )
 import asyncio
+
+# Request timeouts (seconds)
+CONNECT_TIMEOUT = 30
+READ_TIMEOUT = 300  # 5 min for long generations
+STREAM_READ_TIMEOUT = 600  # 10 min for streaming
 
 
 def _get_account_count() -> int:
@@ -30,34 +37,65 @@ def _get_account_count() -> int:
     return 1
 
 
-def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds) -> Response:
+def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, request_id: str = "") -> Response:
     """Single attempt to send a request to Google's Gemini API using given credentials."""
+    rid = request_id or str(uuid.uuid4())[:8]
+
     if not creds:
+        logging.error(f"[{rid}] No credentials available")
         return Response(
-            content="Authentication failed. Please restart the proxy to log in.",
-            status_code=500
+            content=json.dumps({"error": {"message": "Authentication failed. No credentials available.", "code": 500}}),
+            status_code=500,
+            media_type="application/json"
         )
 
     if creds.expired and creds.refresh_token:
         try:
             creds.refresh(GoogleAuthRequest())
             save_credentials(creds)
-        except Exception:
+            logging.debug(f"[{rid}] Token refreshed successfully")
+        except Exception as e:
+            logging.error(f"[{rid}] Token refresh failed: {e}")
             return Response(
-                content="Token refresh failed. Please restart the proxy to re-authenticate.",
-                status_code=500
+                content=json.dumps({"error": {"message": "Token refresh failed. Please restart the proxy.", "code": 500}}),
+                status_code=500,
+                media_type="application/json"
             )
     elif not creds.token:
+        logging.error(f"[{rid}] No access token available")
         return Response(
-            content="No access token. Please restart the proxy to re-authenticate.",
-            status_code=500
+            content=json.dumps({"error": {"message": "No access token. Please restart the proxy.", "code": 500}}),
+            status_code=500,
+            media_type="application/json"
         )
 
-    proj_id = get_user_project_id(creds)
-    if not proj_id:
-        return Response(content="Failed to get user project ID.", status_code=500)
+    try:
+        proj_id = get_user_project_id(creds)
+    except Exception as e:
+        logging.error(f"[{rid}] Failed to get project ID: {e}")
+        return Response(
+            content=json.dumps({"error": {"message": f"Project ID discovery failed: {e}", "code": 500}}),
+            status_code=500,
+            media_type="application/json"
+        )
 
-    onboard_user(creds, proj_id)
+    if not proj_id:
+        logging.error(f"[{rid}] No project ID")
+        return Response(
+            content=json.dumps({"error": {"message": "Failed to get user project ID.", "code": 500}}),
+            status_code=500,
+            media_type="application/json"
+        )
+
+    try:
+        onboard_user(creds, proj_id)
+    except Exception as e:
+        logging.error(f"[{rid}] Onboarding failed: {e}")
+        return Response(
+            content=json.dumps({"error": {"message": f"Onboarding failed: {e}", "code": 500}}),
+            status_code=500,
+            media_type="application/json"
+        )
 
     final_payload = {
         "model": payload.get("model"),
@@ -77,25 +115,57 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds) -> Re
     }
 
     final_post_data = json.dumps(final_payload)
+    model_name = payload.get("model", "unknown")
+    logging.info(f"[{rid}] Sending request to Google API: model={model_name}, stream={is_streaming}")
 
     try:
         if is_streaming:
-            resp = requests.post(target_url, data=final_post_data, headers=request_headers, stream=True)
-            return _handle_streaming_response(resp)
+            resp = requests.post(
+                target_url, data=final_post_data, headers=request_headers,
+                stream=True, timeout=(CONNECT_TIMEOUT, STREAM_READ_TIMEOUT))
+            return _handle_streaming_response(resp, rid)
         else:
-            resp = requests.post(target_url, data=final_post_data, headers=request_headers)
-            return _handle_non_streaming_response(resp)
-    except requests.exceptions.RequestException as e:
-        logging.error(f"Request to Google API failed: {str(e)}")
+            resp = requests.post(
+                target_url, data=final_post_data, headers=request_headers,
+                timeout=(CONNECT_TIMEOUT, READ_TIMEOUT))
+            return _handle_non_streaming_response(resp, rid)
+    except requests.exceptions.ConnectTimeout:
+        logging.error(f"[{rid}] Connection timeout to Google API")
         return Response(
-            content=json.dumps({"error": {"message": f"Request failed: {str(e)}"}}),
+            content=json.dumps(
+                {"error": {"message": "Connection timeout to Google API. Try again.", "code": 504}}),
+            status_code=504,
+            media_type="application/json"
+        )
+    except requests.exceptions.ReadTimeout:
+        logging.error(f"[{rid}] Read timeout from Google API")
+        return Response(
+            content=json.dumps(
+                {"error": {"message": "Read timeout from Google API. The model may need more time.", "code": 504}}),
+            status_code=504,
+            media_type="application/json"
+        )
+    except requests.exceptions.ConnectionError as e:
+        logging.error(f"[{rid}] Connection error: {e}")
+        return Response(
+            content=json.dumps(
+                {"error": {"message": "Cannot connect to Google API. Check your internet connection.", "code": 502}}),
+            status_code=502,
+            media_type="application/json"
+        )
+    except requests.exceptions.RequestException as e:
+        logging.error(f"[{rid}] Request to Google API failed: {str(e)}")
+        return Response(
+            content=json.dumps(
+                {"error": {"message": f"Request failed: {str(e)}", "code": 500}}),
             status_code=500,
             media_type="application/json"
         )
     except Exception as e:
-        logging.error(f"Unexpected error during Google API request: {str(e)}")
+        logging.error(f"[{rid}] Unexpected error during Google API request: {str(e)}")
         return Response(
-            content=json.dumps({"error": {"message": f"Unexpected error: {str(e)}"}}),
+            content=json.dumps(
+                {"error": {"message": f"Unexpected error: {str(e)}", "code": 500}}),
             status_code=500,
             media_type="application/json"
         )
@@ -103,38 +173,52 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds) -> Re
 
 async def send_gemini_request(payload: dict, is_streaming: bool = False) -> Response:
     """Send a request to Google's Gemini API, retrying with different accounts on 403.
-    
+
     Credentials are obtained in the async context (proper round-robin),
     then the blocking HTTP call runs in a thread.
     """
+    request_id = str(uuid.uuid4())[:8]
     max_retries = _get_account_count()
     last_response = None
+    model_name = payload.get("model", "unknown")
+
+    logging.info(f"[{request_id}] New request: model={model_name}, stream={is_streaming}, accounts={max_retries}")
 
     for attempt in range(max_retries):
         # Get credentials HERE, in the event loop — thread-safe rotation
         creds = get_credentials()
-        response = await asyncio.to_thread(_try_send_request_with_creds, payload, is_streaming, creds)
+        response = await asyncio.to_thread(_try_send_request_with_creds, payload, is_streaming, creds, request_id)
         last_response = response
 
         # Check if 403 — try next account (round-robin rotates automatically)
         status = getattr(response, "status_code", None)
         if status == 403 and attempt < max_retries - 1:
-            logging.warning(f"Account returned 403, trying next account ({attempt + 1}/{max_retries})...")
+            logging.warning(
+                f"[{request_id}] Account returned 403, trying next account ({attempt + 1}/{max_retries})...")
             continue
+
+        if status and status >= 400:
+            logging.warning(f"[{request_id}] Request completed with status {status}")
+        else:
+            logging.info(f"[{request_id}] Request completed successfully")
+
         return response
 
+    logging.error(f"[{request_id}] All {max_retries} accounts failed")
     return last_response
 
 
-def _handle_streaming_response(resp) -> StreamingResponse:
+def _handle_streaming_response(resp, rid: str = "") -> StreamingResponse:
     """Handle streaming response from Google API."""
     if resp.status_code != 200:
-        logging.error(f"Google API returned status {resp.status_code}: {resp.text}")
+        logging.error(
+            f"[{rid}] Google API returned status {resp.status_code}: {resp.text[:500]}")
         error_message = f"Google API error: {resp.status_code}"
         try:
             error_data = resp.json()
             if "error" in error_data:
-                error_message = error_data["error"].get("message", error_message)
+                error_message = error_data["error"].get(
+                    "message", error_message)
         except Exception:
             pass
 
@@ -210,12 +294,14 @@ def _handle_streaming_response(resp) -> StreamingResponse:
                             obj = json.loads(chunk)
                             if "response" in obj:
                                 response_chunk = obj["response"]
-                                response_json = json.dumps(response_chunk, separators=(',', ':'))
+                                response_json = json.dumps(
+                                    response_chunk, separators=(',', ':'))
                                 response_line = f"data: {response_json}\n\n"
                                 yield response_line.encode('utf-8', "ignore")
                                 await asyncio.sleep(0)
                             else:
-                                obj_json = json.dumps(obj, separators=(',', ':'))
+                                obj_json = json.dumps(
+                                    obj, separators=(',', ':'))
                                 yield f"data: {obj_json}\n\n".encode('utf-8', "ignore")
                         except json.JSONDecodeError:
                             continue
@@ -249,7 +335,7 @@ def _handle_streaming_response(resp) -> StreamingResponse:
     )
 
 
-def _handle_non_streaming_response(resp) -> Response:
+def _handle_non_streaming_response(resp, rid: str = "") -> Response:
     """Handle non-streaming response from Google API."""
     if resp.status_code == 200:
         try:
@@ -271,11 +357,13 @@ def _handle_non_streaming_response(resp) -> Response:
                 media_type=resp.headers.get("Content-Type")
             )
     else:
-        logging.error(f"Google API returned status {resp.status_code}: {resp.text}")
+        logging.error(
+            f"Google API returned status {resp.status_code}: {resp.text}")
         try:
             error_data = resp.json()
             if "error" in error_data:
-                error_message = error_data["error"].get("message", f"API error: {resp.status_code}")
+                error_message = error_data["error"].get(
+                    "message", f"API error: {resp.status_code}")
                 error_response = {
                     "error": {
                         "message": error_message,
@@ -301,7 +389,8 @@ def _handle_non_streaming_response(resp) -> Response:
 def build_gemini_payload_from_openai(openai_payload: dict) -> dict:
     """Build a Gemini API payload from an OpenAI-transformed request."""
     model = openai_payload.get("model")
-    safety_settings = openai_payload.get("safetySettings", DEFAULT_SAFETY_SETTINGS)
+    safety_settings = openai_payload.get(
+        "safetySettings", DEFAULT_SAFETY_SETTINGS)
 
     request_data = {
         "contents": openai_payload.get("contents"),
@@ -328,10 +417,10 @@ def build_gemini_payload_from_native(native_request: dict, model_from_path: str)
     if "generationConfig" not in native_request:
         native_request["generationConfig"] = {}
 
-    if "thinkingConfig" not in native_request["generationConfig"]:
-        native_request["generationConfig"]["thinkingConfig"] = {}
+    if _has_thinking_support(model_from_path):
+        if "thinkingConfig" not in native_request["generationConfig"]:
+            native_request["generationConfig"]["thinkingConfig"] = {}
 
-    if "gemini-2.5-flash-image" not in model_from_path:
         thinking_budget = get_thinking_budget(model_from_path)
         include_thoughts = should_include_thoughts(model_from_path)
 

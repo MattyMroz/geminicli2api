@@ -26,7 +26,8 @@ SCOPES = [
 ]
 
 # File Paths — legacy single-account (for backward compat)
-CREDENTIAL_FILE = str(ROOT_DIR / os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "oauth_creds.json"))
+CREDENTIAL_FILE = str(
+    ROOT_DIR / os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "oauth_creds.json"))
 
 # Authentication
 GEMINI_AUTH_PASSWORD = os.getenv("GEMINI_AUTH_PASSWORD", "123456")
@@ -50,13 +51,26 @@ DEFAULT_SAFETY_SETTINGS = [
     {"category": "HARM_CATEGORY_JAILBREAK", "threshold": "BLOCK_NONE"},
 ]
 
-# Base Models
+# Base Models (only models verified to exist on Google's CodeAssist endpoint)
 BASE_MODELS = [
     {
-        "name": "models/gemini-2.5-pro-preview-03-25",
+        "name": "models/gemini-2.0-flash",
         "version": "001",
-        "displayName": "Gemini 2.5 Pro Preview 03-25",
-        "description": "Preview version of Gemini 2.5 Pro from March 25th",
+        "displayName": "Gemini 2.0 Flash",
+        "description": "Fast multimodal model from Gemini 2.0 generation",
+        "inputTokenLimit": 1048576,
+        "outputTokenLimit": 8192,
+        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
+        "temperature": 1.0,
+        "maxTemperature": 2.0,
+        "topP": 0.95,
+        "topK": 64,
+    },
+    {
+        "name": "models/gemini-2.5-flash",
+        "version": "001",
+        "displayName": "Gemini 2.5 Flash",
+        "description": "Fast and efficient multimodal model with latest improvements",
         "inputTokenLimit": 1048576,
         "outputTokenLimit": 65535,
         "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
@@ -66,23 +80,10 @@ BASE_MODELS = [
         "topK": 64,
     },
     {
-        "name": "models/gemini-2.5-pro-preview-05-06",
+        "name": "models/gemini-2.5-flash-lite",
         "version": "001",
-        "displayName": "Gemini 2.5 Pro Preview 05-06",
-        "description": "Preview version of Gemini 2.5 Pro from May 6th",
-        "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
-        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
-        "temperature": 1.0,
-        "maxTemperature": 2.0,
-        "topP": 0.95,
-        "topK": 64,
-    },
-    {
-        "name": "models/gemini-2.5-pro-preview-06-05",
-        "version": "001",
-        "displayName": "Gemini 2.5 Pro Preview 06-05",
-        "description": "Preview version of Gemini 2.5 Pro from June 5th",
+        "displayName": "Gemini 2.5 Flash Lite",
+        "description": "Lightweight version of Gemini 2.5 Flash — fast and cost-efficient",
         "inputTokenLimit": 1048576,
         "outputTokenLimit": 65535,
         "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
@@ -105,51 +106,12 @@ BASE_MODELS = [
         "topK": 64,
     },
     {
-        "name": "models/gemini-2.5-flash-preview-05-20",
+        "name": "models/gemini-3-flash-preview",
         "version": "001",
-        "displayName": "Gemini 2.5 Flash Preview 05-20",
-        "description": "Preview version of Gemini 2.5 Flash from May 20th",
+        "displayName": "Gemini 3.0 Flash Preview",
+        "description": "Preview version of Gemini 3.0 Flash — latest generation",
         "inputTokenLimit": 1048576,
         "outputTokenLimit": 65535,
-        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
-        "temperature": 1.0,
-        "maxTemperature": 2.0,
-        "topP": 0.95,
-        "topK": 64,
-    },
-    {
-        "name": "models/gemini-2.5-flash-preview-04-17",
-        "version": "001",
-        "displayName": "Gemini 2.5 Flash Preview 04-17",
-        "description": "Preview version of Gemini 2.5 Flash from April 17th",
-        "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
-        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
-        "temperature": 1.0,
-        "maxTemperature": 2.0,
-        "topP": 0.95,
-        "topK": 64,
-    },
-    {
-        "name": "models/gemini-2.5-flash",
-        "version": "001",
-        "displayName": "Gemini 2.5 Flash",
-        "description": "Fast and efficient multimodal model with latest improvements",
-        "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
-        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
-        "temperature": 1.0,
-        "maxTemperature": 2.0,
-        "topP": 0.95,
-        "topK": 64,
-    },
-    {
-        "name": "models/gemini-2.5-flash-image-preview",
-        "version": "001",
-        "displayName": "Gemini 2.5 Flash Image Preview",
-        "description": "Gemini 2.5 Flash Image Preview",
-        "inputTokenLimit": 32768,
-        "outputTokenLimit": 32768,
         "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
         "temperature": 1.0,
         "maxTemperature": 2.0,
@@ -159,21 +121,8 @@ BASE_MODELS = [
     {
         "name": "models/gemini-3-pro-preview",
         "version": "001",
-        "displayName": "Gemini 3.0 Pro Preview 11-2025",
-        "description": "Preview version of Gemini 3.0 Pro from November 2025",
-        "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
-        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
-        "temperature": 1.0,
-        "maxTemperature": 2.0,
-        "topP": 0.95,
-        "topK": 64,
-    },
-    {
-        "name": "models/gemini-3-flash-preview",
-        "version": "001",
-        "displayName": "Gemini 3.0 Flash Preview",
-        "description": "Preview version of Gemini 3.0 Flash",
+        "displayName": "Gemini 3.0 Pro Preview",
+        "description": "Preview version of Gemini 3.0 Pro — most capable model",
         "inputTokenLimit": 1048576,
         "outputTokenLimit": 65535,
         "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
@@ -190,36 +139,54 @@ BASE_MODELS = [
 def _generate_search_variants():
     search_models = []
     for model in BASE_MODELS:
-        if "gemini-2.5-flash-image" not in model["name"] and "generateContent" in model["supportedGenerationMethods"]:
+        if "generateContent" in model["supportedGenerationMethods"]:
             variant = model.copy()
             variant["name"] = model["name"] + "-search"
-            variant["displayName"] = model["displayName"] + " with Google Search"
-            variant["description"] = model["description"] + " (includes Google Search grounding)"
+            variant["displayName"] = model["displayName"] + \
+                " with Google Search"
+            variant["description"] = model["description"] + \
+                " (includes Google Search grounding)"
             search_models.append(variant)
     return search_models
+
+
+def _has_thinking_support(model_name: str) -> bool:
+    """Check if a model supports thinking budget configuration."""
+    name = model_name.lower()
+    # Exclude models without thinking support
+    if "gemini-2.0-" in name:
+        return False
+    if "gemini-2.5-flash-lite" in name:
+        return False
+    # Include models with thinking
+    if any(x in name for x in ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-3-pro", "gemini-3-flash"]):
+        return True
+    return False
 
 
 def _generate_thinking_variants():
     thinking_models = []
     for model in BASE_MODELS:
-        if "gemini-2.5-flash-image" not in model["name"] and "generateContent" in model["supportedGenerationMethods"] and (
-            "gemini-2.5-flash" in model["name"] or "gemini-2.5-pro" in model["name"]
-        ):
+        if _has_thinking_support(model["name"]) and "generateContent" in model["supportedGenerationMethods"]:
             nothinking = model.copy()
             nothinking["name"] = model["name"] + "-nothinking"
             nothinking["displayName"] = model["displayName"] + " (No Thinking)"
-            nothinking["description"] = model["description"] + " (thinking disabled)"
+            nothinking["description"] = model["description"] + \
+                " (thinking disabled)"
             thinking_models.append(nothinking)
 
             maxthinking = model.copy()
             maxthinking["name"] = model["name"] + "-maxthinking"
-            maxthinking["displayName"] = model["displayName"] + " (Max Thinking)"
-            maxthinking["description"] = model["description"] + " (maximum thinking budget)"
+            maxthinking["displayName"] = model["displayName"] + \
+                " (Max Thinking)"
+            maxthinking["description"] = model["description"] + \
+                " (maximum thinking budget)"
             thinking_models.append(maxthinking)
     return thinking_models
 
 
-all_models = BASE_MODELS + _generate_search_variants() + _generate_thinking_variants()
+all_models = BASE_MODELS + _generate_search_variants() + \
+    _generate_thinking_variants()
 SUPPORTED_MODELS = sorted(all_models, key=lambda x: x["name"])
 
 
@@ -247,22 +214,26 @@ def is_maxthinking_model(model_name: str) -> bool:
 def get_thinking_budget(model_name: str) -> int:
     base_model = get_base_model_name(model_name)
     if is_nothinking_model(model_name):
-        if "gemini-2.5-flash" in base_model:
+        if "gemini-2.5-flash" in base_model and "lite" not in base_model:
             return 0
         elif "gemini-2.5-pro" in base_model or "gemini-3-pro" in base_model:
             return 128
+        elif "gemini-3-flash" in base_model:
+            return 0
     elif is_maxthinking_model(model_name):
-        if "gemini-2.5-flash" in base_model:
+        if "gemini-2.5-flash" in base_model and "lite" not in base_model:
             return 24576
         elif "gemini-2.5-pro" in base_model:
             return 32768
         elif "gemini-3-pro" in base_model:
             return 45000
+        elif "gemini-3-flash" in base_model:
+            return 24576
     return -1
 
 
 def should_include_thoughts(model_name: str) -> bool:
     if is_nothinking_model(model_name):
         base_model = get_base_model_name(model_name)
-        return "gemini-2.5-pro" in base_model or "gemini-3-pro" in base_model
+        return "gemini-2.5-pro" in base_model or "gemini-3-pro" in base_model or "gemini-3-flash" in base_model
     return True

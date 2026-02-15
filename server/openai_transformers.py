@@ -15,21 +15,31 @@ from server.config import (
     get_thinking_budget,
     should_include_thoughts,
     is_nothinking_model,
-    is_maxthinking_model
+    is_maxthinking_model,
+    _has_thinking_support,
 )
 
 
 def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dict[str, Any]:
     """Transform an OpenAI chat completion request to Gemini format."""
     contents = []
+    system_parts = []
 
     for message in openai_request.messages:
         role = message.role
 
+        # Extract system messages into systemInstruction
+        if role == "system":
+            if isinstance(message.content, list):
+                for part in message.content:
+                    if part.get("type") == "text":
+                        system_parts.append({"text": part.get("text", "")})
+            else:
+                system_parts.append({"text": message.content or ""})
+            continue
+
         if role == "assistant":
             role = "model"
-        elif role == "system":
-            role = "user"
 
         if isinstance(message.content, list):
             parts = []
@@ -53,17 +63,21 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                                     header, base64_data = url.split(",", 1)
                                     mime_type = ""
                                     if ":" in header:
-                                        mime_type = header.split(":", 1)[1].split(";", 1)[0] or ""
+                                        mime_type = header.split(
+                                            ":", 1)[1].split(";", 1)[0] or ""
                                     if mime_type.startswith("image/"):
                                         parts.append({
                                             "inlineData": {"mimeType": mime_type, "data": base64_data}
                                         })
                                     else:
-                                        parts.append({"text": text_value[m.start():m.end()]})
+                                        parts.append(
+                                            {"text": text_value[m.start():m.end()]})
                                 except Exception:
-                                    parts.append({"text": text_value[m.start():m.end()]})
+                                    parts.append(
+                                        {"text": text_value[m.start():m.end()]})
                             else:
-                                parts.append({"text": text_value[m.start():m.end()]})
+                                parts.append(
+                                    {"text": text_value[m.start():m.end()]})
                             last_idx = m.end()
                         if last_idx < len(text_value):
                             tail = text_value[last_idx:]
@@ -98,7 +112,8 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                         header, base64_data = url.split(",", 1)
                         mime_type = ""
                         if ":" in header:
-                            mime_type = header.split(":", 1)[1].split(";", 1)[0] or ""
+                            mime_type = header.split(
+                                ":", 1)[1].split(";", 1)[0] or ""
                         if mime_type.startswith("image/"):
                             parts.append({
                                 "inlineData": {"mimeType": mime_type, "data": base64_data}
@@ -114,7 +129,8 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                 tail = text[last_idx:]
                 if tail:
                     parts.append({"text": tail})
-            contents.append({"role": role, "parts": parts if parts else [{"text": text}]})
+            contents.append(
+                {"role": role, "parts": parts if parts else [{"text": text}]})
 
     generation_config = {}
     if openai_request.temperature is not None:
@@ -147,16 +163,24 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
         "model": get_base_model_name(openai_request.model)
     }
 
+    # Add systemInstruction if system messages were present
+    if system_parts:
+        request_payload["systemInstruction"] = {
+            "role": "user",
+            "parts": system_parts
+        }
+
     if is_search_model(openai_request.model):
         request_payload["tools"] = [{"googleSearch": {}}]
 
-    if "gemini-2.5-flash-image" not in openai_request.model:
+    if _has_thinking_support(openai_request.model):
         thinking_budget = None
 
         if is_nothinking_model(openai_request.model) or is_maxthinking_model(openai_request.model):
             thinking_budget = get_thinking_budget(openai_request.model)
         else:
-            reasoning_effort = getattr(openai_request, 'reasoning_effort', None)
+            reasoning_effort = getattr(
+                openai_request, 'reasoning_effort', None)
             if reasoning_effort:
                 base_model = get_base_model_name(openai_request.model)
                 if reasoning_effort == "minimal":
@@ -164,6 +188,8 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                         thinking_budget = 0
                     elif "gemini-2.5-pro" in base_model or "gemini-3-pro" in base_model:
                         thinking_budget = 128
+                    elif "gemini-3-flash" in base_model:
+                        thinking_budget = 0
                 elif reasoning_effort == "low":
                     thinking_budget = 1000
                 elif reasoning_effort == "medium":
@@ -175,6 +201,8 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                         thinking_budget = 32768
                     elif "gemini-3-pro" in base_model:
                         thinking_budget = 45000
+                    elif "gemini-3-flash" in base_model:
+                        thinking_budget = 24576
             else:
                 thinking_budget = get_thinking_budget(openai_request.model)
 
@@ -213,7 +241,8 @@ def gemini_response_to_openai(gemini_response: Dict[str, Any], model: str) -> Di
                 mime = inline.get("mimeType") or "image/png"
                 if isinstance(mime, str) and mime.startswith("image/"):
                     data_b64 = inline.get("data")
-                    content_parts.append(f"![image](data:{mime};base64,{data_b64})")
+                    content_parts.append(
+                        f"![image](data:{mime};base64,{data_b64})")
                 continue
 
         content = "\n\n".join([p for p in content_parts if p is not None])
@@ -263,7 +292,8 @@ def gemini_stream_chunk_to_openai(gemini_chunk: Dict[str, Any], model: str, resp
                 mime = inline.get("mimeType") or "image/png"
                 if isinstance(mime, str) and mime.startswith("image/"):
                     data_b64 = inline.get("data")
-                    content_parts.append(f"![image](data:{mime};base64,{data_b64})")
+                    content_parts.append(
+                        f"![image](data:{mime};base64,{data_b64})")
                 continue
 
         content = "\n\n".join([p for p in content_parts if p is not None])

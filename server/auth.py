@@ -98,7 +98,8 @@ def authenticate_user(request: Request):
     # HTTP Basic
     if auth_header.startswith("Basic "):
         try:
-            decoded = base64.b64decode(auth_header[6:]).decode("utf-8", "ignore")
+            decoded = base64.b64decode(
+                auth_header[6:]).decode("utf-8", "ignore")
             _, password = decoded.split(":", 1)
             if password == GEMINI_AUTH_PASSWORD:
                 return "basic_user"
@@ -181,7 +182,8 @@ def get_credentials(allow_oauth_flow=True):
                     creds_data["scopes"] = creds_data["scope"].split()
                 if "expiry" in creds_data:
                     _fix_expiry(creds_data)
-                credentials = Credentials.from_authorized_user_info(creds_data, SCOPES)
+                credentials = Credentials.from_authorized_user_info(
+                    creds_data, SCOPES)
                 credentials_from_env = True
                 if data.get("project_id"):
                     user_project_id = data["project_id"]
@@ -207,13 +209,15 @@ def get_credentials(allow_oauth_flow=True):
                     creds_data["scopes"] = creds_data["scope"].split()
                 if "expiry" in creds_data:
                     _fix_expiry(creds_data)
-                credentials = Credentials.from_authorized_user_info(creds_data, SCOPES)
+                credentials = Credentials.from_authorized_user_info(
+                    creds_data, SCOPES)
                 if credentials.expired and credentials.refresh_token:
                     try:
                         credentials.refresh(GoogleAuthRequest())
                         save_credentials(credentials)
                     except Exception as e:
-                        logging.warning(f"File credentials refresh failed: {e}")
+                        logging.warning(
+                            f"File credentials refresh failed: {e}")
                 if data.get("project_id"):
                     user_project_id = data["project_id"]
                 return credentials
@@ -235,11 +239,13 @@ def _fix_expiry(creds_data: dict):
             if "+00:00" in expiry_str:
                 parsed = datetime.fromisoformat(expiry_str)
             elif expiry_str.endswith("Z"):
-                parsed = datetime.fromisoformat(expiry_str.replace("Z", "+00:00"))
+                parsed = datetime.fromisoformat(
+                    expiry_str.replace("Z", "+00:00"))
             else:
                 parsed = datetime.fromisoformat(expiry_str)
             ts = parsed.timestamp()
-            creds_data["expiry"] = datetime.utcfromtimestamp(ts).strftime("%Y-%m-%dT%H:%M:%SZ")
+            creds_data["expiry"] = datetime.utcfromtimestamp(
+                ts).strftime("%Y-%m-%dT%H:%M:%SZ")
         except Exception:
             del creds_data["expiry"]
 
@@ -256,9 +262,11 @@ def _run_oauth_flow():
         }
     }
 
-    flow = Flow.from_client_config(client_config, scopes=SCOPES, redirect_uri="http://localhost:8080")
+    flow = Flow.from_client_config(
+        client_config, scopes=SCOPES, redirect_uri="http://localhost:8080")
     flow.oauth2session.scope = SCOPES
-    auth_url, _ = flow.authorization_url(access_type="offline", prompt="consent", include_granted_scopes="true")
+    auth_url, _ = flow.authorization_url(
+        access_type="offline", prompt="consent", include_granted_scopes="true")
 
     print(f"\n{'=' * 80}")
     print("AUTHENTICATION REQUIRED")
@@ -325,6 +333,7 @@ def onboard_user(creds, project_id):
             f"{CODE_ASSIST_ENDPOINT}/v1internal:loadCodeAssist",
             data=json.dumps(load_payload),
             headers=headers,
+            timeout=30,
         )
         resp.raise_for_status()
         data = resp.json()
@@ -336,10 +345,12 @@ def onboard_user(creds, project_id):
                     tier = t
                     break
             if not tier:
-                tier = {"name": "", "description": "", "id": "legacy-tier", "userDefinedCloudaicompanionProject": True}
+                tier = {"name": "", "description": "", "id": "legacy-tier",
+                        "userDefinedCloudaicompanionProject": True}
 
         if tier.get("userDefinedCloudaicompanionProject") and not project_id:
-            raise ValueError("This account requires GOOGLE_CLOUD_PROJECT env var.")
+            raise ValueError(
+                "This account requires GOOGLE_CLOUD_PROJECT env var.")
 
         if data.get("currentTier"):
             _onboarded_accounts.add(account_key)
@@ -352,11 +363,16 @@ def onboard_user(creds, project_id):
             "metadata": get_client_metadata(project_id),
         }
 
+        max_onboard_wait = 120  # seconds
+        onboard_start = time.time()
         while True:
+            if time.time() - onboard_start > max_onboard_wait:
+                raise Exception(f"Onboarding timed out after {max_onboard_wait}s")
             onboard_resp = requests.post(
                 f"{CODE_ASSIST_ENDPOINT}/v1internal:onboardUser",
                 data=json.dumps(onboard_payload),
                 headers=headers,
+                timeout=30,
             )
             onboard_resp.raise_for_status()
             lro = onboard_resp.json()
@@ -433,6 +449,7 @@ def get_user_project_id(creds):
             f"{CODE_ASSIST_ENDPOINT}/v1internal:loadCodeAssist",
             data=json.dumps({"metadata": get_client_metadata()}),
             headers=headers,
+            timeout=30,
         )
         resp.raise_for_status()
         data = resp.json()
