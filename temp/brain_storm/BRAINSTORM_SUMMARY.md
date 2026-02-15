@@ -65,7 +65,7 @@ CLI → FastAPI → Auth → Router → Transformer → API Client → Google Co
                                         AccountsManager (round-robin)
 ```
 
-### Znane problemy
+### Znane problemy !ZROBIONE!
 
 - **Krytyczne**: Token refresh outside Lock (race condition), auth globals bez sync
 - **Wysokie**: No connection pooling (requests), busy-wait streaming poll
@@ -73,7 +73,7 @@ CLI → FastAPI → Auth → Router → Transformer → API Client → Google Co
 
 ### Roadmap
 
-- **v2.1** (2-4 tyg): Fix races, httpx, unit tests, structured logging
+- **v2.1** (2-4 tyg): Fix races, httpx, unit tests, structured logging !ZROBIONE!
 - **v3.0** (1-3 mies): Admin dashboard, caching, rate limiting, metrics
 - **v4.0** (3-6 mies): Docker, Web UI translator, multi-provider, SDK
 
