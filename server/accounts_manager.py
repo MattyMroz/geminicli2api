@@ -49,6 +49,10 @@ class AccountsManager:
     def count(self) -> int:
         return len(self._accounts)
 
+    def get_all_accounts(self) -> List[dict]:
+        """Return list of all accounts [{"file": Path, "creds": Credentials, "project_id": str|None}]."""
+        return list(self._accounts)
+
     def get_credentials_sync(self) -> Optional[Credentials]:
         """Synchronous version — returns next credentials (rotates). Thread-safe.
 
@@ -205,6 +209,74 @@ class AccountsManager:
 
     # --- Add new account (interactive OAuth flow) ---
 
+    def _onboard_new_account(self, creds) -> Optional[str]:
+        """Onboard a new account to Gemini Code Assist. Returns project_id or None."""
+        import requests
+        import time
+
+        if creds.expired and creds.refresh_token:
+            creds.refresh(GoogleAuthRequest())
+
+        headers = {
+            "Authorization": f"Bearer {creds.token}",
+            "Content-Type": "application/json",
+            "User-Agent": f"GeminiCLI/0.1.5",
+        }
+        meta = {"ideType": "IDE_UNSPECIFIED", "platform": "PLATFORM_UNSPECIFIED", "pluginType": "GEMINI"}
+
+        try:
+            # 1. Check current state
+            resp = requests.post(
+                "https://cloudcode-pa.googleapis.com/v1internal:loadCodeAssist",
+                json={"metadata": meta}, headers=headers, timeout=30,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+
+            # Already has project — done
+            pid = data.get("cloudaicompanionProject")
+            if pid:
+                return pid
+
+            # 2. Pick default tier and onboard
+            tier = next((t for t in data.get("allowedTiers", []) if t.get("isDefault")), None)
+            if not tier:
+                logger.warning("No default tier available for onboarding")
+                return None
+
+            if tier.get("userDefinedCloudaicompanionProject"):
+                logger.warning("Account requires manual GOOGLE_CLOUD_PROJECT")
+                return None
+
+            print(f"Aktywacja konta ({tier.get('name', tier.get('id'))})...")
+
+            payload = {"tierId": tier.get("id"), "metadata": meta}
+            deadline = time.time() + 120
+            while time.time() < deadline:
+                r = requests.post(
+                    "https://cloudcode-pa.googleapis.com/v1internal:onboardUser",
+                    json=payload, headers=headers, timeout=30,
+                )
+                r.raise_for_status()
+                if r.json().get("done"):
+                    break
+                time.sleep(3)
+            else:
+                logger.error("Onboarding timeout")
+                return None
+
+            # 3. Fetch project_id
+            resp2 = requests.post(
+                "https://cloudcode-pa.googleapis.com/v1internal:loadCodeAssist",
+                json={"metadata": meta}, headers=headers, timeout=30,
+            )
+            resp2.raise_for_status()
+            return resp2.json().get("cloudaicompanionProject")
+
+        except Exception as e:
+            logger.error(f"Onboarding failed: {e}")
+            return None
+
     def add_account_interactive(self) -> bool:
         """Run OAuth flow interactively to add a new account."""
         from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -247,7 +319,7 @@ class AccountsManager:
             access_type="offline", prompt="consent", include_granted_scopes="true")
 
         print(f"\n{'=' * 60}")
-        print("🔑 DODAWANIE NOWEGO KONTA GOOGLE")
+        print("DODAWANIE NOWEGO KONTA GOOGLE")
         print(f"{'=' * 60}")
         print(f"Otwórz ten URL w przeglądarce:\n{auth_url}")
         print(f"{'=' * 60}\n")
@@ -256,7 +328,7 @@ class AccountsManager:
         server.handle_request()
 
         if not _Handler.auth_code:
-            print("❌ Nie udało się uzyskać kodu autoryzacji.")
+            print("BLAD: Nie udalo sie uzyskac kodu autoryzacji.")
             return False
 
         # Patch validation
@@ -278,11 +350,21 @@ class AccountsManager:
             self._save_account(account)
             self._accounts.append(account)
 
-            print(f"✅ Konto dodane jako: {filepath}")
-            print(f"📊 Łącznie kont: {len(self._accounts)}")
+            print(f"Konto dodane jako: {filepath}")
+
+            # Auto-onboarding — aktywuj konto w Gemini Code Assist
+            project_id = self._onboard_new_account(creds)
+            if project_id:
+                account["project_id"] = project_id
+                self._save_account(account)
+                print(f"Aktywowano! Projekt: {project_id}")
+            else:
+                print("UWAGA: Nie udalo sie aktywowac — konto wymaga recznej weryfikacji Google")
+
+            print(f"Lacznie kont: {len(self._accounts)}")
             return True
         except Exception as e:
-            print(f"❌ Błąd: {e}")
+            print(f"BLAD: {e}")
             return False
         finally:
             oauthlib.oauth2.rfc6749.parameters.validate_token_parameters = orig
