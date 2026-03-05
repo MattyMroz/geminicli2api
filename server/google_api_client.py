@@ -65,7 +65,8 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, reque
     if not creds:
         logging.error(f"[{rid}] No credentials available")
         return Response(
-            content=json.dumps({"error": {"message": "Authentication failed. No credentials available.", "code": 500}}),
+            content=json.dumps({"error": {
+                               "message": "Authentication failed. No credentials available.", "code": 500}}),
             status_code=500,
             media_type="application/json"
         )
@@ -78,14 +79,16 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, reque
         except Exception as e:
             logging.error(f"[{rid}] Token refresh failed: {e}")
             return Response(
-                content=json.dumps({"error": {"message": "Token refresh failed. Please restart the proxy.", "code": 500}}),
+                content=json.dumps({"error": {
+                                   "message": "Token refresh failed. Please restart the proxy.", "code": 500}}),
                 status_code=500,
                 media_type="application/json"
             )
     elif not creds.token:
         logging.error(f"[{rid}] No access token available")
         return Response(
-            content=json.dumps({"error": {"message": "No access token. Please restart the proxy.", "code": 500}}),
+            content=json.dumps(
+                {"error": {"message": "No access token. Please restart the proxy.", "code": 500}}),
             status_code=500,
             media_type="application/json"
         )
@@ -95,7 +98,8 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, reque
     except Exception as e:
         logging.error(f"[{rid}] Failed to get project ID: {e}")
         return Response(
-            content=json.dumps({"error": {"message": f"Project ID discovery failed: {e}", "code": 500}}),
+            content=json.dumps(
+                {"error": {"message": f"Project ID discovery failed: {e}", "code": 500}}),
             status_code=500,
             media_type="application/json"
         )
@@ -103,7 +107,8 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, reque
     if not proj_id:
         logging.error(f"[{rid}] No project ID")
         return Response(
-            content=json.dumps({"error": {"message": "Failed to get user project ID.", "code": 500}}),
+            content=json.dumps(
+                {"error": {"message": "Failed to get user project ID.", "code": 500}}),
             status_code=500,
             media_type="application/json"
         )
@@ -113,7 +118,8 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, reque
     except Exception as e:
         logging.error(f"[{rid}] Onboarding failed: {e}")
         return Response(
-            content=json.dumps({"error": {"message": f"Onboarding failed: {e}", "code": 500}}),
+            content=json.dumps(
+                {"error": {"message": f"Onboarding failed: {e}", "code": 500}}),
             status_code=500,
             media_type="application/json"
         )
@@ -137,7 +143,8 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, reque
 
     final_post_data = json.dumps(final_payload)
     model_name = payload.get("model", "unknown")
-    logging.info(f"[{rid}] Sending request to Google API: model={model_name}, stream={is_streaming}")
+    logging.info(
+        f"[{rid}] Sending request to Google API: model={model_name}, stream={is_streaming}")
 
     try:
         session = _get_session()
@@ -184,7 +191,8 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, reque
             media_type="application/json"
         )
     except Exception as e:
-        logging.error(f"[{rid}] Unexpected error during Google API request: {str(e)}")
+        logging.error(
+            f"[{rid}] Unexpected error during Google API request: {str(e)}")
         return Response(
             content=json.dumps(
                 {"error": {"message": f"Unexpected error: {str(e)}", "code": 500}}),
@@ -194,17 +202,19 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, reque
 
 
 async def send_gemini_request(payload: dict, is_streaming: bool = False) -> Response:
-    """Send a request to Google's Gemini API, retrying with different accounts on 403.
+    """Send a request to Google's Gemini API, retrying with different accounts on errors.
 
     Credentials are obtained in the async context (proper round-robin),
     then the blocking HTTP call runs in a thread.
+    Retries with next account on ANY HTTP error (403, 429, 500, etc.).
     """
     request_id = str(uuid.uuid4())[:8]
     max_retries = _get_account_count()
     last_response = None
     model_name = payload.get("model", "unknown")
 
-    logging.info(f"[{request_id}] New request: model={model_name}, stream={is_streaming}, accounts={max_retries}")
+    logging.info(
+        f"[{request_id}] New request: model={model_name}, stream={is_streaming}, accounts={max_retries}")
 
     for attempt in range(max_retries):
         # Get credentials HERE, in the event loop — thread-safe rotation
@@ -212,15 +222,16 @@ async def send_gemini_request(payload: dict, is_streaming: bool = False) -> Resp
         response = await asyncio.to_thread(_try_send_request_with_creds, payload, is_streaming, creds, request_id)
         last_response = response
 
-        # Check if 403 — try next account (round-robin rotates automatically)
+        # Check if error — try next account (round-robin rotates automatically)
         status = getattr(response, "status_code", None)
-        if status == 403 and attempt < max_retries - 1:
+        if status and status >= 400 and attempt < max_retries - 1:
             logging.warning(
-                f"[{request_id}] Account returned 403, trying next account ({attempt + 1}/{max_retries})...")
+                f"[{request_id}] Account returned {status}, trying next account ({attempt + 1}/{max_retries})...")
             continue
 
         if status and status >= 400:
-            logging.warning(f"[{request_id}] Request completed with status {status}")
+            logging.warning(
+                f"[{request_id}] Request completed with status {status} (all accounts exhausted)")
         else:
             logging.info(f"[{request_id}] Request completed successfully")
 
@@ -283,8 +294,10 @@ def _handle_streaming_response(resp, rid: str = "") -> StreamingResponse:
                 try:
                     with resp:
                         for chunk in resp.iter_lines():
-                            loop.call_soon_threadsafe(chunk_queue.put_nowait, chunk)
-                    loop.call_soon_threadsafe(chunk_queue.put_nowait, None)  # sentinel
+                            loop.call_soon_threadsafe(
+                                chunk_queue.put_nowait, chunk)
+                    loop.call_soon_threadsafe(
+                        chunk_queue.put_nowait, None)  # sentinel
                 except Exception as ex:
                     loop.call_soon_threadsafe(chunk_queue.put_nowait, ex)
 

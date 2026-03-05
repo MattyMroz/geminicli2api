@@ -30,7 +30,7 @@ class TranslatorConfig:
     max_output_tokens: int = 65536
 
     # --- Translation ---
-    translated_line_count: int = 20
+    translated_line_count: int = 100
     concurrent_requests: int = 20
     mode: str = "text"  # text | image | manga | subtitle | ocr
 

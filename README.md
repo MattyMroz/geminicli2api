@@ -143,11 +143,52 @@ uv run start.py --add-account   # konto 3
 
 Pliki kont: `accounts/*.json`
 
+### Wymagania konta Google
+
+> **Nie potrzebujesz** Google Cloud Console, AI Studio (`ai.dev`), kluczy API ani żadnych projektów GCP tworzonych ręcznie. Wszystko działa wyłącznie przez konto Google.
+
+By konto działało, muszą być spełnione **wszystkie** poniższe warunki:
+
+1. **Konto Google z numerem telefonu** — Google wymaga weryfikacji SMS lub przez urządzenie Android przy pierwszym użyciu API. Konta bez numeru telefonu lub niezweryfikowane zwracają błąd `403 Verify your account to continue`.
+
+2. **Aktywacja Gemini Code Assist** — konto musi być zarejestrowane w programie *Gemini Code Assist for individuals* (free tier). Odbywa się to automatycznie przy `uv run start.py -a`.
+
+3. **`project_id` w pliku JSON** — każde konto po onboardingu otrzymuje identyfikator projektu GCP **przydzielany automatycznie przez Google** (nie tworzysz go sam). Jest on zapisywany automatycznie w `accounts/account_N.json`.
+
+4. **Akceptacja warunków Gemini Code Assist** — przy pierwszym logowaniu przez `start.py -a` przeglądarka przeprowadzi przez ten proces automatycznie.
+
+### Testowanie kont
+
+```bash
+uv run test_accounts.py         # sprawdź wszystkie konta
+uv run test_accounts.py 3       # sprawdź tylko konto #3
+uv run test_accounts.py 1 4 7   # sprawdź konta #1, #4, #7
+```
+
+Test łączy się **bezpośrednio** z Google API (z pominięciem proxy) — każde konto testowane osobno, bez rotacji.
+
+Przykładowy wynik:
+
+```
+ Test 3/3 kont  gemini-2.5-flash
+
+ v # 1  2.1s  account_1.json  Hi there!
+ v # 2  1.8s  account_2.json  Hi there!
+ x # 3  1.2s  account_3.json  Wymagana weryfikacja konta Google
+        Otworz w przegladarce (zalogowany na to konto):
+        https://accounts.google.com/signin/continue?...
+
+ 2/3 OK  5s
+```
+
+Jeśli konto wymaga weryfikacji — otwórz podany link w przeglądarce zalogowanej na to konto Google i przejdź weryfikację SMS. Po weryfikacji konto działa od razu.
+
 ## Struktura projektu
 
 ```
 geminicli2api/
 ├── start.py                           ← Root launcher
+├── test_accounts.py                   ← Test kont Google (bezposredni, bez proxy)
 ├── pyproject.toml
 ├── .env                               ← Zmienne środowiskowe
 ├── accounts/                          ← Konta Google OAuth
