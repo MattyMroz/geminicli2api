@@ -110,7 +110,7 @@ Np.: Spotkałem Sunny'ego / miecz Nephis / rozkaz Song
 UWAGA: Cienie to istoty/echa służące Sunny'emu. Sunny ma 7 rdzeni duszy = 7 cieni.
 Tłumacz ich nazwy na polski, ale czasem daj angielskie nazwy jeśli fajnie brzmią.
 
-9. Saint / Święta (kobieta/ona) - kamienna rycerka, jeden z najsilniejszych cieni Sunny'ego. Ewoluowała przez wiele form: Potwór Cienia → Demon Cienia → Diabeł Wzniesienia → Transcendentny Diabeł. Niezwykła obrona i waleczność.
+9. Saint / Święta (kobieta/ona) - kamienna rycerka, jeden z najsilniejszych cieni Sunny'ego. Ewoluowała przez wiele form: Potwór Cienia → Demon Cienia → Wzniesiony Diabeł  → Transcendentny Diabeł. Niezwykła obrona i waleczność.
    - "Saint" → Święta (KOBIETA - ona!)
    - Odmieniaj: Święta, Świętej, Świętą, Świętej. Np.: "moc Świętej", "razem ze Świętą"
 
@@ -127,9 +127,7 @@ Tłumacz ich nazwy na polski, ale czasem daj angielskie nazwy jeśli fajnie brzm
    - "Slayer" → Zabójczyni (KOBIETA - ona!)
    - Odmieniaj: Zabójczyni, Zabójczyni, Zabójczynię, Zabójczynią
 
-13. Fiend / Demon (on) - kolejny cień Sunny'ego.
-   - Odmieniaj odpowiednio do kontekstu
-
+13. Mimik - cień Sunnego'm wielki chodzący żywy zamek mimik
 
 ---------------------------------------------------------------------
 --- TRZEJ SUWERENOWIE (Three Sovereigns) ---
@@ -147,9 +145,9 @@ UWAGA: Suwerenowie to najwyżsi znani rangą ludzie. Osiągnęli ten rang po Czw
 15. Anvil / Kowadło (mężczyzna) - Król Mieczy (King of Swords), Suweren, dawniej klan Valor. Ojciec Morgan. Walczy z Song o władzę nad ludzkością.
    - "Anvil" → Kowadło
    - "King of Swords" → Król Mieczy
-   - Odmieniaj: Kowadło, Kowadła, Kowadłu, Kowadłem. Np.: "miecz Kowadła", "z Kowadłem"
+   - Odmieniaj: Kowadło, Kowadła, Kowadłu, Kowadłem. Np.: "miecz Kowadła", "z Kowadłem" lub Anvilowi i tak dalej
 
-16. Asterion / Aster (mężczyzna) - Obrzydliwość (The Abomination), Suweren, tajemnicza postać. Dreamspawn (Zrodzony ze Snu). Manipulacyjny, psychologiczny. Interesuje się osobami z boskimi liniami krwi.
+16. Asterion / Aster (mężczyzna) - Obrzydliwość (The Abomination), Suweren, tajemnicza postać. Dreamspawn (Zrodzony ze Snu) lub Dreamspawn. Manipulacyjny, psychologiczny. Interesuje się osobami z boskimi liniami krwi.
    - "Asterion" → Asterion / Aster (wymiennie)
    - "The Abomination" → Obrzydliwość
    - Odmieniaj: Asterion, Asteriona, Asterionowi, Asterionem
@@ -171,12 +169,12 @@ Tłumacz KONSEKWENTNIE - nie zmieniaj raz wybranej formy!
    - "Black Moon" → Czarny Księżyc
 
 19. Revel / Rozkosz (kobieta) - znana jako "Pogromczyni Światła" (Lightslayer) lub "Mroczna Tancerka" (Dark Dancer). Transcendentna córka Song, PIERWSZA z nich która dokonała Transcendencji. Potrafi manipulować ciemnością, stawać się nieuchwytna, paraliżować, truć. Może transformować się w czterometrowego skrzydlatego diabła.
-   - "Revel" → Rozkosz / Revel (wymiennie) ale raczej Revel
+   - "Revel" → (Rozkosz raczej nie używane) -> Revel (wymiennie) ale raczej Revel
    - "Lightslayer" → Pogromczyni Światła
    - "Dark Dancer" → Mroczna Tancerka
 
-20. Lonesome Howl / Samotny Wycie (kobieta) - adoptowana córka Song.
-   - "Lonesome Howl" → Samotne Wycie / Samotny Wycie
+20. Lonesome Howl / Samotne Wycie (kobieta) - adoptowana córka Song.
+   - "Lonesome Howl" → Samotne Wycie
 
 21. Seishan / Song Seishan (kobieta) - adoptowana córka Song. Jedna z wielu osieroconych dziewcząt wychowanych przez Ki Song.
    - "Seishan" → Seishan. Odmieniaj: Seishan, Seishan (nieodmienne)
@@ -198,25 +196,10 @@ Tłumacz KONSEKWENTNIE - nie zmieniaj raz wybranej formy!
 25. Madoc (mężczyzna) - członek klanu Valor.
    - Odmieniaj: Madoc, Madoca, Madocowi, Madocem
 
-26. Mordret / Książę Nicości (mężczyzna) - Władca Luster (Prince of Nothing). Potężny i niebezpieczny. Posiada moc odbić/luster.
+26. Mordret / Książę Niczego (mężczyzna) - Władca Luster (Prince of Nothing). Potężny i niebezpieczny. Posiada moc odbić/luster.
    - "Mordret" → Mordret
-   - "Prince of Nothing" → Książę Nicości
+   - "Prince of Nothing" → Książę Niczego
    - Odmieniaj: Mordret, Mordreta, Mordretowi, Mordretem. Np.: "odbicie Mordreta", "plan Mordreta"
-
-
----------------------------------------------------------------------
---- POSTACIE Z PIERWSZEGO KOSZMARU (First Nightmare Characters) ---
----------------------------------------------------------------------
-
-27. Caster (mężczyzna) - potomek klanu Han Li. Antagonista. Na zewnątrz szlachetny i uprzejmy, ale w rzeczywistości manipulacyjny i kontrolujący. Jego Aspekt daje mu ekstremalną szybkość, ale skraca życie przy każdym użyciu.
-   - Odmieniaj: Caster, Castera, Casterowi, Casterem
-
-28. Scholar / Uczony (mężczyzna) - towarzysz Sunny'ego z pierwszego Koszmaru. Inteligentny i manipulacyjny.
-   - "Scholar" → Uczony (preferowane) / Scholar (dopuszczalne)
-   - Odmieniaj: Uczony, Uczonego, Uczonemu, Uczonym
-
-29. Stephen (mężczyzna) - postać z pierwszego tomu/Koszmaru.
-   - Odmieniaj: Stephen, Stephena, Stephenowi, Stephenem
 
 
 ---------------------------------------------------------------------
@@ -232,8 +215,8 @@ UWAGA: Daemony to rodzeństwo - dzieci Zapomnianego Boga. Są niezwykle potężn
    - Odmieniaj: Tkacz, Tkacza, Tkaczowi, Tkaczem. Np.: "kości Tkacza", "sorceria Tkacza"
 
 31. Nether / Otchłań (on - MĘSKI RODZAJ) - najmłodszy z rodzeństwa daemonów, Demon Przeznaczenia / Demon Wyboru (Demon of Destiny/Choice). Władca Podziemi (Ruler of the Underworld). Twórca run w Wieży Hebanowej. Głębokie rozumienie dusz i esencji duszy.
-   - "Nether" → Otchłań / Nether (wymiennie) raczej Nether
-   - Odmieniaj: Otchłań, Otchłani, Otchłani, Otchłanią
+   - "Nether" → Nether (wymiennie) raczej Nether
+   - Odmieniaj: Nether, Netherowi, Netherem
    - Tłumacz jako ON (MĘSKI RODZAJ!)
 
 32. Hope / Nadzieja (kobieta) - Demon Pragnienia (Demon of Desire), córka Zapomnianego Boga. Była czczona przez śmiertelników, za co bogowie uwięzili ją w Wieży z Kości Słoniowej. Jej podstępny wpływ sączy się z więzienia, wykrzywiając pragnienia i doprowadzając do szaleństwa.
@@ -308,7 +291,7 @@ RAZ WYBRANE TŁUMACZENIE = ZAWSZE TO SAMO!
 
 --- SYSTEM RANG LUDZI (Divine Path / Path of Ascension) ---
 
-- Dormant / Sleeper → Uśpiony / Śpiący (osoba zarażona Klątwą Koszmaru, przed Pierwszym Koszmarem)
+- Dormant / Sleeper → Śpiący (osoba zarażona Zaklęciem Koszmaru, przed Pierwszym Koszmarem)
 - Awakened → Przebudzony/Przebudzona (po przetrwaniu Pierwszego Koszmaru)
 - Ascended / Master → Wzniesiony / Mistrz (po Drugim Koszmarze, może fizycznie wchodzić do Królestwa Snów)
 - Transcendent / Saint → Transcendentny / Święty/Święta (po Trzecim Koszmarze, może przemieszczać się między światami)
@@ -344,15 +327,15 @@ RAZ WYBRANE TŁUMACZENIE = ZAWSZE TO SAMO!
 
 --- KLUCZOWA TERMINOLOGIA ---
 
-- Nightmare Spell → Klątwa Koszmaru / Czar Koszmaru (siła zarażająca ludzi, dająca moce)
+- Nightmare Spell → Zaklęcie Koszmaru (siła zarażająca ludzi, dająca moce)
 - Nightmare → Koszmar (śmiertelna próba, którą muszą przetrwać zarażeni)
 - First Nightmare → Pierwszy Koszmar
 - Second Nightmare → Drugi Koszmar
 - Third Nightmare → Trzeci Koszmar
 - Fourth Nightmare → Czwarty Koszmar
-- Aspect → Aspekt (unikalna magiczna moc przyznawana przez Klątwę)
+- Aspect → Aspekt (unikalna magiczna moc przyznawana przez Zaklęcie)
 - Aspect Ability → Zdolność Aspektu
-- Flaw → Skaza / Wada (cena za moc Aspektu)
+- Flaw → Wada (cena za moc Aspektu)
 - Soul Core → Rdzeń Duszy (odmieniaj: Rdzeń Duszy, Rdzenia Duszy, Rdzeniowi Duszy...)
 - Soul Essence → Esencja Duszy
 - Soul Sea → Morze Duszy
@@ -367,7 +350,7 @@ RAZ WYBRANE TŁUMACZENIE = ZAWSZE TO SAMO!
 - Shadow → Cień / Cienie (istoty służące Sunny'emu)
 - Shadow Step → Krok Cienia
 - Shadow Dance → Taniec Cienia
-- Shadow Manipulation → Manipulacja Cieniem
+- Shadow Manipulation → Manipulacja Cieniem / Kontrola Cienia
 - Hollow → Pusty/Pusta (stan utraty duszy)
 - Nightmare Creature → Stworzenie Koszmarne / Istota Koszmarna
 - Daemon → Daemon (nie tłumacz! zostawiaj jako "daemon")
@@ -384,7 +367,8 @@ RAZ WYBRANE TŁUMACZENIE = ZAWSZE TO SAMO!
 - Ascension → Wzniesienie
 - Transcendence → Transcendencja
 - Dreamspawn → Zrodzony ze Snu
-
+- NQSC -> EnQuEsCe
+- Eurys - on - Eurys
 
 --- TWORZENIE PRZEDMIOTÓW Z CIENIA ---
 UWAGA: Sunny tworzy przedmioty Z cienia, więc tłumacz:
@@ -475,5 +459,8 @@ NIGDY NIE DODAWAJ TAKI WSTAWEK NA KOŃCU!!!!
 - Tak, zachowałem strukturę `◍◍[num].`, znaczniki `@@` i unikałem dodawania dodatkowych nowych linii. Tytuły rozdziałów zostały obsłużone zgodnie z instrukcją.
 
 Shadow Slave zawsze tłumacz jako Niewolnik Cienia.
+NIGDY NIE POMIJAJ TŁUMACZENIA SHADOW SLAVE na NIEWOLNIK CIENIA!
+NIGDY NIE POMIJAJ TŁUMACZENIA CHAPTER I JEGO NUMER NA ROZDZIAŁ I JEGO NUMER W ODPOWIEDNIEJ FORMIE LICZEBNIKÓW!
+Chapter. -> Rozdział. np sto trzydziesty drugi <- odmiana 2 członowa
 
 KONIEC PROMPTU POMOCNICZEGO.

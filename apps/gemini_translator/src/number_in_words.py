@@ -81,9 +81,19 @@ class NumberInWords:
             number = str(number)
 
         if '.' in number:
-            integer_part, decimal_part = map(int, number.split('.'))
+            parts = number.split('.')
+            if all(len(p) == 3 for p in parts[1:]):
+                integer_part = int(number.replace('.', ''))
+                decimal_part = 0
+            else:
+                integer_part, decimal_part = int(parts[0].replace(',', '')), int(parts[1])
         elif ',' in number:
-            integer_part, decimal_part = map(int, number.split(','))
+            parts = number.split(',')
+            if all(len(p) == 3 for p in parts[1:]):
+                integer_part = int(number.replace(',', ''))
+                decimal_part = 0
+            else:
+                integer_part, decimal_part = int(parts[0].replace('.', '')), int(parts[1])
         else:
             integer_part = int(number)
             decimal_part = 0
@@ -147,7 +157,13 @@ class NumberInWords:
                             result = result[:-1]
                             break
                     else:
-                        if number.count('.') == 1 or number.count(',') == 1:
+                        comma_parts = number.split(',')
+                        dot_parts = number.split('.')
+                        is_thousands = (
+                            (len(comma_parts) > 1 and all(len(p) == 3 for p in comma_parts[1:])) or
+                            (len(dot_parts) > 1 and all(len(p) == 3 for p in dot_parts[1:]))
+                        )
+                        if number.count('.') == 1 or number.count(',') == 1 or is_thousands:
                             number_in_words_str: str = self.number_in_words(
                                 number)
                             if (result and not result[-1].isspace() and result[-1] not in special_chars):

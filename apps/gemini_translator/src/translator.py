@@ -18,6 +18,8 @@ from collections import deque
 import pysrt
 from natsort import natsorted
 
+from rich.markup import escape
+
 from apps.gemini_translator.src.api_client import GeminiAPIClient
 from apps.gemini_translator.src.utils.console import console
 
@@ -107,7 +109,7 @@ class GeminiTranslator:
                     max_tokens=self.max_output_tokens,
                 )
             except Exception as e:
-                console.print(f"Error loading image: {e}", style="red_bold")
+                console.print(f"Error loading image: {e}", style="red_bold", markup=False)
                 return ""
         else:
             response = await self.api_client.generate(
@@ -128,7 +130,7 @@ class GeminiTranslator:
                 try:
                     response = await self.translate_with_api("", prompt_main, prompt_helper, image_path)
                     console.print(
-                        f"\n[green_bold]OCR tekst:[/green_bold]\n{response}", style='white_bold')
+                        f"\n[green_bold]OCR tekst:[/green_bold]\n{escape(response)}", style='white_bold')
 
                     async with self.write_lock:
                         with open(output_file, 'a', encoding='utf-8') as f:
@@ -137,7 +139,7 @@ class GeminiTranslator:
                 except Exception as e:
                     await self.handle_translation_error(e, attempt)
             self._failed_groups += 1
-            console.print(f"BŁĄD: OCR nie powiodło się po {MAX_RETRIES} próbach: {image_path}", style="red_bold")
+            console.print(f"BŁĄD: OCR nie powiodło się po {MAX_RETRIES} próbach: {image_path}", style="red_bold", markup=False)
             return ""
 
     async def process_folder_ocr(self, folder_path: str) -> None:
@@ -171,10 +173,10 @@ class GeminiTranslator:
             for attempt in range(MAX_RETRIES):
                 try:
                     console.print(
-                        "[yellow_bold]Napisy do tłumaczenia:[/yellow_bold]\n" + text)
+                        "[yellow_bold]Napisy do tłumaczenia:[/yellow_bold]\n" + escape(text))
                     response = await self.translate_with_api(text, prompt_main, prompt_helper, image_path)
                     console.print(
-                        f"\n[green_bold]Przetłumaczone napisy:[/green_bold]\n{response}", style='white_bold')
+                        f"\n[green_bold]Przetłumaczone napisy:[/green_bold]\n{escape(response)}", style='white_bold')
 
                     translated_text = self.format_response(response)
                     if translated_text:
@@ -218,7 +220,7 @@ class GeminiTranslator:
                 try:
                     response = await self.translate_with_api("", prompt_main, prompt_helper, image_path)
                     console.print(
-                        f"\n[green_bold]Przetłumaczony obraz:[/green_bold]\n{response}", style='white_bold')
+                        f"\n[green_bold]Przetłumaczony obraz:[/green_bold]\n{escape(response)}", style='white_bold')
                     translated_text = self.format_response(response)
                     if translated_text:
                         self.save_image_translation_as_srt(
@@ -234,10 +236,10 @@ class GeminiTranslator:
             for attempt in range(MAX_RETRIES):
                 try:
                     console.print(
-                        "[yellow_bold]Tekst do tłumaczenia:[/yellow_bold]\n" + text)
+                        "[yellow_bold]Tekst do tłumaczenia:[/yellow_bold]\n" + escape(text))
                     response = await self.translate_with_api(text, prompt_main, prompt_helper, image_path)
                     console.print(
-                        f"\n[green_bold]Przetłumaczony tekst:[/green_bold]\n{response}", style='white_bold')
+                        f"\n[green_bold]Przetłumaczony tekst:[/green_bold]\n{escape(response)}", style='white_bold')
                     translated_text = self.format_response(response)
                     if translated_text:
                         self.save_image_translation_as_srt(
@@ -252,7 +254,7 @@ class GeminiTranslator:
 
     def format_response(self, response: str) -> str:
         translated_text = response.rstrip(" @@")
-        translated_text = re.sub(r"◍◍\d+\. ", "", translated_text)
+        translated_text = re.sub(r"◍+\d+\.\s*", "", translated_text)
         translated_text = translated_text.replace(" ◍◍◍◍, ", ",\n")
         translated_text = translated_text.replace(" ◍◍◍◍ ", "\n")
         translated_text = translated_text.replace(" ◍◍◍◍", "")
@@ -283,7 +285,7 @@ class GeminiTranslator:
         error_message = str(e)
         console.print(
             f"Wystąpił błąd podczas tłumaczenia (próba {attempt + 1}/{MAX_RETRIES}): {error_message}",
-            style="red_bold"
+            style="red_bold", markup=False
         )
 
         if attempt >= MAX_RETRIES - 1:
@@ -357,8 +359,9 @@ class GeminiTranslator:
     def prepare_text_for_translation(self, group: List[pysrt.SubRipItem], counter: int) -> str:
         text = ""
         for sub in group:
+            clean_text = re.sub(r"◍+\d+\.\s*", "", sub.text)
             text += "◍◍{}. {}".format(counter,
-                                      sub.text.replace('\n', ' ◍◍◍◍ ')) + " @@\n"
+                                      clean_text.replace('\n', ' ◍◍◍◍ ')) + " @@\n"
             counter += 1
         return text.removesuffix(' @@\n') if text.endswith(' @@\n') else text
 
@@ -384,7 +387,7 @@ class GeminiTranslator:
                 f"Zakończono tłumaczenie pliku: {input_path}", style="green_bold")
         except Exception as e:
             console.print(
-                f"Błąd podczas tłumaczenia pliku {input_path}: {str(e)}", style="red_bold")
+                f"Błąd podczas tłumaczenia pliku {input_path}: {str(e)}", style="red_bold", markup=False)
 
     async def process_file(self, file_path: str):
         if self.mode == 'manga':
