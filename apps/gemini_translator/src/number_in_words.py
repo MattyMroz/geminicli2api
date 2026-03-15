@@ -144,7 +144,7 @@ class NumberInWords:
         special_chars: List[str] = ['!', '@', '#', '$', '%', '^', '&', '*',
                                     '(', ')', '_', '+', '~', '`', '{', '}', '|', '[', ']', '\\', ':', '"', ';', "'", '<', '>', '?', '/', '-']
         for i, char in enumerate(text):
-            if char.isdigit() or (char in ['.', ','] and i > 0 and i < len(text) - 1 and text[i-1].isdigit() and text[i+1].isdigit()):
+            if char.isdecimal() or (char in ['.', ','] and i > 0 and i < len(text) - 1 and text[i-1].isdecimal() and text[i+1].isdecimal()):
                 number += char
             else:
                 if number and number not in special_chars:
@@ -172,7 +172,7 @@ class NumberInWords:
                         else:
                             parts: List[str] = re.split(r'(\D)', number)
                             for part in parts:
-                                if part.isdigit():
+                                if part.isdecimal():
                                     number_in_words_str: str = self.number_in_words(
                                         part)
                                     if (result and not result[-1].isspace() and result[-1] not in special_chars):
