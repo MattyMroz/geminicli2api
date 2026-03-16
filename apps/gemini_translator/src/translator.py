@@ -262,13 +262,34 @@ class GeminiTranslator:
 
     def update_subtitles(self, group: List[pysrt.SubRipItem], translated_lines: List[str]):
         for sub, trans_text in zip(group, translated_lines):
-            sub.text = trans_text
+            sub.text = self._clean_subtitle_artifacts(trans_text)
 
     def _apply_partial_translation(self, group: List[pysrt.SubRipItem], translated_lines: List[str]):
         """Apply partial translation — fill as many subs as we have translations for."""
         for i, trans_text in enumerate(translated_lines):
             if i < len(group):
-                group[i].text = trans_text
+                group[i].text = self._clean_subtitle_artifacts(trans_text)
+
+    def _clean_subtitle_artifacts(self, text: str) -> str:
+        """Remove leftover ◍ marker artifacts from a translated subtitle line.
+
+        The model sometimes outputs malformed markers like:
+          ◍◍1s.  /  ◍◍7siedemdziesiąt dziewięć.  /  ◍◍-48.  /  ◍◍M30.
+        instead of proper translated text. This strips them out.
+        """
+        stripped = text.lstrip()
+        if re.match(r'^◍+(?![◍\s])', stripped):
+            # Marker sklejony z tokenem (◍◍7siedemdziesiąt dziewięć. tekst)
+            # → strip od ◍ do końca pierwszego zdania (., !, ?) włącznie
+            text = re.sub(r'^◍+.*?(?:[.!?]\s*|$)', '', stripped)
+        else:
+            # Marker poprzedzony spacją (◍◍ prawdziwy tekst) → strip tylko ◍ prefix
+            text = re.sub(r'^◍+\S*\s*', '', stripped)
+        # Strip osadzone tokeny ◍ w środku zdania
+        text = re.sub(r'◍+\S*', '', text)
+        # Collapse multiple spaces left behind
+        text = re.sub(r' {2,}', ' ', text)
+        return text.strip()
 
     def save_image_translation_as_srt(self, translated_text: str, output_path: str):
         lines = translated_text.split(' @@\n')

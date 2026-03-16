@@ -20,7 +20,7 @@ novels early and in the highest quality.
  lіghtn \ оvеlс \
 аvе ~ c ` о \ m.
 
- lіght \ nоvel \ world ~ c \ О \ m.
+ lіght \ nоvel \ world ~ c \ о \ m.
 
 lіght \ nоvel \ world ~ c \ о \ m.
 
@@ -47,137 +47,162 @@ FreeWebNovel
 Free Web Novel
 Visit freewebnovel(dot)com for the best reading experience
 
-Usuń też reklamy i znaczniki z treści:
-- Linie złożone tylko z podkreślników: ____
-- Linie złożone tylko z gwiazdek: ****
-- "Read the latest chapters on..."
 
  Wszystkie takie sentencjie lub zdania lub samo odniesienie do strony usuń i nie przepisuj
 
  ZADANIE POBOCZNE USUNIĘCIE ZNAKÓW WODNYCH Z TEKSTU TYPU novelfire.net, freewebnovel.com i podobnych i pochodnych
 
 
-Tłumaczysz teraz: Omniscient Reader's Viewpoint
-Polski tytuł: Punkt Widzenia Wszechwiedzącego Czytelnika
-
-
-=====================================================================
-=== WAŻNA UWAGA: STYL I CHARAKTER SERII ===
-=====================================================================
-Omniscient Reader's Viewpoint (ORV) to koreańska web novel autorstwa Sing Shong. Gatunek:
-apokaliptyczne fantasy, progression, meta-narracja, MMORPG-like scenarios. Narracja:
-PIERWSZOOSOBOWA z perspektywy Kim Dokja ("ja/mnie"). Styl: emocjonalny, ironiczny,
-samoświadomy (narrator zna fabułę i czasem "mówi do czytelnika"). Mroczny, momentami
-piękny. ZACHOWAJ tę wyjątkową pierwszoosobową narrację i meta-świadomość Kim Dokja.
-
-UWAGA NA FORMAT INTERFEJSU SCENARIUSZA:
-Powiadomienia systemowe (status okno, powiadomienia, nagrody) pojawiają się w nawiasach
-kwadratowych lub jako wyodrębniony tekst. ZACHOWAJ ich układ i tłumacz etykiety.
-Przykład:
-  [Scenariusz 1 - Kim Dokja wszedł do pokoju!]
-  [Umiejętność 'Wiedza Czytelnika' aktywowana.]
+Tłumaczysz teraz: Supreme Magus
+Polski tytuł: Najwyższy Magus
 
 
 =====================================================================
 === POSTACIE I INFORMACJE DO TŁUMACZENIA ===
 =====================================================================
 Nie zmieniaj tłumaczenia tych nazw, są w odpowiedniej formie.
-UWAGA! - koreańskie nazwiska (Kim, Yoo, Jung, Han, Lee, Shin) zostawiaj NIEPRZETŁUMACZONE!
-Odmieniaj: "plecak Kim Dokja" / "z Yoo Joonghyukiem" / "oczy Han Sooyoung"
+UWAGA! - odmieniaj WSZYSTKIE nazwy przez przypadki!
+Np.: Spotkałem Litha / miecz Solusa / rozkaz Litha
 
 
 ---------------------------------------------------------------------
---- GŁÓWNI BOHATEROWIE ---
+--- GŁÓWNI BOHATEROWIE (Main Characters) ---
 ---------------------------------------------------------------------
 
-1. Kim Dokja (mężczyzna) - protagonista i NARRATOR (pierwsza osoba). Były pracownik biurowy.
-   Jedyny czytelnik który przeczytał całą powieść "Trzy Sposoby na Przetrwanie w Zniszczonym Świecie".
-   Zna przyszłość fabuły - to jego jedyna przewaga. Introwertyczny, skrycie opiekuńczy, skłonny do
-   samopoświęcenia, ironiczny wobec siebie, emocjonalnie zablokowany. Rzadko mówi co naprawdę czuje.
-   - "Kim Dokja" → Kim Dokja
-   - Odmieniaj: Kim Dokja, Kim Dokja (nieodmienne). Np.: "plan Kim Dokja", "z Kim Dokja"
-   - Jako NARRATOR mówi o sobie "ja" → zostaw "ja" (narracja 1-osobowa!)
-   - umiejętność: "Omniscient Reader's Viewpoint" → "Punkt Widzenia Wszechwiedzącego Czytelnika"
-   - UWAGA: ON, MĘŻCZYZNA!
+1. Lith / Lith Verhen (mężczyzna) - główny bohater. Reinkarnowany z Ziemi (dawniej Derek McCoy - nie tłumacz tego imienia). Potężny mag, Wyróżniony (Awakened), potem Wyższy Wyróżniony (Bright Awakened), potem Magus Wyższy, itd. Posiada wiele rdzeni many. Cyniczny, pragmatyczny, bezwzględny w walce, ale z czasem otwiera się na bliskich. Ma ciemne włosy i oczy.
+   - "Lith" → Lith (główna forma)
+   - Odmieniaj: Lith, Litha, Lithowi, Lithem. Np.: "miecz Litha", "razem z Lithem", "powiedział Lithowi"
+   - UWAGA: ON, NIE ONA! Lith to MĘŻCZYZNA!
+   - Jako Derek McCoy w retrospekcjach - zostawiaj jako Derek / Derek McCoy
 
-2. Yoo Joonghyuk (mężczyzna) - "Regressor" (Cofający się w czasie). Protagonista powieści wewnątrz
-   powieści (TWSRW). Nieprawdopodobnie silny, zimny, bezwzględny, milczący. Przeszedł apokalipsę
-   wiele razy od nowa. Tsundere wobec Kim Dokja - nigdy nie przyzna że mu zależy. Czarne włosy, szare
-   oczy, przerażające spojrzenie. Najsilniejszy fizycznie bohater w historii.
-   - "Yoo Joonghyuk" → Yoo Joonghyuk
-   - Odmieniaj: Yoo Joonghyuk, Yoo Joonghyuka, Yoo Joonghyukowi, Yoo Joonghyukiem
-   - "Regressor" → Regresor / Cofający się w czase (w zależności od kontekstu)
-   - UWAGA: ON, MĘŻCZYZNA!
-
-3. Han Sooyoung (kobieta) - pisarka, cynická, manipulatorska, inteligentna, sarkastyczna.
-   Okazuje się być gl��boko związana z fabułą TWSRW (jej rola ujawniana stopniowo - nie spoileruj!).
-   Relacja z Kim Dokja: wzajemna nieufność i nieoczekiwana lojalność. Szybka, bezwzględna w działaniu.
-   - "Han Sooyoung" → Han Sooyoung
-   - Odmieniaj: Han Sooyoung, Han Sooyoung (nieodmienne). Np.: "plan Han Sooyoung"
+2. Solus / Solus Verhen (kobieta) - duch/istota zamieszkująca pierścień Litha (Pierścień Menadion / Menadion's Ring). Córka Menadion (legendarnej kowalki). Może przybierać ludzką formę. Towarzyszka Litha, głęboka więź mentalna. Mądra, wspierająca, emocjonalna. Z czasem odzyskuje wspomnienia i ciało.
+   - "Solus" → Solus
+   - Odmieniaj: Solus, Solus (nieodmienne lub lekko: od Solus, z Solus). Np.: "moc Solus", "powiedział do Solus"
+   - "Menadion's Ring" → Pierścień Menadion
    - UWAGA: ONA, KOBIETA!
 
-4. Jung Heewon (kobieta) - wojowniczka z mieczy, bezpośrednia, gorącokrwista, silne poczucie
-   sprawiedliwości. Szczera emocjonalnie - kontrastuje z Kim Dokja. Lojalna, waleczna.
-   - Odmieniaj: Jung Heewon, Jung Heewon (nieodmienne). Np.: "miecz Jung Heewon"
-   - UWAGA: ONA, KOBIETA!
+3. Kamila / Kamila Yehval (kobieta) - żona Litha. Urzędniczka rządowa (Constable). Nie ma magicznych zdolności (jest niewyróżniona). Ciepła, kochająca, mądra. Matka córki Litha (Elysia).
+   - Odmieniaj: Kamila, Kamili, Kamili, Kamilą, Kamilę. Np.: "uśmiech Kamili", "z Kamilą"
 
-5. Lee Hyunsung (mężczyzna) - były żołnierz. Lojalny, niezawodny, silny. Moralne kompas grupy.
-   Najprostszy i najszczerszy z ekipy Kim Dokja. Duże ciało, dobre serce.
-   - Odmieniaj: Lee Hyunsung, Lee Hyunsunga, Lee Hyunsungowi, Lee Hyunsungiem
-   - UWAGA: ON, MĘŻCZYZNA!
+4. Tista / Tista Verhen (kobieta) - młodsza siostra Litha. Rudowłosa. Przebudziła się jako Wyróżniona. Ma smoczą krew. Z czasem staje się coraz potężniejsza.
+   - Odmieniaj: Tista, Tisty, Tiście, Tistą. Np.: "moc Tisty"
 
-6. Lee Gilyoung (chłopiec/mężczyzna) - nastoletni chłopak. Zdolność kontrolowania owadów.
-   Dziecko, które dojrzewa w trakcie historii. Podziwia Kim Dokja.
-   - Odmieniaj: Lee Gilyoung, Lee Gilyounga, Lee Gilyoungowi, Lee Gilyoungiem
+5. Phloria / Phloria Ernas (kobieta) - była dziewczyna Litha, przyjaciółka. Waleczna, lojalna, silna wojowniczka. Córka szlacheckiej rodziny Ernas.
+   - Odmieniaj: Phloria, Phlorii, Phlorii, Phlorią. Np.: "miecz Phlorii"
 
-7. Shin Yoosung (dziewczyna/kobieta) - nastolatka. Zdolność kontrolowania roślin/scenariuszy.
-   Dojrzewa w trakcie historii. Bliska Lee Gilyoungowi.
-   - Odmieniaj: Shin Yoosung, Shin Yoosung (nieodmienne). Np.: "zdolności Shin Yoosung"
-   - UWAGA: ONA, KOBIETA!
+6. Friya / Friya Ernas (kobieta) - siostra Phlorii, magini przestrzeni/teleportacji. Sprytna i zaradna.
+   - Odmieniaj: Friya, Friyi, Friyi, Friyą. Np.: "zaklęcie Friyi"
 
-8. Yoo Sangah (kobieta) - dawna koleżanka z pracy Kim Dokja. Uprzejma, kompetentna.
-   Z czasem staje się potężna. Ma ukrytą głębię.
-   - Odmieniaj: Yoo Sangah, Yoo Sangah (nieodmienne). Np.: "uśmiech Yoo Sangah"
-   - UWAGA: ONA, KOBIETA!
+7. Quylla / Quylla Ernas (kobieta) - siostra Phlorii (adoptowana), uzdrowicielka/utalentowana magini. Genialna badaczka magii.
+   - Odmieniaj: Quylla, Quylli, Quylli, Quyllą. Np.: "badania Quylli"
 
-9. Bihyung (dokkaebi/on) - Dokkaebi prowadzący scenariusze Kim Dokja. Bezczelny, komercyjny,
-   traktuje scenariusze jak reality show. Staje się osobliwym sprzymierzeńcem Kim Dokja.
-   - "Bihyung" → Bihyung
-   - Odmieniaj: Bihyung, Bihyunga, Bihyungowi, Bihyungiem
+8. Orion / Orion Ernas (mężczyzna) - ojciec rodziny Ernas, Magus Wyższy (Great Mage/Archmage). Potężny kowal magiczny. Przyjaciel i mentor Litha.
+   - Odmieniaj: Orion, Oriona, Orionowi, Orionem. Np.: "zbroja Oriona"
 
-10. Secretive Plotter / Tajemniczy Knujący (konstelacja/on) - tajemnicza potężna konstelacja.
-    Ważna dla fabuły (rola ujawniana stopniowo - nie spoileruj!).
-    - "Secretive Plotter" → Tajemniczy Knujący
-
-11. Kim Namwoon (mężczyzna) - początkowo antagonista, potem komplikuje się. Brutalny,
-    bezpośredni. Z czasem ewoluuje.
-    - Odmieniaj: Kim Namwoon, Kim Namwoona, Kim Namwoonowi, Kim Namwoonem
-
-12. Uriel (konstelacja/kobieta) - konstelacja Archanioła Uriel. Sympatyzuje z Kim Dokja.
-    Głośna, emocjonalna, żarliwa. Kibicuje bohaterce (właściwie Kim Dokja) z najwyższym zaangażowaniem.
-    - "Uriel" → Uriel (nie tłumacz)
-    - Odmieniaj: Uriel, Uriel (nieodmienne)
-    - UWAGA: ONA, KOBIETA (w tej serii Uriel to kobieta)!
-
-13. Zeus (konstelacja/mężczyzna) - konstelacja mitologiczna, ważna postać w późniejszych scenariuszach.
-    - Odmieniaj: Zeus, Zeusa, Zeusowi, Zeusem
-
-14. Dokgak / Dokkaebi Złotego Smoka (dokkaebi) - inny ważny dokkaebi w historii.
+9. Jirni / Jirni Ernas (kobieta) - matka rodziny Ernas, Archon (wysoka urzędniczka). Bezwzględna szpiegini i strateg. Niezwykle inteligentna i przebiegła.
+   - Odmieniaj: Jirni, Jirni (nieodmienne). Np.: "plan Jirni"
 
 
 ---------------------------------------------------------------------
---- WAŻNA POWIEŚĆ WEWNĄTRZ POWIEŚCI ---
+--- RODZINA LITHA (Verhen Family) ---
 ---------------------------------------------------------------------
 
-POWIEŚĆ: "Three Ways to Survive in a Ruined World" (TWSRW)
-POLSKI TYTUŁ: "Trzy Sposoby na Przetrwanie w Zniszczonym Świecie"
-- Autor w internecie podpisany jako "tls123" → "tls123" (nie tłumacz nicka)
-- Kim Dokja przeczytał wszystkie 3149 rozdziałów tej powieści - jedyny taki czytelnik
-- Fabuła TWSRW "ożywa" w rzeczywistości - Kim Dokja zna każde zdarzenie z wyprzedzeniem
-- Kiedy cytowana jest treść z tej powieści - zachowaj kursywę/wyróżnienie
+10. Elina Verhen (kobieta) - matka Litha. Kochająca, opiekuńcza. Zwykła kobieta bez magii.
+    - Odmieniaj: Elina, Eliny, Elinie, Eliną
 
-Protagonista TWSRW = Yoo Joonghyuk (jego "literacka" wersja)
-Narrator TWSRW ≠ Kim Dokja (Kim Dokja był tylko czytelnikiem, nie autorem - do pewnego momentu)
+11. Raaz Verhen (mężczyzna) - ojciec Litha. Pracowity farmer.
+    - Odmieniaj: Raaz, Raaza, Raazowi, Raazem
+
+12. Rena / Rena Verhen (kobieta) - najstarsza siostra Litha. Wyszła za mąż za Seron.
+    - Odmieniaj: Rena, Reny, Renie, Reną
+
+13. Aran / Aran Verhen (mężczyzna) - młodszy brat Litha. Dziecko z talentem magicznym.
+    - Odmieniaj: Aran, Arana, Aranowi, Aranem
+
+14. Leria (kobieta) - młodsza siostra Litha (najmłodsza). Dziecko z talentem magicznym.
+    - Odmieniaj: Leria, Lerii, Lerii, Lerią
+
+15. Elysia (kobieta) - córka Litha i Kamili. Niemowlę/małe dziecko.
+    - Odmieniaj: Elysia, Elysii, Elysii, Elysią
+
+
+---------------------------------------------------------------------
+--- SMOKI I POSTACIE SMOCZE ---
+---------------------------------------------------------------------
+UWAGA: W Supreme Magus smoki mają ogromne znaczenie! Lith sam ma smoczą krew/formę.
+
+16. Lith (smocza forma) - Lith posiada smoczą formę zwaną Tiamat. Ma czarne łuski, jest potężnym smokiem.
+    - "Tiamat" → Tiamat (nie tłumacz)
+    - Kiedy jest w smoczej formie nadal jest Lithem
+
+17. Salaark / Salaark Babcia / Babcia Salaark (kobieta) - Smoczyca Ognista, jedna z Opiekunów (Guardians). Władczyni Pustyni (Desert). Ekstremalnie potężna. Adoptowała Litha jako wnuka. Nazywa go "wnusiu" (grandbaby/grandson).
+    - "Salaark" → Salaark
+    - Odmieniaj: Salaark, Salaark (nieodmienne). Np.: "pałac Salaark", "moc Salaark"
+    - "Guardian" → Opiekun / Opiekunka
+    - Zwraca się do Litha: "wnusiu" / "mój wnuku"
+
+18. Leegaain (mężczyzna) - Smok Ojciec / Ojciec Smoków (Father of all Dragons). Jeden z najpotężniejszych Opiekunów. Leniwy, sarkastyczny, ekstremalnie potężny.
+    - Odmieniaj: Leegaain, Leegaaina, Leegaainowi, Leegaainem
+
+19. Faluel (kobieta) - Hydra (wielogłowa smoczyca). Mentorka Litha i Tisty w zakresie smoczej magii. Mądra i wymagająca nauczycielka.
+    - Odmieniaj: Faluel, Faluel (nieodmienne). Np.: "lekcje Faluel"
+
+20. Zoreth (kobieta) - Abomination/Mroczna Smoczyca, siostra Litha (z poprzedniego życia Dereka? / skomplikowana relacja). Hybryd Wyróżnionego i Nieumarłego.
+    - Odmieniaj: Zoreth, Zoreth (nieodmienne). Np.: "moc Zoreth"
+
+21. Bytra (kobieta) - Abomination, partnerka Zoreth. Genialna kowalka/rzemieślniczka, rywalizuje z Menadion.
+    - Odmieniaj: Bytra, Bytry, Bytrze, Bytrą
+
+
+---------------------------------------------------------------------
+--- INNI WAŻNI BOHATEROWIE ---
+---------------------------------------------------------------------
+
+22. Manohar (mężczyzna) - genialny, ekscentryczny uzdrowiciel. "Szalony Geniusz" (Mad Professor). Narcystyczny, nieobliczalny, ale niezwykle utalentowany medycznie.
+    - Odmieniaj: Manohar, Manohara, Manoharowi, Manoharem
+
+23. Nalear / Naleara (kobieta) - zdrajczyni, dawna studentka. Antagonistka Litha.
+    - Odmieniaj: Nalear, Nalear (nieodmienne)
+
+24. Thrud / Thrud Griffon (kobieta) - Złota Griffon, antagonistka. Córka Artasa (Mad King). Potężna wojowniczka i strategini. Chce wskrzesić ojca i zdobyć władzę.
+    - Odmieniaj: Thrud, Thrud (nieodmienne). Np.: "armia Thrud", "plan Thrud"
+
+25. Meln Narchat (mężczyzna) - zdrajca / antagonista.
+    - Odmieniaj: Meln, Melna, Melnowi, Melnem
+
+26. Sylpha (kobieta) - Królowa Królestwa Griffon (Kingdom of Griffon), władczyni. Mądra monarchini.
+    - Odmieniaj: Sylpha, Sylphy, Sylphie, Sylphą
+    - "Queen Sylpha" → Królowa Sylpha
+
+27. Milea Genista (kobieta) - Cesarzowa Imperium Bestii (Beast Empire). Dyplomatyczna, inteligentna.
+    - Odmieniaj: Milea, Milei, Milei, Mileą
+
+28. Leannan (kobieta) - Dryada, Opiekunka (Guardian). Mądra, stara istota leśna.
+    - Odmieniaj: Leannan, Leannan (nieodmienne)
+
+29. Zagran / Night / Noc (kobieta) - dawna Opiekunka, Nieśmiertelna Noc (Undying Night). Potężny wampir, antagonistka. Podstępna, manipulatorska.
+    - "Night" → Noc (w kontekście postaci)
+    - Odmieniaj: Noc, Nocy, Nocy, Nocą
+
+30. Vastor / Zogar Vastor (mężczyzna) - Mistrz Vastor, dawny nauczyciel Litha. Gruby, pozornie nieszkodliwy mag, ale skrywa mroczne sekrety - jest Abomination. Z czasem staje się sojusznikiem Litha.
+    - Odmieniaj: Vastor, Vastora, Vastorowi, Vastorem
+
+31. Menadion / Ripha Menadion (kobieta) - legendarna kowalka magiczna, matka Solus. Stworzyła Pierścień Menadion (w którym zamieszkuje Solus). Tragiczna postać - zdradzicielka lub zdradzona, zależy od perspektywy.
+    - Odmieniaj: Menadion, Menadion (nieodmienne). Np.: "spuścizna Menadion"
+
+
+---------------------------------------------------------------------
+--- DUCHY / ISTOTY MAGICZNE ---
+---------------------------------------------------------------------
+
+32. Abominations / Obrzydliwości - hybrydy Wyróżnionych i Nieumarłych. Potężne, ale odrzucone przez społeczeństwo. Zoreth i Bytra to Obrzydliwości.
+    - "Abomination" → Obrzydliwość
+    - "Abominations" → Obrzydliwości
+    - Odmieniaj: Obrzydliwość, Obrzydliwości, Obrzydliwością
+
+33. Guardians / Opiekunowie - najpotężniejsze istoty magiczne chroniące Mogar (świat). Salaark, Leegaain, Leannan to Opiekunowie.
+    - "Guardian" → Opiekun / Opiekunka (w zależności od płci)
+    - "Guardians" → Opiekunowie
 
 
 =====================================================================
@@ -187,212 +212,215 @@ Używaj poniższych tłumaczeń KONSEKWENTNIE w CAŁYM tekście!
 RAZ WYBRANE TŁUMACZENIE = ZAWSZE TO SAMO!
 
 
---- SYSTEM SCENARIUSZY (INTERFEJS GRY) ---
+--- SYSTEM MAGII ---
 
-- Scenario → Scenariusz
-- Main Scenario → Scenariusz Główny
-- Sub Scenario → Scenariusz Poboczny
-- Hidden Scenario → Ukryty Scenariusz
-- Scenario Complete → Scenariusz ukończony
-- Scenario Failed → Scenariusz nieudany
-- [New Scenario has arrived!] → [Nowy Scenariusz się pojawił!]
-- Incarnation → Wcielenie / Inkarnacja (ludzie żyjący w scenariuszach)
-- Constellation → Konstelacja (potężne istoty obserwujące scenariusze)
-- Sponsor → Sponsor (konstelacja sponsorująca inkarnację)
-- Dokkaebi / Dokkebi → Dokkaebi (istoty zarządzające scenariuszami - nie tłumacz!)
-- Star Stream → Gwiezdny Strumień / Star Stream (sfera konstelacji)
-- Probability → Prawdopodobieństwo (konstelacje manipulują prawdopodobieństwem)
-- Coins → Monety / Gwiazdkowe Monety (waluta scenariuszy)
-- Status window / Status screen → Okno statusu / Ekran statusu
-- Skill → Umiejętność
-- Attribute → Atrybut
-- Level → Poziom
-- Achievement → Osiągnięcie
-- Title → Tytuł (specjalny status)
-- Stigma → Stygmat (umiejętności bardzo wysokiego rzędu)
-- Exclusive Skill → Umiejętność Wyłączna
-- Dokgak → Dokgak (konkretny dokkaebi - nie tłumacz)
-- Nebula → Mgławica (organizacja konstelacji)
-- Oracle → Wyrocznia
-- Regression → Regresja (cofnięcie czasu)
-- Regression Count → Liczba Regresji
+- Mana → Mana (nie tłumacz, odmieniaj: many, manie, maną)
+- Mana Core → Rdzeń Many (odmieniaj: Rdzenia Many, Rdzeniowi Many...)
+- Life Force → Siła Życiowa
+- World Energy → Energia Świata
+- Spirit Magic → Magia Ducha
+- True Magic → Prawdziwa Magia
+- Fake Magic → Fałszywa Magia / Magia Fałszywa
+- Gravity Magic → Magia Grawitacji
+- Dimensional Magic → Magia Wymiarowa
+- Light Magic → Magia Światła
+- Dark Magic → Mroczna Magia / Magia Ciemności
+- Fire Magic → Magia Ognia
+- Water Magic → Magia Wody
+- Earth Magic → Magia Ziemi
+- Air Magic → Magia Powietrza
+- Healing Magic → Magia Uzdrawiania / Magia Lecznicza
+- Forgemastering → Kowalstwo Magiczne / Kowanie (magiczne rzemiosło tworzenia przedmiotów)
+- Forgemaster → Kowal Magiczny / Mistrz Kowalstwa
+- Spell → Zaklęcie
+- Array → Krąg / Matryca (magiczna formacja)
+- Tower → Wieża (magiczna konstrukcja)
+- Warp → Teleportacja / Skok Przestrzenny
+- Body Casting → Rzucanie Ciałem (technika rzucania zaklęć bez ruchów rąk)
 
 
---- RANGI I POZIOMY ---
+--- RANGI / KOLORY RDZENI MANY ---
+UWAGA: Rdzeń many zmienia kolor w miarę wzrostu mocy!
 
-- Grade → Klasa / Ranga
-- Rank → Ranga
-- Transcendent → Transcendentny
-- Mythological Grade → Klasa Mitologiczna
-- Demon King → Król Demonów
-- Dokkaebi King → Król Dokkaebi
-- Absolute → Absolutny
-- [You have become stronger!] → [Stałeś się silniejszy!]
-- [You have acquired a new skill!] → [Zdobyłeś nową umiejętność!]
+- Black Core → Czarny Rdzeń (najsłabszy, zwykły śmiertelnik)
+- Red Core → Czerwony Rdzeń
+- Orange Core → Pomarańczowy Rdzeń
+- Yellow Core → Żółty Rdzeń
+- Green Core → Zielony Rdzeń
+- Cyan/Light Blue Core → Błękitny Rdzeń
+- Blue Core → Niebieski Rdzeń
+- Bright Blue → Jasny Niebieski Rdzeń
+- Deep Blue → Głęboki Niebieski Rdzeń
+- Violet/White Core → Fioletowy / Biały Rdzeń (najwyższy znany)
 
-
---- KLUCZOWE UMIEJĘTNOŚCI ---
-
-- Omniscient Reader's Viewpoint → Punkt Widzenia Wszechwiedzącego Czytelnika
-  (umiejętność Kim Dokja - KLUCZOWA, tłumacz zawsze pełną nazwą!)
-- Way of the Sword → Droga Miecza (Yoo Joonghyuk)
-- Way of the Wind → Droga Wiatru
-- Combat Sequence → Sekwencja Bojowa
-- Lie Detector → Wykrywacz Kłamstw
-- Fourth Wall → Czwarta Ściana (umiejętność pasywna Kim Dokja - chroni go przed świadomością że jest postacią)
-- Bookmark → Zakładka (umiejętność)
-- Regression → Regresja
-- Character List → Lista Postaci
-- Foresee → Przewidywanie
-- Plunder → Grabież (umiejętność Yoo Joonghyuka)
-- King of Kingship → Król Królów
-- Tyrant → Tyrant / Tyrański
+Powiązanie z rangami:
+- Wyróżniony (Awakened) - od Błękitnego Rdzenia
+- Jasny Wyróżniony (Bright Awakened) - jasne warianty rdzeni
 
 
---- KLUCZOWE POJĘCIA NARRACYJNE ---
-UWAGA: ORV jest meta-powieścią - pojęcia z teorii literatury są KLUCZOWE!
+--- RANGI MAGÓW ---
 
-- Protagonist → Protagonista / Główny bohater
-- Narrator → Narrator
-- Reader → Czytelnik
-- Writer / Author → Pisarz / Autor
-- Story → Historia / Opowieść
-- Ending → Zakończenie
-- Scenario = Story arc → Scenariusz = Arc fabularny
-- The story must go on → Historia musi trwać (ważne zdanie!)
-- To survive in a ruined world → Przetrwać w zniszczonym świecie
-- Character → Postać (literacka)
-- The third way → Trzecia Droga (ważny termin fabuły)
-- Foreshadowing → Zapowiedź / Foreshadowing
-- Subversion → Odwrócenie / Subwersja
-- Canon → Kanon
-- Non-canon → Poza kanonem
+- Apprentice → Uczeń
+- Mage → Mag
+- Great Mage → Wielki Mag
+- Archmage → Arcymag
+- Magus → Magus
+- Great Magus / Supreme Magus → Wielki Magus / Najwyższy Magus (tytuł książki!)
+- Awakened → Wyróżniony / Przebudzony (mag który "przebudził" swój rdzeń - używaj "Wyróżniony")
+- Bright Awakened → Jasny Wyróżniony
+- Plant → Roślinka (obraźliwe określenie na słabego maga - zachowaj sarkazm!)
 
+--- RANGI MILITARNE / TYTUŁY ---
+
+- Constable → Konstabel / Urzędnik
+- Archon → Archon (nie tłumacz)
+- Spellbreaker → Łamacz Zaklęć
+- Ranger → Strażnik
+- Knight → Rycerz
+- Royal Forgemaster → Królewski Kowal / Królewski Mistrz Kowalstwa
+- Headmaster → Dyrektor (szkoły magicznej)
+
+
+--- RASY I ISTOTY ---
+
+- Dragon → Smok (odmieniaj: Smoka, Smokowi, Smokiem)
+- Hydra → Hydra
+- Guardian → Opiekun / Opiekunka
+- Undead → Nieumarły / Nieśmiertelny
+- Vampire → Wampir
+- Lich → Lisz
+- Abomination → Obrzydliwość
+- Griffon → Gryf
+- Dryad → Dryada
+- Elf → Elf
+- Dwarf → Krasnolud
+- Beastman / Beast → Bestia / Człowiek-Bestia
+- Emperor Beast → Cesarska Bestia (najsilniejsza kategoria bestii)
+- Evolved Monster → Ewoluowany Potwór
+- Ancient → Starożytny/Starożytna
+- Bright → Jasny/Jasna (jako ranga)
 
 --- LOKALIZACJE ---
 
-- Seoul → Seul (lub Seoul w zależności od kontekstu)
-- Korea → Korea
-- Subway / Underground → Metro / Podziemie (pierwsze scenariusze)
-- Gong Ryong Stream → Strumień Gongryon (lokalizacja)
-- [Station name] Station → Stacja [Nazwa] (zachowaj koreańskie nazwy stacji metra)
-- Scenario world → Świat Scenariuszy
-- Star Stream → Gwiezdny Strumień (sfera wyższa)
-- Demon World → Świat Demonów
-- Abyss → Otchłań
+- Mogar → Mogar (świat, nie tłumacz)
+- Kingdom of Griffon → Królestwo Gryfa
+- Gorgon Empire → Imperium Gorgony
+- Beast Empire → Imperium Bestii
+- Desert → Pustynia (królestwo Salaark)
+- Blood Desert → Krwawa Pustynia
+- Lutia → Lutia (wioska, gdzie dorastał Lith)
+- White Griffon Academy → Akademia Białego Gryfa (szkoła magii)
+- Crystal Griffon Academy → Akademia Kryształowego Gryfa
+- Black Star Academy → Akademia Czarnej Gwiazdy
+- Desolate Lands → Spustoszone Ziemie
+- Fringe → Rubież / Pogranicze (niebezpieczne tereny na obrzeżach)
+- Council → Rada (organ rządzący magami)
+- Tower → Wieża (laboratoria/domy magów, np. "Solus's Tower" → "Wieża Solus")
 
 
---- KONSTELACJE I MITOLOGIA ---
+--- KLUCZOWE PRZEDMIOTY / POJĘCIA ---
 
-- Constellation → Konstelacja (potężna istota patrząca z góry)
-- Nebula → Mgławica (frakcja konstelacji)
-- The Absolute God → Absolut / Bóg Absolutny
-- Olympus → Olimp (frakcja konstelacji greckich)
-- Vedas → Wedy (frakcja konstelacji hinduskich)
-- Asgard → Asgarrd (frakcja konstelacji nordyckich)
-- Demon King of Salvation → Król Demonów Zbawienia (tytuł Kim Dokja)
-- Prisoner of the Golden Headband → Więzień Złotej Opaski (Sun Wukong)
-- Bald General of the North → Łysy Generał Północy
-- Father of the Rich Night → Ojciec Bogatej Nocy
-- Abyssal Black Flame Dragon → Smok Czarnego Płomienia Otchłani
-- Oldest Dream → Najstarsze Marzenie
-- Goryeo Sword Saint → Koreański Święty Miecz
+- Menadion's Ring / Ring of Menadion → Pierścień Menadion (pierścień Litha w którym mieszka Solus)
+- Skinwalker Armor → Zbroja Zmiennoskóra
+- War of the Griffons → Wojna Gryfów
+- Arthas's Madness → Szaleństwo Arthasa
+- Mad King → Szalony Król (Arthas, ojciec Thrud)
+- Cursed Objects → Przeklęte Przedmioty
+- Power Core → Rdzeń Mocy
+- Mana Flow → Przepływ Many
+- Accumulation → Akumulacja (termin na technikę gromadzenia many)
+- Breathing Technique → Technika Oddechowa (oddychanie wzmacniające magię)
+- Invigoration → Wzmocnienie (specyficzna technika oddechowa Litha)
+- Switch → Przełączenie (zmiana między formami/rdzeniami)
+- Fusion Magic → Magia Fuzji (łączenie magii z ciałem)
+- Origin Flames → Płomienie Początku / Płomienie Źródła (smocze ognie Litha, potężna broń)
+- Call of the Blood → Zew Krwi (smocze przebudzenie)
+- Domination → Dominacja (kontrola nad obcą magią)
+- Tower / Mage Tower → Wieża Maga
+- Silverwing's Tower → Wieża Silverwinga
 
 
 =====================================================================
 === ZASADY TŁUMACZENIA I STYL ===
 =====================================================================
 
-1. GATUNEK: Apokaliptyczne progression fantasy + meta-narracja o literaturze. Współczesna
-   Korea nagle wchodzi w "scenariusze" oparte na powieści. Kim Dokja zna fabułę. Tłumacz jako
-   INTENSYWNĄ, EMOCJONALNĄ powieść z głębią - nie tylko akcją. Momenty ciszy i emocji są równie
-   ważne jak walki. Niech czytelnik POCZUJE każdy twist.
+1. GATUNEK: Dark fantasy, progression fantasy, reinkarnacja, przygoda. Świat pełen magii, intryg politycznych, potworów i bogów. Lith progresuje od słabego dzieciaka do jednego z najpotężniejszych magów. Tłumacz to jako PORĄBANĄ, EPICKĄ książkę fantasy z elementami akcji, romansu i humoru. Niech czytelnik czuje EPICCOŚĆ i siłę postaci.
 
-2. NARRATOR - PIERWSZA OSOBA: Kim Dokja mówi "JA" - ZACHOWAJ narrację pierwszoosobową!
-   Jego głos: ironiczny, samoświadomy, pozornie zdystansowany ale głęboko emocjonalny w środku.
-   Robi z siebie złoczyńcę - choć jest kimś całkowicie innym. Rzadko mówi co czuje wprost.
-   Jego myśli to często ukryte wyznania. SUBTELNOŚĆ jest kluczem!
+2. NARRATOR: Narracja trzecioosobowa z perspektywy Litha. Jego myśli są cyniczne, pragmatyczne, czasem mroczne (pamięta swoje poprzednie życie jako Derek McCoy). Z czasem staje się cieplejszy wobec rodziny i przyjaciół. Wewnętrzne monologi powinny brzmieć jak myśli inteligentnego, doświadczonego faceta który przeżył jedno życie i nie zamierza zmarnować drugiego.
 
-3. META-NARRACJA: Kim Dokja niekiedy BEZPOŚREDNIO ZWRACA SIĘ DO CZYTELNIKA (tzw. "czwarta
-   ściana") lub nawiązuje do tego że jest w powieści. To FUNDAMENTALNA cecha serii.
-   Zachowaj te momenty z najwyższą starannością - to jest dusza ORV!
+3. ODMIANA IMION: ODMIENIAJ WSZYSTKO co się da przez przypadki!
+   - Lith → "widziałem Litha", "powiedziałem Lithowi", "z Lithem"
+   - Kamila → "uśmiech Kamili", "z Kamilą"
+   - Solus → "od Solus" (nieodmienne)
+   - Tista → "moc Tisty"
+   - Phloria → "miecz Phlorii"
+   - Orion → "zbroja Oriona"
 
-4. ODMIANA IMION: ODMIENIAJ przez przypadki gdzie gramatyka na to pozwala!
-   - Koreańskie nazwiska+imię = nieodmienne jako całość: "miecz Yoo Joonghyuk",
-     "plan Kim Dokja", "z Han Sooyoung", "do Lee Hyunsung"
-   - NIE odmieniaj samego nazwiska bez imienia: nie piszemy "Yoo Joonghyuka" jeśli używamy
-     formatu "Yoo Joonghyuk powiedział" (nieodmienne). Możliwe: "z Yoo Joonghyukiem"
+4. KONSEKWENCJA TŁUMACZEŃ: Raz przetłumaczone słowo = ZAWSZE tak samo!
+   - NIE zmieniaj "Pierścień Menadion" na "Pierścień Menadiona"!
+   - NIE zmieniaj "Wyróżniony" na "Przebudzony" w losowych miejscach!
+   - NIE zmieniaj "Kowalstwo Magiczne" na "Kowanie Magiczne" bez powodu!
 
-5. KONSEKWENCJA TŁUMACZEŃ: Raz przetłumaczone = ZAWSZE tak samo!
-   - "Omniscient Reader's Viewpoint" → ZAWSZE "Punkt Widzenia Wszechwiedzącego Czytelnika"
-   - "Three Ways to Survive in a Ruined World" → ZAWSZE "Trzy Sposoby na Przetrwanie w Zniszczonym Świecie"
-   - "Constellation" → ZAWSZE "Konstelacja"
-   - "Incarnation" → ZAWSZE "Inkarnacja" lub "Wcielenie" (używaj jednego w ramach rozdziału)
-   - "Dokkaebi" → ZAWSZE "Dokkaebi" (nie tłumacz!)
-   - "Regression" → ZAWSZE "Regresja"
-   - "Fourth Wall" → ZAWSZE "Czwarta Ściana"
+5. TRZY KRÓLESTWA: Griffon, Gorgon, impulse Bestii - główne potęgi polityczne. Konsekwentne tłumaczenie:
+   - Kingdom of Griffon → Królestwo Gryfa
+   - Gorgon Empire → Imperium Gorgony
+   - Beast Empire → Imperium Bestii
 
-6. FORMAT POWIADOMIEŃ SYSTEMOWYCH: Powiadomienia w nawiasach kwadratowych tłumacz z zachowaniem
-   nawiasów i układu:
-   [You have killed a monster!] → [Zabiłeś potwora!]
-   [Scenario cleared. Reward: 100 coins] → [Scenariusz ukończony. Nagroda: 100 monet]
-   [A constellation is sponsoring you!] → [Konstelacja cię sponsoruje!]
+6. SMOCZA FORMA LITHA: Gdy Lith przybiera smoczą formę (Tiamat), opisuj to z EPICCOŚCIĄ. Czarne łuski, potęga, strach wrogów. Ale to ciągle Lith.
 
-7. WALKI I AKCJA: Opisuj walki DYNAMICZNIE - miecze, umiejętności, zdolności konstelaacji.
-   Yoo Joonghyuk walczy z kosmiczną siłą i precyzją. Kim Dokja walczy SPRYTEM, wiedzą fabularną
-   i desperacją. Podkreślaj kontrast między "protagonistą" (YJH) a "czytelnikiem" (KDJ).
+7. WALKI I AKCJA: Opisuj walki DYNAMICZNIE - eksplozje magii, zaklęcia, smocze ognie, Płomienie Początku. Lith walczy TAKTYCZNIE i BRUTALNIE - łączy magię ciała (Fuzja), zaklęcia, smoczą siłę. Podkreślaj taktykę i bezwzględność.
 
-8. EMOCJE I DRAMAT: ORV to powieść GŁĘBOKO emocjonalna pod pozorami chłodu narracyjnego.
-   Kulminacje emocjonalne MUSZĄ brzmieć mocno. Sceny pożegnań, poświęcenia, zeznań miłosnych
-   (ukrytych w metaforach o powieści) - tłumacz je z UCZUCIEM.
+8. HUMOR: Lith ma suchy, cyniczny humor. Manohar jest ekscentrycznie zabawny. Rodzina Litha daje momenty ciepła i humoru. Salaark traktuje Litha jak wnuka co jest zabawne bo jest kosmicznie potężną smoczyca. Nie spłaszczaj humoru!
 
-9. IRONIA I HUMOR: Kim Dokja ma suchy, ironiczny humor. Komentuje fabułę jakby był dalej
-   czytelnikiem. "Ah, to ten rozdział w którym protagonist X robi Y." Zachowaj tę meta-ironię!
+9. NAZWY WŁASNE: Imiona postaci, nazwy miejsc NIE TŁUMACZ (Lith, Solus, Kamila, Lutia itp.) - ale ODMIENIAJ przez przypadki i TŁUMACZ tytuły/przydomki.
 
-10. TYTUŁY I RANGI KONSTELAACJI:
-    - Konstelaacje mają EPICKIE, PODNIOSŁE tytuły. Tłumacz je z rozmachem.
-    - "Demon King of Salvation" → "Król Demonów Zbawienia" (kim staje się Kim Dokja)
-    - "Most Ancient Dream" → "Najstarsze Marzenie"
-    - Konstelacje greco-rzymskie, koreańskie, hinduskie, nordyckie - tłumacz nazwy mitologiczne.
+10. TYTUŁY I RANGI:
+    - "Magus" (jako ranga) → "Magus"
+    - "Great Magus" → "Wielki Magus"
+    - "Supreme Magus" → "Najwyższy Magus"
+    - "Archmage" → "Arcymag"
+    - "Guardian" → "Opiekun/Opiekunka"
+    - "Queen" → "Królowa"
+    - "King" → "Król"
+    - "Archon" → "Archon"
 
-11. UŻYWAJ WULGARYZMÓW gdzie pasują - apokalipsa jest brutalna, Kim Dokja klnie w myślach,
-    walki są straszliwe. Yoo Joonghyuk jest bezwzględny. Nie cenzuruj.
+11. SKALA I EPICCOŚĆ: Supreme Magus to historia o reinkarnacji i progresji - od słabego dziecka w biednej wiosce do jednego z najpotężniejszych magów świata. PODKREŚLAJ tę progresję! Każdy nowy poziom mocy powinien brzmieć imponująco. Walki ze smokami, bogami, armiami - niech to BRZMI epicko.
 
-12. KOREAŃSKI KONTEKST KULTUROWY: Zachowaj koreańskie nazwy własne (stacji metra, miejsc,
-    potraw). Nie tłumacz "sunbae/hoobae" (starszy/młodszy kolega) - zostaw lub opisuj kontekstowo.
+12. WULGARYZMY: Używaj wulgaryzmów tam gdzie pasują do tonu - Lith klnie w myślach (szczególnie wspominając poprzednie życie), walki są brutalne. Nie cenzuruj.
+
+13. REINKARNACJA: Lith pamięta swoje poprzednie życie jako Derek McCoy na Ziemi. Wspomnienia z Ziemi zostawiaj w kontekście - odniesienia do technologii, internetu, gier, kina - to element humoru i kontrastu z fantasy światem.
+
+14. SOLUS I PIERŚCIEŃ: Solus to kluczowa postać. Mieszka w Pierścieniu Menadion, może tworzyć Wieżę (Tower). Jej relacja z Lithem jest głęboka - dzielą umysły i uczucia. Tłumacz tę więź z czułością.
 
 
 =====================================================================
 === RELACJE MIĘDZY POSTACIAMI ===
 =====================================================================
 
-- Kim Dokja ↔ Yoo Joonghyuk: Czytelnik i Protagonista powieści. On zna każdy ruch YJH.
-  YJH go nienawidzi/nie ufa, ale potrzebuje jego wiedzy. Skomplikowana, kluczowa relacja.
-  Z czasem: coś głębszego co żadne z nich nie umie nazwać. CENTRALNA PARA EMOCJONALNA.
-- Kim Dokja ↔ Han Sooyoung: Wzajemna nieufność i nieoczekiwana lojalność. Oboje są cwani.
-  Ona go rozumie na poziomie którego inni nie rozumieją. ON jej ufa bardziej niż przyznaje.
-- Kim Dokja ↔ Jung Heewon: Ona jest jego mieczem. On jej ufa bezwarunkowo. Ona go chroni.
-- Kim Dokja ↔ Lee Hyunsung: Niezawodny filar - Kim Dokja wie że Hyunsung nigdy nie zdradzi.
-- Kim Dokja ↔ Lee Gilyoung + Shin Yoosung: Rodzic i dzieci (metaforycznie). Ich ochrona jest
-  jednym z jego motorów. Oni go uwielbiają.
-- Kim Dokja ↔ Yoo Sangah: Dawni znajomi z pracy. Ona odkrywa kim naprawdę jest Kim Dokja.
-- Kim Dokja ↔ Bihyung: Dokkaebi-sponsor. Komiczna relacja biznesowa z ukrytą sympatią.
-- Kim Dokja ↔ Uriel: Ona jest jego wielką fanką (kibicuje mu jak szalonej kibicce). On to
-  wykorzystuje ale jest też wdzięczny.
-- Yoo Joonghyuk ↔ pozostali: Oni się go boją. On ich ignoruje. Ale stopniowo się zmienia.
+- Lith ↔ Solus: Najgłębsza więź - dzielą umysł, emocje, wspomnienia. Solus mieszka w jego pierścieniu. Z czasem rozwija się romantyczne napięcie.
+- Lith ↔ Kamila: Żona i mąż. Miłość, zaufanie, normalność w szalonym życiu maga. Kamila akceptuje Litha takim jakim jest.
+- Lith ↔ Tista: Brat-siostra. Lith jest ochronny, Tista z czasem dorasta do potężnej magini.
+- Lith ↔ Phloria: Była dziewczyna, skomplikowane uczucia. Szacunek i ból nieudanego związku.
+- Lith ↔ Rodzina Ernas (Orion, Jirni, Friya, Quylla): Bliscy przyjaciele rodziny. Orion jak starszy brat/ojciec. Jirni jak ciotka-szpieg.
+- Lith ↔ Salaark: "Babcia" i "wnusiu". Salaark go adoptowała, rozpieszcza, chroni. Zabawna dynamika.
+- Lith ↔ Faluel: Mentorka-uczeń. Faluel uczy go smoczej magii i jest wymagająca.
+- Lith ↔ Leegaain: Smok Ojciec, potężny i leniwy. Udziela rad niechętnie.
+- Lith ↔ Vastor: Dawny nauczyciel, potem sojusznik. Skomplikowana relacja po odkryciu mrocznych sekretów.
+- Thrud ↔ Lith: Antagonistka. Chce go pokonać/wykorzystać.
+- Noc ↔ Lith: Wampirzyca, dawna antagonistka/sojuszniczka.
 
 Tłumaczysz fragmenty - nie zakładaj, że dana relacja już istnieje w bieżącym rozdziale.
-Używaj wulgaryzmów. Bądź EPICKI i EMOCJONALNY. Zachowaj pierwszoosobową narrację Kim Dokja.
-Narracja KDJ zaczyna się od "Ja..." lub "Wiedziałem, że..." - ZACHOWAJ PIERWSZĄ OSOBĘ!
+Używaj wulgaryzmów.
+Bądź epicki.
+Bądź konsekwentny.
 
 NIGDY NIE DODAWAJ TAKI WSTAWEK NA KOŃCU!!!!
 ◍QA:
 - **Czy przestrzegałeś wszystkich zasad formatowania?**
 - Tak, zachowałem strukturę `◍◍[num].`, znaczniki `@@` i unikałem dodawania dodatkowych nowych linii. Tytuły rozdziałów zostały obsłużone zgodnie z instrukcją.
 
-Omniscient Reader's Viewpoint zawsze tłumacz jako Punkt Widzenia Wszechwiedzącego Czytelnika.
-Three Ways to Survive in a Ruined World zawsze tłumacz jako Trzy Sposoby na Przetrwanie w Zniszczonym Świecie.
-NIGDY NIE POMIJAJ TŁUMACZENIA OMNISCIENT READER'S VIEWPOINT!
+Supreme Magus zawsze tłumacz jako Najwyższy Magus.
+NIGDY NIE POMIJAJ TŁUMACZENIA SUPREME MAGUS na NAJWYŻSZY MAGUS!
 NIGDY NIE POMIJAJ TŁUMACZENIA CHAPTER I JEGO NUMER NA ROZDZIAŁ I JEGO NUMER W ODPOWIEDNIEJ FORMIE LICZEBNIKÓW!
 Chapter. -> Rozdział. np sto trzydziesty drugi <- odmiana 2 członowa
 

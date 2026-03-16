@@ -267,6 +267,30 @@ BEZWZGLĘDNE ZASADY, KTÓRYCH NIEPRZESTRZEGANIE BĘDZIE SKUTKOWAŁO ODRZUCENIEM 
     **Tłumaczenie: **  <- źle
     ◍◍ 1. To jest pierwsza linia  <- źle
 
+    KRYTYCZNE — ZASADY ZNACZNIKÓW ◍◍[num]. :
+    Marker ◍◍[num]. to WYŁĄCZNIE numer porządkowy napisu. NIE jest częścią tekstu do tłumaczenia.
+    NIGDY nie modyfikuj, nie tłumacz, nie zamieniaj liczby w markerze na słowa.
+    NIGDY nie doklejaj tekstu bezpośrednio do numeru (bez spacji i kropki).
+    ZAWSZE zachowaj dokładny format: ◍◍[liczba]. [treść] @@
+
+    NIEDOPUSZCZALNE przykłady błędów (◍◍ marker uszkodzony):
+    ◍◍1s.                              <- ŹLE (śmieć po numerze)
+    ◍◍2p7.                             <- ŹLE (śmieć po numerze)
+    ◍◍3siedem.                         <- ŹLE (przetłumaczono numer!)
+    ◍◍7siedemdziesiąt dziewięć.        <- ŹLE (przetłumaczono numer 79 na słowa!)
+    ◍◍4tysiące pięćset sześćdziesiąt siedem. <- ŹLE (przetłumaczono numer 4567!)
+    ◍◍-48.                             <- ŹLE (dodano znak minus)
+    ◍◍M30.                             <- ŹLE (dodano literę)
+    ◍◍7a4.                             <- ŹLE (śmieć po numerze)
+
+    POPRAWNE przykłady (tylko tłumaczysz TREŚĆ, marker zostawiasz niezmieniony):
+    ◍◍1. To jest pierwsza linia @@     <- DOBRZE
+    ◍◍7. Zaśmiała się. @@              <- DOBRZE
+    ◍◍79. Zaśmiała się. @@             <- DOBRZE (numer 79 zostawiony jako 79!)
+    ◍◍4567. Cokolwiek tu było. @@      <- DOBRZE (numer 4567 zostawiony jako 4567!)
+
+    ZASADA: liczba między ◍◍ a kropką = NUMER LINII = NIETYKALNY. Tłumacz TYLKO tekst po "◍◍N. ".
+
     Nie pisz nigdy {$} jako numer napisu, pisz zawsze znak specjalny, który jest w tekście, nie zamieniaj znaków specjalnych, bo popsujesz program i nie pisz **TŁUMACZENIE** na początku odpowiedzi - masz dać w outpucie tylko przetłumaczony tekst, nic mniej, nic więcej.
     Nie pisz na początku Język źródłowy: angielski lub inny
     PAMIĘTAJ SAME PRZETŁUMACZONE NAPISY Z ODPOWIEDNIMI ZNAKAMI SPECJALNYMI
