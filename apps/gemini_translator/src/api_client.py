@@ -51,6 +51,7 @@ class GeminiAPIClient:
         top_p: float = 1.0,
         max_tokens: int = 65536,
         system_prompt: Optional[str] = None,
+        response_format: Optional[dict] = None,
     ) -> str:
         """
         Send a chat completion request to the proxy server.
@@ -69,6 +70,8 @@ class GeminiAPIClient:
             "max_tokens": max_tokens,
             "stream": False,
         }
+        if response_format:
+            payload["response_format"] = response_format
 
         client = await self._get_client()
 

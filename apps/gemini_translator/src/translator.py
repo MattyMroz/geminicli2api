@@ -8,6 +8,7 @@ Adapted from GeminiTranslatorCOTE.py:
 """
 import os
 import re
+import json
 import asyncio
 import shutil
 import time
@@ -88,9 +89,9 @@ class GeminiTranslator:
         }
         return mime_types.get(extension, 'application/octet-stream')
 
-    async def translate_with_api(self, text: str, prompt_main: str, prompt_helper: str, image_path: str = None) -> str:
+    async def translate_with_api(self, text: str, prompt_main: str, prompt_helper: str, image_path: str = None, use_json: bool = False) -> str:
         """Send translation request via proxy."""
-        full_prompt = f"{prompt_main}\n\n{prompt_helper}\n\n{text}"
+        system_prompt = f"{prompt_main}\n\n{prompt_helper}"
 
         if image_path:
             try:
@@ -101,7 +102,7 @@ class GeminiTranslator:
                 mime_type = self._get_mime_type(image_path)
                 response = await self.api_client.generate_with_image(
                     model=self.model_name,
-                    prompt=full_prompt,
+                    prompt=f"{system_prompt}\n\n{text}" if not use_json else text,
                     image_data=image_data,
                     mime_type=mime_type,
                     temperature=self.temperature,
@@ -114,10 +115,12 @@ class GeminiTranslator:
         else:
             response = await self.api_client.generate(
                 model=self.model_name,
-                prompt=full_prompt,
+                prompt=text,
                 temperature=self.temperature,
                 top_p=self.top_p,
                 max_tokens=self.max_output_tokens,
+                system_prompt=system_prompt,
+                response_format={"type": "json_object"} if use_json else None,
             )
 
         return response.strip()
@@ -170,21 +173,28 @@ class GeminiTranslator:
 
     async def translate_group(self, text: str, prompt_main: str, prompt_helper: str, group: List[pysrt.SubRipItem], subs: pysrt.SubRipFile, output_path: str, image_path: str = None):
         async with self.semaphore:
+            error_prefix = ""
+            expected_count = len(group)
             for attempt in range(MAX_RETRIES):
                 try:
+                    retry_text = f"{error_prefix}{text}" if error_prefix else text
                     console.print(
-                        "[yellow_bold]Napisy do tłumaczenia:[/yellow_bold]\n" + escape(text))
-                    response = await self.translate_with_api(text, prompt_main, prompt_helper, image_path)
+                        "[yellow_bold]Napisy do tłumaczenia:[/yellow_bold]\n" + escape(retry_text))
+                    response = await self.translate_with_api(retry_text, prompt_main, prompt_helper, image_path, use_json=True)
                     console.print(
                         f"\n[green_bold]Przetłumaczone napisy:[/green_bold]\n{escape(response)}", style='white_bold')
 
-                    translated_text = self.format_response(response)
-                    if translated_text:
-                        translated_lines = translated_text.split(" @@\n")
-                        if len(translated_lines) != len(group):
+                    translated_lines = self.format_response(response)
+                    if translated_lines is not None:
+                        if len(translated_lines) != expected_count:
                             console.print(
-                                f"BŁĄD: liczba napisów po tłumaczeniu ({len(translated_lines)}) != przed ({len(group)}) [próba {attempt + 1}/{MAX_RETRIES}]",
+                                f"BŁĄD: liczba napisów po tłumaczeniu ({len(translated_lines)}) != przed ({expected_count}) [próba {attempt + 1}/{MAX_RETRIES}]",
                                 style="red_bold"
+                            )
+                            error_prefix = (
+                                f"BŁĄD W POPRZEDNIEJ ODPOWIEDZI: Zwróciłeś {len(translated_lines)} elementów zamiast {expected_count}. "
+                                f"Tym razem zwróć DOKŁADNIE {expected_count} elementów w tablicy \"t\". "
+                                f"Każdy napis [N] = jeden element. NIE POMIJAJ ŻADNEGO.\n\n"
                             )
                             # On last attempt — save whatever we got (partial is better than nothing)
                             if attempt == MAX_RETRIES - 1:
@@ -204,6 +214,21 @@ class GeminiTranslator:
                                 subs.save(output_path, encoding='utf-8')
                             self._translated_groups += 1
                             return
+                    else:
+                        # format_response returned None — no JSON parsed
+                        console.print(
+                            f"BŁĄD: Brak poprawnego JSON [próba {attempt + 1}/{MAX_RETRIES}]",
+                            style="red_bold"
+                        )
+                        error_prefix = (
+                            f"BŁĄD W POPRZEDNIEJ ODPOWIEDZI: Nie zwróciłeś poprawnego JSON. "
+                            f"Odpowiedz WYŁĄCZNIE czystym JSON: {{\"t\": [\"napis1\", ..., \"napis{expected_count}\"]}}. "
+                            f"Bez markdown, bez komentarzy, bez tekstu przed/po JSON.\n\n"
+                        )
+                        if attempt == MAX_RETRIES - 1:
+                            self._failed_groups += 1
+                            return
+                        continue
                 except Exception as e:
                     await self.handle_translation_error(e, attempt)
             self._failed_groups += 1
@@ -221,7 +246,7 @@ class GeminiTranslator:
                     response = await self.translate_with_api("", prompt_main, prompt_helper, image_path)
                     console.print(
                         f"\n[green_bold]Przetłumaczony obraz:[/green_bold]\n{escape(response)}", style='white_bold')
-                    translated_text = self.format_response(response)
+                    translated_text = self._format_response_plain(response)
                     if translated_text:
                         self.save_image_translation_as_srt(
                             translated_text, output_path)
@@ -240,7 +265,7 @@ class GeminiTranslator:
                     response = await self.translate_with_api(text, prompt_main, prompt_helper, image_path)
                     console.print(
                         f"\n[green_bold]Przetłumaczony tekst:[/green_bold]\n{escape(response)}", style='white_bold')
-                    translated_text = self.format_response(response)
+                    translated_text = self._format_response_plain(response)
                     if translated_text:
                         self.save_image_translation_as_srt(
                             translated_text, output_path.replace('.txt', '.srt'))
@@ -252,44 +277,71 @@ class GeminiTranslator:
 
     # --- Helpers ---
 
-    def format_response(self, response: str) -> str:
-        translated_text = response.rstrip(" @@")
-        translated_text = re.sub(r"◍+\d+\.\s*", "", translated_text)
-        translated_text = translated_text.replace(" ◍◍◍◍, ", ",\n")
-        translated_text = translated_text.replace(" ◍◍◍◍ ", "\n")
-        translated_text = translated_text.replace(" ◍◍◍◍", "")
-        return translated_text
+    def format_response(self, response: str) -> list:
+        """Parse JSON response and return list of translated strings."""
+        text = response.strip()
+        # Strip markdown code fences if present
+        if text.startswith("```"):
+            text = re.sub(r'^```\w*\n?', '', text)
+            text = re.sub(r'\n?```$', '', text)
+            text = text.strip()
+
+        try:
+            data = json.loads(text)
+        except json.JSONDecodeError:
+            # Fallback: try to extract JSON from response
+            match = re.search(r'\{.*\}', text, re.DOTALL)
+            if match:
+                try:
+                    data = json.loads(match.group())
+                except json.JSONDecodeError:
+                    console.print("BŁĄD: Nie udało się sparsować JSON z odpowiedzi", style="red_bold")
+                    return None
+            else:
+                console.print("BŁĄD: Brak JSON w odpowiedzi modelu", style="red_bold")
+                return None
+
+        # Extract translations from JSON — flexible key lookup
+        if isinstance(data, dict):
+            translations = data.get("t") or data.get("translations") or data.get("translated")
+            if translations is None:
+                # Try first list value in the dict
+                for v in data.values():
+                    if isinstance(v, list):
+                        translations = v
+                        break
+        elif isinstance(data, list):
+            translations = data
+        else:
+            console.print("BŁĄD: Nieoczekiwany format JSON", style="red_bold")
+            return None
+
+        if not isinstance(translations, list):
+            console.print("BŁĄD: Brak tablicy tłumaczeń w JSON", style="red_bold")
+            return None
+
+        # Handle items that might be dicts with "text" key
+        result = []
+        for item in translations:
+            if isinstance(item, str):
+                result.append(item)
+            elif isinstance(item, dict) and "text" in item:
+                result.append(item["text"])
+            else:
+                result.append(str(item))
+
+        return result
 
     def update_subtitles(self, group: List[pysrt.SubRipItem], translated_lines: List[str]):
         for sub, trans_text in zip(group, translated_lines):
-            sub.text = self._clean_subtitle_artifacts(trans_text)
+            sub.text = trans_text.strip()
 
     def _apply_partial_translation(self, group: List[pysrt.SubRipItem], translated_lines: List[str]):
         """Apply partial translation — fill as many subs as we have translations for."""
         for i, trans_text in enumerate(translated_lines):
             if i < len(group):
-                group[i].text = self._clean_subtitle_artifacts(trans_text)
+                group[i].text = trans_text
 
-    def _clean_subtitle_artifacts(self, text: str) -> str:
-        """Remove leftover ◍ marker artifacts from a translated subtitle line.
-
-        The model sometimes outputs malformed markers like:
-          ◍◍1s.  /  ◍◍7siedemdziesiąt dziewięć.  /  ◍◍-48.  /  ◍◍M30.
-        instead of proper translated text. This strips them out.
-        """
-        stripped = text.lstrip()
-        if re.match(r'^◍+(?![◍\s])', stripped):
-            # Marker sklejony z tokenem (◍◍7siedemdziesiąt dziewięć. tekst)
-            # → strip od ◍ do końca pierwszego zdania (., !, ?) włącznie
-            text = re.sub(r'^◍+.*?(?:[.!?]\s*|$)', '', stripped)
-        else:
-            # Marker poprzedzony spacją (◍◍ prawdziwy tekst) → strip tylko ◍ prefix
-            text = re.sub(r'^◍+\S*\s*', '', stripped)
-        # Strip osadzone tokeny ◍ w środku zdania
-        text = re.sub(r'◍+\S*', '', text)
-        # Collapse multiple spaces left behind
-        text = re.sub(r' {2,}', ' ', text)
-        return text.strip()
 
     def save_image_translation_as_srt(self, translated_text: str, output_path: str):
         lines = translated_text.split(' @@\n')
@@ -301,6 +353,15 @@ class GeminiTranslator:
                 index=i, start=start_time, end=end_time, text=line)
             subs.append(item)
         subs.save(output_path, encoding='utf-8')
+
+    def _format_response_plain(self, response: str) -> str:
+        """Legacy plain text format response (for image/manga modes)."""
+        translated_text = response.rstrip(" @@")
+        translated_text = re.sub(r"\u25cd+\d+\.\s*", "", translated_text)
+        translated_text = translated_text.replace(" \u25cd\u25cd\u25cd\u25cd, ", ",\n")
+        translated_text = translated_text.replace(" \u25cd\u25cd\u25cd\u25cd ", "\n")
+        translated_text = translated_text.replace(" \u25cd\u25cd\u25cd\u25cd", "")
+        return translated_text
 
     async def handle_translation_error(self, e: Exception, attempt: int):
         error_message = str(e)
@@ -378,13 +439,14 @@ class GeminiTranslator:
         return prompt_main, prompt_helper
 
     def prepare_text_for_translation(self, group: List[pysrt.SubRipItem], counter: int) -> str:
-        text = ""
+        lines = []
         for sub in group:
+            # Clean old markers if re-translating
             clean_text = re.sub(r"◍+\d+\.\s*", "", sub.text)
-            text += "◍◍{}. {}".format(counter,
-                                      clean_text.replace('\n', ' ◍◍◍◍ ')) + " @@\n"
+            clean_text = clean_text.replace(" ◍◍◍◍ ", "\n").replace(" ◍◍◍◍", "").rstrip(" @@")
+            lines.append(f"[{counter}]\n{clean_text}")
             counter += 1
-        return text.removesuffix(' @@\n') if text.endswith(' @@\n') else text
+        return f"Przetłumacz {len(lines)} napisów:\n\n" + "\n\n".join(lines)
 
     async def translate_file(self, input_path: str, output_path: str):
         try:

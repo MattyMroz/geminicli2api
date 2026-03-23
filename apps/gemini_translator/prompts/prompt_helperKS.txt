@@ -342,6 +342,7 @@ RAZ WYBRANE TŁUMACZENIE = ZAWSZE TO SAMO!
 
 - Axel → Axel (miasto dla początkujących poszukiwaczy przygód - NIE TŁUMACZ)
 - Kingdom of Belzerg → Królestwo Belzerg (NIE TŁUMACZ "Belzerg")
+- Capital → Stolica / Belzerg (stolica królestwa)
 - Crimson Demon Village → Wioska Szkarłatnych Demonów
 - Crimson Demon Clan → Klan Szkarłatnych Demonów
 - Demon King's Castle → Zamek Króla Demonów
@@ -367,7 +368,7 @@ RAZ WYBRANE TŁUMACZENIE = ZAWSZE TO SAMO!
 
 --- POJĘCIA OGÓLNE ---
 
-- Party → Drużyna / Party
+- Party → Drużyna / Ekipa
 - Quest → Zadanie / Misja
 - Guild → Gildia
 - Guild Card → Karta Gildii
@@ -380,10 +381,10 @@ RAZ WYBRANE TŁUMACZENIE = ZAWSZE TO SAMO!
 - Eris (currency) → erysy (jednostka waluty; Np.: "sto ery­sów" - NIE "Eris" w sensie waluty! odróżniaj od bogini Eris)
   UWAGA: "eris" jako waluta = "erys" / "erysy" (PL); "Eris" z wielkiej = bogini!
 - Dungeon → Loch / Dungeon
-- Monster → Potwór
-- Boss → Boss
-- Drop (item) → Drop / łup (potwory "dropią" przedmioty)
-- Respawn → Odrodzenie (nieumarli się odradzają)
+- Monster → Potwór / Stwór
+- Boss → Boss / Chef (kontekstowo)
+- Drop (item) → Upada przedmiot / łup (potwory "dropują" przedmioty)
+- Respawn → Odrodzenie / Powrót (nieumarli się odradzają)
 - Resurrection → Wskrzeszenie / Odrodzenie
 
 
@@ -404,7 +405,7 @@ RAZ WYBRANE TŁUMACZENIE = ZAWSZE TO SAMO!
    - Wiz → "sklep Wiz" (nieodmienne)
 
 4. KONSEKWENCJA TŁUMACZEŃ: Raz przetłumaczone słowo = ZAWSZE tak samo!
-   - NIE zmieniaj "Król Demonów" na "Demon Lord" lub "Władca Demonów"! - Preferowane "Władca Demonów"
+   - NIE zmieniaj "Król Demonów" na "Demon Lord" lub "Władca Demonów"!
    - NIE zmieniaj "Zakon Osi" na "Kult Aquy" (chociaż to to samo)!
    - NIE zmieniaj "Krzyżowczyni" na "Paladynka" dla Darkness!
    - "Eksplozja" = ZAWSZE "EKSPLOZJA!" (wielkie litery gdy rzucana)!
@@ -486,5 +487,10 @@ Tłumaczysz fragmenty — nie zakładaj, że dana relacja już istnieje w bież�
 Bądź konsekwentny w tłumaczeniach.
 Zachowaj humor i lekkość tonu komedii.
 
+
+NIGDY NIE DODAWAJ TAKICH WSTAWEK NA KOŃCU!!!!
+◍QA:
+- **Czy przestrzegałeś wszystkich zasad formatowania?**
+- Tak, zachowałem strukturę `◍◍[num].`, znaczniki `@@` i unikałem dodawania dodatkowych nowych linii.
 
 KonoSuba: God's Blessing on This Wonderful World! zawsze tłumacz jako KonoSuba! Boże błogosławieństwo dla tego wspaniałego świata!
