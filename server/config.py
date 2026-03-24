@@ -55,19 +55,6 @@ DEFAULT_SAFETY_SETTINGS = [
 # Base Models (only models verified to exist on Google's CodeAssist endpoint)
 BASE_MODELS = [
     {
-        "name": "models/gemini-2.0-flash",
-        "version": "001",
-        "displayName": "Gemini 2.0 Flash",
-        "description": "Fast multimodal model from Gemini 2.0 generation",
-        "inputTokenLimit": 1048576,
-        "outputTokenLimit": 8192,
-        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
-        "temperature": 1.0,
-        "maxTemperature": 2.0,
-        "topP": 0.95,
-        "topK": 64,
-    },
-    {
         "name": "models/gemini-2.5-flash",
         "version": "001",
         "displayName": "Gemini 2.5 Flash",
@@ -132,6 +119,32 @@ BASE_MODELS = [
         "topP": 0.95,
         "topK": 64,
     },
+    {
+        "name": "models/gemini-3.1-pro-preview",
+        "version": "001",
+        "displayName": "Gemini 3.1 Pro Preview",
+        "description": "Advanced intelligence with complex problem-solving and agentic coding",
+        "inputTokenLimit": 1048576,
+        "outputTokenLimit": 65535,
+        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
+        "temperature": 1.0,
+        "maxTemperature": 2.0,
+        "topP": 0.95,
+        "topK": 64,
+    },
+    {
+        "name": "models/gemini-3.1-flash-lite-preview",
+        "version": "001",
+        "displayName": "Gemini 3.1 Flash Lite Preview",
+        "description": "Frontier-class performance at a fraction of the cost — Gemini 3.1 generation",
+        "inputTokenLimit": 1048576,
+        "outputTokenLimit": 65535,
+        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
+        "temperature": 1.0,
+        "maxTemperature": 2.0,
+        "topP": 0.95,
+        "topK": 64,
+    },
 ]
 
 
@@ -160,7 +173,7 @@ def _has_thinking_support(model_name: str) -> bool:
     if "gemini-2.5-flash-lite" in name:
         return False
     # Include models with thinking
-    if any(x in name for x in ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-3-pro", "gemini-3-flash"]):
+    if any(x in name for x in ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-3-pro", "gemini-3-flash", "gemini-3.1-pro"]):
         return True
     return False
 

@@ -32,15 +32,15 @@ accounts/*.json
 !accounts/.gitkeep
 oauth_creds.json
 
-# ── Working space (user data) ─────────────────────────────
-working_space/input/*
-working_space/output/*
-working_space/output_txt/*
-working_space/temp/*
-!working_space/input/.gitkeep
-!working_space/output/.gitkeep
-!working_space/output_txt/.gitkeep
-!working_space/temp/.gitkeep
+# ── Workspace (user data) ─────────────────────────────────
+workspace/input/*
+workspace/output/*
+workspace/output_txt/*
+workspace/temp/*
+!workspace/input/.gitkeep
+!workspace/output/.gitkeep
+!workspace/output_txt/.gitkeep
+!workspace/temp/.gitkeep
 
 # ── IDE / editor ──────────────────────────────────────────
 .vscode/

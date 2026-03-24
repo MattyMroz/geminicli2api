@@ -41,7 +41,7 @@ Serwer startuje na `http://127.0.0.1:8888`.
 
 ### 4. Tłumaczenie tekstu
 
-Wrzuć pliki `.txt` lub `.srt` do `working_space/input/`, potem:
+Wrzuć pliki `.txt` lub `.srt` do `workspace/input/`, potem:
 
 ```bash
 uv run start.py --translate   # lub: uv run start.py -t
@@ -51,7 +51,7 @@ Translator:
 1. Automatycznie uruchomi serwer proxy (jeśli nie działa)
 2. Sformatuje pliki wejściowe (TXT → SRT z chunkowaniem)
 3. Przetłumaczy asynchronicznie (domyślnie 20 równoległych requestów)
-4. Zapisze wynik do `working_space/output/` (SRT) i `working_space/output_txt/` (TXT)
+4. Zapisze wynik do `workspace/output/` (SRT) i `workspace/output_txt/` (TXT)
 
 ## Komendy
 
@@ -94,9 +94,9 @@ class TranslatorConfig:
     sentence_length: int = 750               # max długość zdania
 
     # Ścieżki
-    input_folder: str = "working_space/input"
-    output_folder: str = "working_space/output"
-    output_txt_folder: str = "working_space/output_txt"
+    input_folder: str = "workspace/input"
+    output_folder: str = "workspace/output"
+    output_txt_folder: str = "workspace/output_txt"
     prompts_folder: str = "apps/gemini_translator/prompts"
 
     # Zarządzanie serwerem
@@ -192,7 +192,7 @@ geminicli2api/
 ├── pyproject.toml
 ├── .env                               ← Zmienne środowiskowe
 ├── accounts/                          ← Konta Google OAuth
-├── working_space/
+├── workspace/
 │   ├── input/                         ← Pliki do tłumaczenia
 │   ├── output/                        ← Przetłumaczone pliki (SRT)
 │   └── output_txt/                    ← Przetłumaczone pliki (TXT)

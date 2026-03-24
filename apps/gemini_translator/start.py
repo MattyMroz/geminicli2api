@@ -8,9 +8,9 @@ Flow:
     4. Post-processing: translated SRT → TXT saved in output_txt_folder
 
 Folders:
-    working_space/input/      — original TXT + generated SRT
-    working_space/output/     — translated SRT
-    working_space/output_txt/ — translated TXT
+    workspace/input/      — original TXT + generated SRT
+    workspace/output/     — translated SRT
+    workspace/output_txt/ — translated TXT
 """
 from apps.gemini_translator.src.utils.execution_timer import ExecutionTimer
 from apps.gemini_translator.src.utils.console import console

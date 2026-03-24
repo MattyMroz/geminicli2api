@@ -19,6 +19,14 @@ from server.config import (
     _has_thinking_support,
 )
 
+# MIME type prefixes supported by Gemini API via inlineData
+_SUPPORTED_MIME_PREFIXES = (
+    "image/",
+    "audio/",
+    "video/",
+    "application/pdf",
+)
+
 
 def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dict[str, Any]:
     """Transform an OpenAI chat completion request to Gemini format."""
@@ -65,7 +73,7 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                                     if ":" in header:
                                         mime_type = header.split(
                                             ":", 1)[1].split(";", 1)[0] or ""
-                                    if mime_type.startswith("image/"):
+                                    if mime_type.startswith(_SUPPORTED_MIME_PREFIXES):
                                         parts.append({
                                             "inlineData": {"mimeType": mime_type, "data": base64_data}
                                         })
@@ -114,7 +122,7 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                         if ":" in header:
                             mime_type = header.split(
                                 ":", 1)[1].split(";", 1)[0] or ""
-                        if mime_type.startswith("image/"):
+                        if mime_type.startswith(_SUPPORTED_MIME_PREFIXES):
                             parts.append({
                                 "inlineData": {"mimeType": mime_type, "data": base64_data}
                             })
@@ -239,10 +247,14 @@ def gemini_response_to_openai(gemini_response: Dict[str, Any], model: str) -> Di
             inline = part.get("inlineData")
             if inline and inline.get("data"):
                 mime = inline.get("mimeType") or "image/png"
-                if isinstance(mime, str) and mime.startswith("image/"):
+                if isinstance(mime, str) and mime.startswith(_SUPPORTED_MIME_PREFIXES):
                     data_b64 = inline.get("data")
-                    content_parts.append(
-                        f"![image](data:{mime};base64,{data_b64})")
+                    if mime.startswith("image/"):
+                        content_parts.append(
+                            f"![image](data:{mime};base64,{data_b64})")
+                    else:
+                        content_parts.append(
+                            f"[media](data:{mime};base64,{data_b64})")
                 continue
 
         content = "\n\n".join([p for p in content_parts if p is not None])
@@ -290,10 +302,14 @@ def gemini_stream_chunk_to_openai(gemini_chunk: Dict[str, Any], model: str, resp
             inline = part.get("inlineData")
             if inline and inline.get("data"):
                 mime = inline.get("mimeType") or "image/png"
-                if isinstance(mime, str) and mime.startswith("image/"):
+                if isinstance(mime, str) and mime.startswith(_SUPPORTED_MIME_PREFIXES):
                     data_b64 = inline.get("data")
-                    content_parts.append(
-                        f"![image](data:{mime};base64,{data_b64})")
+                    if mime.startswith("image/"):
+                        content_parts.append(
+                            f"![image](data:{mime};base64,{data_b64})")
+                    else:
+                        content_parts.append(
+                            f"[media](data:{mime};base64,{data_b64})")
                 continue
 
         content = "\n\n".join([p for p in content_parts if p is not None])

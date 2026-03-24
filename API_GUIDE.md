@@ -211,7 +211,94 @@ Modele Gemini obsługują multimodalne wejście. Obrazy przesyłaj jako base64 w
 
 **Obsługiwane formaty**: PNG, JPEG, WebP, HEIC, HEIF
 
-**Wskazówka**: `content` może być stringiem (tylko tekst) albo tablicą (tekst + obrazy).
+**Wskazówka**: `content` może być stringiem (tylko tekst) albo tablicą (tekst + multimedia).
+
+---
+
+### Audio (transkrypcja i analiza)
+
+```json
+{
+  "model": "gemini-2.5-flash",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:audio/mp3;base64,//uQxAAAAAAA..."
+          }
+        },
+        {
+          "type": "text",
+          "text": "Transkrybuj to nagranie audio."
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Obsługiwane formaty audio**: MP3, WAV, AIFF, AAC, OGG, FLAC, WebM (audio)
+
+---
+
+### Video (analiza)
+
+```json
+{
+  "model": "gemini-2.5-flash",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:video/mp4;base64,AAAAIGZ0eXA..."
+          }
+        },
+        {
+          "type": "text",
+          "text": "Opisz co się dzieje na tym filmie."
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Obsługiwane formaty video**: MP4, MPEG, MOV, AVI, FLV, MPG, WebM, WMV, 3GPP
+
+---
+
+### PDF (analiza dokumentów)
+
+```json
+{
+  "model": "gemini-2.5-flash",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:application/pdf;base64,JVBERi0xLjQ..."
+          }
+        },
+        {
+          "type": "text",
+          "text": "Podsumuj ten dokument PDF."
+        }
+      ]
+    }
+  ]
+}
+```
+
+> **Uwaga**: Wszystkie multimedia przesyłane są jako base64 w formacie `data:{mime};base64,{dane}`. Użyj `type: "image_url"` dla wszystkich typów mediów (obrazy, audio, video, PDF) — to format kompatybilny z OpenAI API.
 
 ---
 

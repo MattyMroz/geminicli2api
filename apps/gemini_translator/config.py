@@ -42,11 +42,11 @@ class TranslatorConfig:
 
     # --- Paths ---
     input_folder: str = field(default_factory=lambda: str(
-        ROOT_DIR / "working_space" / "input"))
+        ROOT_DIR / "workspace" / "input"))
     output_folder: str = field(default_factory=lambda: str(
-        ROOT_DIR / "working_space" / "output"))
+        ROOT_DIR / "workspace" / "output"))
     output_txt_folder: str = field(default_factory=lambda: str(
-        ROOT_DIR / "working_space" / "output_txt"))
+        ROOT_DIR / "workspace" / "output_txt"))
     prompts_folder: str = field(
         default_factory=lambda: str(APP_DIR / "prompts"))
 
