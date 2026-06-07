@@ -41,7 +41,7 @@ class GeminiTranslator:
         temperature: float = 0.3,
         top_p: float = 1.0,
         max_output_tokens: int = 65536,
-        translated_line_count: int = 20,
+        translated_line_count: int = 100,
         model_name: str = "gemini-2.5-pro",
         mode: str = "text",
         concurrent_requests: int = 2,

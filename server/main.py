@@ -33,7 +33,8 @@ logging.basicConfig(
 )
 
 # Global AccountsManager instance
-accounts_manager = AccountsManager(str(ACCOUNTS_DIR))
+_validate_accounts = os.getenv("VALIDATE_ACCOUNTS", "").lower() in ("1", "true", "yes")
+accounts_manager = AccountsManager(str(ACCOUNTS_DIR), validate=_validate_accounts)
 
 
 @asynccontextmanager

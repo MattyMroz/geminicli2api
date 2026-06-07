@@ -1,0 +1,230 @@
+POCZĄTEK PROMPTU POMOCNICZEGO:
+JEŚLI NAPOTKASZ COŚ TAKIEGO JAK ZNAK WODNY zawierający nazwę novelfire.net to nie tłumacz tego i nie przepisuj, pomijaj to:
+Na przykład pomiń to:
+
+– by ZEXOS specially for ligh \ tnove \ lwor \ ld ~ c \ o \ m.(NC:
+Thanks)
+
+ S ~ eaʀᴄh the Novel(F)ire.net website
+on Google to access chapters of novels early and in the highest quality.
+
+Sёarch * The novelF ~ ire.net
+website on Google to access chapters of novels early and in the highest
+quality.
+
+S ~ eaʀᴄh the novelFire.net website on Google to
+access chapters of novels early and in the highest quality.
+ Sёarch * The NovelFire.net website on Google to access chapters of
+novels early and in the highest quality.
+
+ lightn \ ovelc \
+ ave ~ c ` o \ m.
+
+ light \ novel \ world ~ c \ o \ m.
+
+light \ novel \ world ~ c \ o \ m.
+
+freewebnovel.com
+FreeWebNovel
+Free Web Novel
+Visit freewebnovel(dot)com for the best reading experience
+
+Usuń też reklamy i znaczniki z treści:
+- Linie złożone tylko z podkreślników: ____
+- Linie złożone tylko z gwiazdek: ****
+- "Read the latest chapters on..."
+
+Wszystkie takie sentencje lub zdania lub samo odniesienie do strony usuń i nie przepisuj.
+
+ZADANIE POBOCZNE: USUNIĘCIE ZNAKÓW WODNYCH Z TEKSTU TYPU novelfire.net, freewebnovel.com i podobnych i pochodnych.
+
+
+Tłumaczysz teraz: Hero of Darkness
+Polski tytuł: Bohater Ciemności
+
+
+=====================================================================
+=== WAŻNA UWAGA: TYTUŁ I NAGŁÓWKI TECHNICZNE ===
+=====================================================================
+
+Hero of Darkness ZAWSZE tłumacz jako Bohater Ciemności.
+
+UWAGA: jeśli na samym początku wejścia już znajduje się techniczna linia nagłówkowa,
+nie usuwaj jej i nie poprawiaj na siłę — zostaw ją tak, jak jest w źródle.
+
+ALE: wszędzie poza tym nagłówkiem używaj TYLKO formy: Bohater Ciemności.
+
+NIGDY NIE POMIJAJ TŁUMACZENIA CHAPTER I JEGO NUMERU NA ROZDZIAŁ I JEGO NUMER
+W ODPOWIEDNIEJ FORMIE LICZEBNIKÓW!
+Chapter X → Rozdział X (np.: Rozdział pierwszy, Rozdział dwunasty itd.)
+
+
+=====================================================================
+=== STYL I CHARAKTER SERII ===
+=====================================================================
+
+Hero of Darkness to angielska web novel autorstwa CrimsonWolfAuthor.
+Gatunek: dark fantasy, isekai, akcja, przygoda, antyhero progression.
+
+Fabuła: Elric — człowiek z traumatyczną przeszłością, odrzucony przez rodzinę
+i społeczeństwo — popełnia samobójstwo. Zostaje wskrzeszony przez Boga Ciemności
+i reinkarnuje w innym świecie jako Kahn. Od tej chwili buduje własną drużynę
+(Legię), zdobywa władzę i realizuje swoje cele wyłącznie na własnych warunkach.
+
+Klimat serii:
+- mroczny, cyniczny, pragmatyczny,
+- protagonista NIE jest rycerzem bez skazy — to wyrachowany antybohater,
+  który nie ufa nikomu i patrzy na świat przez pryzmat korzyści i zagrożeń,
+- budowanie potęgi krok po kroku: rekrutacja podwładnych, eksploracja lochów,
+  walki z bossami, sojusze i intrygi,
+- świat zamieszkują różne rasy: ludzie, elfy, demonkinowie, wilkołaki,
+  tygrysołaki, lwy (lionkin) i inne istoty.
+
+Narracja jest TRZECIOOSOBOWA, blisko perspektywy Kahna.
+Jego wewnętrzny głos jest:
+- zimny, pozbawiony sentymentów,
+- kalkulujący ryzyko i zysk,
+- sarkastyczny lub ironiczny, ale nigdy rozklejony emocjonalnie,
+- bezwzględny wobec wrogów, lojalny wobec podwładnych gdy zasłużą.
+
+Autor zaznacza wprost: brak haremu, romansu i fan-service.
+Nie dodawaj tych elementów od siebie.
+
+Tłumacz DOKŁADNIE — nie dodawaj przekleństw tam gdzie ich nie ma,
+zdania mają mieć takie samo wybrzmienie po przetłumaczeniu.
+Zachowaj formatowanie oryginału.
+Nigdy nie pisz cyrylicą.
+
+
+=====================================================================
+=== POSTACIE I ICH PŁEĆ ===
+=====================================================================
+
+Format: Imię Nazwisko (Płeć / Rola) — opis
+K = Kobieta, M = Mężczyzna
+
+
+---------------------------------------------------------------------
+--- GŁÓWNY PROTAGONISTA ---
+---------------------------------------------------------------------
+
+1. Kahn Salvatore / Elric (M) — główny protagonista. Reinkarnowany człowiek z Ziemi.
+   W poprzednim życiu: Elric. W nowym świecie: Kahn Salvatore.
+   Antybohater, scheming mastermind, nie ufa nikomu. Buduje Legię podwładnych.
+
+
+---------------------------------------------------------------------
+--- LEGIA KAHNA (podwładni) ---
+---------------------------------------------------------------------
+
+2. Omega (M) — wilkołak, pierwszy i najsilniejszy podwładny Kahna.
+3. Blackwall (M) — podwładny Kahna.
+4. Armin (M) — podwładny Kahna.
+5. Ronin (M) — podwładny Kahna.
+6. Ceril (M) — podwładny Kahna.
+7. Oliver (M) — podwładny Kahna.
+8. Jugram (M) — podwładny Kahna.
+
+
+---------------------------------------------------------------------
+--- RODZINA ELRICA (poprzednie życie na Ziemi) ---
+---------------------------------------------------------------------
+
+9. Jonas (M) — ojciec Elrica.
+10. Sarah (K) — matka Elrica.
+11. David (M) — brat Elrica.
+12. Synthia (K) — siostra Elrica.
+
+
+---------------------------------------------------------------------
+--- STOWARZYSZENIE POSZUKIWACZY PRZYGÓD ---
+---------------------------------------------------------------------
+
+13. Malcolm (M) — członek Stowarzyszenia Poszukiwaczy Przygód.
+14. Arkham (M) — prezydent Stowarzyszenia Poszukiwaczy Przygód.
+15. Solomon (M) — wiceprezydent Stowarzyszenia Poszukiwaczy Przygód.
+16. Stragabor Sigurd (M) — poszukiwacz przygód.
+
+
+---------------------------------------------------------------------
+--- WŁADZA I PRAWO ---
+---------------------------------------------------------------------
+
+17. Kapitan Nordak (M) — oficer straży / wojska.
+18. Porucznik Beatrice (K) — oficer straży / wojska.
+19. Stary sędzia (M) — lionkin (rasą człowiek-lew), sędzia.
+20. Straze Boltomir (M) — tygrysołak (człowiek-tygrys).
+
+
+---------------------------------------------------------------------
+--- POZOSTAŁE POSTACIE ---
+---------------------------------------------------------------------
+
+21. Jessica Artwinger (K)
+22. Markus (M) — były podwładny Jessiki.
+23. Jerome (M) — opiekun domu Kahna.
+24. Nikola (M) — stary kupiec.
+25. Elanev (M) — syn Nikoli.
+26. Deamos (M) — młody szlachcic.
+27. Damanael Olstrinvach (M) — elf, przestępca.
+28. Saan Jormain (M) — stary szlachcic.
+29. Vetroleux Arvitzen (M) — demonkin, Król Podziemia.
+
+
+---------------------------------------------------------------------
+--- BÓSTWA I BOSSY ---
+---------------------------------------------------------------------
+
+30. Bóg Ciemności (M) — bóstwo, które dało Kahnowi drugie życie.
+31. Rudra (M) — gigantyczny wąż (boss/stworzenie).
+32. Magmowy Smok (M) — boss podziemi.
+
+
+=====================================================================
+=== ZASADY TŁUMACZENIA ===
+=====================================================================
+
+1. GATUNEK: Dark fantasy / isekai / antyhero progression. Ton ma być mroczny,
+   pragmatyczny i zimny — nie bohaterski ani sentymentalny.
+
+2. NARRATOR: Perspektywa Kahna jest wyrachowana i cynyczna. Nie rozgrzewaj tonu,
+   nie dodawaj emocji których nie ma w oryginale.
+
+3. RASY: Świat jest wielorasowy. Nazwy ras tłumacz opisowo gdy mają sens po polsku:
+   - wolfkin → wilkołak / człowiek-wilk
+   - lionkin → lionkin (lub człowiek-lew jeśli kontekst wymaga)
+   - tigerkin → tygrysołak / człowiek-tygrys
+   - demonkin → demonkin (zostaw jeśli brak dobrego polskiego odpowiednika)
+   Jeśli autor używa konkretnej nazwy rasy jako własnej nazwy, zostaw ją.
+
+4. TYTUŁY I RANGI: Tłumacz na polski tam gdzie to naturalne:
+   - Captain → Kapitan
+   - Lieutenant → Porucznik
+   - President → Prezydent (Stowarzyszenia)
+   - Vice-President → Wiceprezydent
+   - Lord / Overlord → Pan / Władca Podziemia (zależnie od kontekstu)
+   - Adventurer's Association → Stowarzyszenie Poszukiwaczy Przygód
+
+5. KONSEKWENCJA: Raz przetłumaczone słowo = zawsze tak samo.
+   NIE zmieniaj "Bohater Ciemności" na "Heros Ciemności" w połowie tekstu.
+   NIE zmieniaj "Legia" na "Legion" lub "Armia" bez powodu.
+
+6. FORMATOWANIE: Zachowaj oryginalne formatowanie — akapity, dialogi, rozdziały.
+   Nie skracaj, nie łącz akapitów.
+
+7. IMIONA: Imiona postaci ZOSTAW bez tłumaczenia. Odmieniaj przez przypadki
+   tam gdzie to naturalnie brzmi po polsku:
+   - Kahn → Kahna (dop.), Kahnowi (cel.), z Kahnem
+   - Omega → Omegi, Omegi
+   - Arkham → Arkhama, Arkhamowi
+   Imiona angielskie odmieniaj jak rzeczowniki polskie, jeśli brzmi to naturalnie.
+
+8. BRAK PRZEKLEŃSTW: Nie dodawaj przekleństw tam gdzie ich nie ma w oryginale.
+   Jeśli postać (np. Kahn) jest ostra i bezwzględna, wyraź to przez ton zdania,
+   nie przez dodawanie wulgaryzmów których nie było.
+
+9. Chapter X → Rozdział X (liczebnik słownie tam gdzie to naturalne):
+   np. Chapter 1 → Rozdział pierwszy, Chapter 15 → Rozdział piętnasty.
+
+KONIEC PROMPTU POMOCNICZEGO.
+TERAZ PRZETŁUMACZ PONIŻSZE NAPISY NAPISY:

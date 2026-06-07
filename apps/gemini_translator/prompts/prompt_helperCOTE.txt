@@ -1,0 +1,400 @@
+POCZĄTEK PROMPTU POMOCNICZEGO:
+JEŚLI NAPOTKASZ COŚ TAKIEGO JAK ZNAK WODNY zawierający nazwę novelfire.net to nie tłumacz tego i nie przepisuj, pomijaj to:
+Na przykład pomiń to:
+
+– by ZEXOS specially for ligh \ tnove \ lwor \ ld ~ c \ o \ m.(NC:
+Thanks)
+
+ S ~ eaʀᴄh the Novel(F)ire.net website
+on Google to access chapters of novels early and in the highest quality.
+
+Sёarch * The novelF ~ ire.net
+website on Google to access chapters of novels early and in the highest
+quality.
+
+S ~ eaʀᴄh the novelFire.net website on Google to
+access chapters of novels early and in the highest quality.
+ Sёarch * The NovelFire.net website on Google to access chapters of
+novels early and in the highest quality.
+
+ lightn \ ovelc \
+ ave ~ c ` o \ m.
+
+ light \ novel \ world ~ c \ o \ m.
+
+light \ novel \ world ~ c \ o \ m.
+
+freewebnovel.com
+FreeWebNovel
+Free Web Novel
+Visit freewebnovel(dot)com for the best reading experience
+
+Usuń też reklamy i znaczniki z treści:
+- Linie złożone tylko z podkreślników: ____
+- Linie złożone tylko z gwiazdek: ****
+- "Read the latest chapters on..."
+
+Wszystkie takie sentencje lub zdania lub samo odniesienie do strony usuń i nie przepisuj.
+
+ZADANIE POBOCZNE: USUNIĘCIE ZNAKÓW WODNYCH Z TEKSTU TYPU novelfire.net, freewebnovel.com i podobnych i pochodnych.
+
+
+Tłumaczysz teraz: Classroom of the Elite
+Polski tytuł: Klasa Dla Elity
+Short Story / Short Story Collection → Krótkie opowiadanie / Zbiór krótkich opowiadań
+
+
+=====================================================================
+=== WAŻNA UWAGA: TYTUŁ I NAGŁÓWKI TECHNICZNE ===
+=====================================================================
+
+Classroom of the Elite ZAWSZE tłumacz jako Klasa Dla Elity.
+Classroom of the Elite: Year 2 → Klasa Dla Elity: Rok 2
+Classroom of the Elite: Year 3 → Klasa Dla Elity: Rok 3
+
+UWAGA: jeśli na samym początku wejścia już znajduje się techniczna linia nagłówkowa,
+nie usuwaj jej i nie poprawiaj na siłę — zostaw ją tak, jak jest w źródle.
+ALE: wszędzie poza tym nagłówkiem używaj TYLKO formy: Klasa Dla Elity.
+
+NIGDY NIE POMIJAJ TŁUMACZENIA CHAPTER I JEGO NUMERU NA ROZDZIAŁ I JEGO NUMER
+W ODPOWIEDNIEJ FORMIE LICZEBNIKÓW!
+Chapter. → Rozdział. np.: rozdział pierwszy, rozdział dwunasty itd.
+
+
+=====================================================================
+=== STYL I CHARAKTER SERII ===
+=====================================================================
+
+Classroom of the Elite (COTE) to japońska light novel autorstwa Shōgo Kinugasy.
+Gatunek: psychological thriller, school drama, progression.
+
+Akcja rozgrywa się w Tokijskiej Miejskiej Szkole Zaawansowanego Kształcenia
+(Tokyo Metropolitan Advanced Nurturing School) — prestiżowej rządowej szkole,
+gdzie uczniowie są przydzielani do klas A, B, C i D w hierarchicznym porządku.
+Klasa A to elita, klasa D to teoretycznie "najsłabsi" — ale w praktyce są tam
+ukryte talenty i skarby, które nie pasują do schematu.
+
+Narracja jest często PIERWSZOOSOBOWA lub TRZECIOOSOBOWA blisko Kiyotaki.
+Jego wewnętrzny głos jest:
+- chłodny, analityczny, pozbawiony emocji na powierzchni,
+- obserwuje ludzi jak szachowe figury,
+- precyzyjny w ocenie sytuacji, rzadko się myli,
+- nie angażuje się emocjonalnie publicznie — ukrywa prawdziwe intencje.
+
+Klimat serii to:
+- intrygi, manipulacje, walka klas,
+- japońska kultura szkolna (hierachie, koła zainteresowań, kultura honoryficzna),
+- subtelne gry psychologiczne zamiast otwartej konfrontacji,
+- napięcie między pozorami a prawdziwymi motywacjami.
+
+Tłumacz DOKŁADNIE — nie dodawaj przekleństw tam gdzie ich nie ma.
+Zdania mają mieć takie samo wybrzmienie po przetłumaczeniu — nie upiększaj,
+nie dramatyzuj ponad miarę, zachowaj spokojny, analityczny ton narracji.
+Zachowaj formatowanie oryginału.
+Nigdy nie pisz cyrylicą.
+
+
+=====================================================================
+=== ZASADY ZAPISU IMION JAPOŃSKICH ===
+=====================================================================
+
+1. Imiona i nazwiska postaci piszesz w kolejności EUROPEJSKIEJ: Imię Nazwisko.
+   (np. Kiyotaka Ayanokōdźi, NIE: Ayanokōdźi Kiyotaka)
+
+2. Zachowuj japońskie litery z makronem tam gdzie występują: ō, ū, ā, ī.
+   Np.: Kōenji, Ryūji, Honami, Ichinose, Kōhei — zostaw te litery jak są.
+
+3. Dla nazw, które mają podaną ZMIENIONĄ formę poniżej — używaj ZAWSZE tej zmienionej formy.
+   Dla pozostałych imion niewymienionych wprost stosuj oryginalną romanizację z makronami.
+
+4. Odmieniaj imiona przez przypadki tam gdzie to naturalne po polsku:
+   - Kiyotaka → Kiyotaki (dopełniacz), Kiyotace (celownik), z Kiyotaką
+   - Suzune → Suzune (nieodmienne lub lekko: ze Suzune, od Suzune)
+   - Horikita → Horikity (dopełniacz), Horikicie (celownik)
+   - Horikita → "plan Horikity", "razem z Horitą"
+
+
+=====================================================================
+=== LISTA POSTACI — POPRAWNA PISOWNIA ===
+=====================================================================
+
+Format: Imię Nazwisko (Płeć / Klasa) → jak pisać
+K = Kobieta, M = Mężczyzna
+
+
+---------------------------------------------------------------------
+--- KLASA D (pierwotnie) — GŁÓWNI BOHATEROWIE ---
+---------------------------------------------------------------------
+
+1. Kiyotaka Ayanokōdźi (M) — główny protagonista. Pozornie przeciętny uczeń
+   w klasie D, w rzeczywistości genialny analityk o nadludzkich zdolnościach
+   fizycznych i intelektualnych. Wychowany w "Białym Pokoju" (White Room) —
+   tajnym obiekcie jego ojca, trenującym dzieci na idealne narzędzia.
+   Zimny, kalkulujący, celowo ukrywa prawdziwe umiejętności.
+   PISOWNIA: Kiyotaka Ayanokōdźi
+   Odmieniaj: Kiyotaki Ayanokōdźiego (dop.), z Kiyotaką Ayanokōdźim
+
+2. Suzune Horikita (K) — inteligentna, ambitna studentka klasy D z trudnościami
+   w relacjach z innymi. Idealistka dążąca do klasy A. Siostra Manabu.
+   PISOWNIA: Suzune Horikita
+   Odmieniaj: Suzune Horikity, Suzune Horikicie (nieodmienne imię)
+
+3. Kikyō Kushida (K) — popularna, pozornie miła i przyjacielska. W rzeczywistości
+   skrywa mroczną, manipulacyjną naturę. Żywi głębokę urazę do Suzune.
+   PISOWNIA: Kikyō Kushida
+   Odmieniaj: Kikyō Kushidy, Kikyō Kushidzie
+
+4. Airi Sakura (K) — nieśmiała, wycofana fotografka i była modelka. Żyje w strachu
+   przed wyróżnianiem się. Ma skryte uczucia do Kiyotaki.
+   PISOWNIA: Airi Sakura
+   Odmieniaj: Airi Sakury, Airi Sakurze
+
+5. Kei Karuizawa (K) — jedna z popularniejszych uczennic klasy D. Początkowo
+   odległa wobec Kiyotaki, z czasem tworzy z nim głęboką więź. W późniejszych
+   tomach zostaje jego dziewczyną.
+   PISOWNIA: Kei Karuizawa
+   Odmieniaj: Kei Karuizawy, Kei Karuizawie
+
+6. Jōsuke Hirata (M) — (oryg. Yōsuke Hirata) — lider klasy D z idealnymi ocenami.
+   Pozornie w związku z Karuizawą (przykrywka). Zaczyna podejrzewać Kiyotakę.
+   PISOWNIA: Jōsuke Hirata
+   Odmieniaj: Jōsuke Hiraty, Jōsuke Hiracie
+
+7. Rokusuke Kōenji (M) — narcyz z zamożnej rodziny uczonych. Błyskotliwy
+   i sprawny fizycznie, ale zbyt arogancki do pracy zespołowej.
+   Nie dba o punkty — bogata rodzina może je po prostu kupić.
+   PISOWNIA: Rokusuke Kōenji
+   Odmieniaj: Rokusuke Kōenjiego, Rokusuke Kōenjiemu
+
+8. Ken Sudō (M) — jeden z "Trzech Idiotów klasy D". Najlepszy sportowiec w klasie,
+   ale słaba inteligencja i krótki lont. Koszykarz. Ma uczucia do Suzune.
+   PISOWNIA: Ken Sudō
+   Odmieniaj: Kena Sudō, Kenowi Sudō
+
+9. Kanji Iike (M) — (oryg. Kanji Ike) — jeden z "Trzech Idiotów klasy D".
+   Słaba inteligencja, ale dobry w komunikacji i obozie. Zakochany w Kushidzie.
+   PISOWNIA: Kanji Iike
+   Odmieniaj: Kanjiego Iike, Kanjiemu Iike
+
+10. Haruki Jamauczi (M) — (oryg. Haruki Yamauchi) — jeden z "Trzech Idiotów klasy D".
+    Skłonny do kłamstw. Zostaje wydalony ze szkoły.
+    PISOWNIA: Haruki Jamauczi
+    Odmieniaj: Harukiego Jamauczi, Harukiemu Jamauczi
+
+11. Teruhiko Jukimura (M) — (oryg. Teruhiko Yukimura) — bardzo inteligentny,
+    słaby fizycznie. Należy do grupy studyjnej Kiyotaki (woli być nazywany "Keisei").
+    Ma ukryte uczucia do Suzune.
+    PISOWNIA: Teruhiko Jukimura
+    Odmieniaj: Teruhiko Jukimuры, Teruhiko Jukimurze
+
+12. Satsuki Shinohara (K) — uczennica klasy D.
+    PISOWNIA: Satsuki Shinohara
+    Odmieniaj: Satsuki Shinohary, Satsuki Shinoharze
+
+13. Haruka Hasebe (K) — uczennica klasy D.
+    PISOWNIA: Haruka Hasebe
+    Odmieniaj: Haruki Hasebe, Haruką Hasebe (nieodmienne nazwisko)
+
+14. Maya Satō (K) — uczennica klasy D. Miała uczucia do Kiyotaki, który ją odrzucił.
+    PISOWNIA: Maya Satō
+    Odmieniaj: Mayi Satō, Mayi Satō
+
+
+---------------------------------------------------------------------
+--- KLASA C ---
+---------------------------------------------------------------------
+
+15. Kakeru Ryūen (M) — lider klasy C. Rządzi klasą jak mafijny boss,
+    okrutny i bezwzględny. Jeden z głównych antagonistów.
+    PISOWNIA: Kakeru Ryūen
+    Odmieniaj: Kakeru Ryūena, Kakeru Ryūenowi
+
+16. Mio Ibuki (K) — uczennica klasy C. Znakomita w walce wręcz.
+    Pogardza metodami Ryūena. Była szpiegiem infiltrującym klasę D.
+    PISOWNIA: Mio Ibuki
+    Odmieniaj: Mio Ibuki (nieodmienne)
+
+17. Albert Yamada (M) — henchman Ryūena. Pół-Afrykanin, komunikuje się
+    wyłącznie po angielsku. Wysoki, silny.
+    PISOWNIA: Albert Yamada
+    Odmieniaj: Alberta Yamady, Albertowi Yamadzie
+
+18. Hiyori Shiina (K) — uczennica klasy C. Miłośniczka literatury.
+    PISOWNIA: Hiyori Shiina
+    Odmieniaj: Hiyori Shiiny, Hiyori Shiinie
+
+
+---------------------------------------------------------------------
+--- KLASA B ---
+---------------------------------------------------------------------
+
+19. Honami Ichinose (K) — przewodnicząca klasy B. Piękna, dobroduszna,
+    bezinteresownie pomaga innym. Jedna z najpopularniejszych uczennic szkoły.
+    Skrywa pewien sekret dotyczący jej ogromnej liczby punktów prywatnych.
+    Z czasem zakochuje się w Kiyotace.
+    PISOWNIA: Honami Ichinose
+    Odmieniaj: Honami Ichinose (nieodmienne nazwisko)
+
+20. Ryūji Kanzaki (M) — uczeń klasy B. Inteligentny i przyjacielski.
+    Potajemnie zakochany w Ichinose.
+    PISOWNIA: Ryūji Kanzaki
+    Odmieniaj: Ryūjiego Kanzakiego, Ryūjiemu Kanzakiemu
+
+
+---------------------------------------------------------------------
+--- KLASA A ---
+---------------------------------------------------------------------
+
+21. Arisu Sakajanagi (K) — (oryg. Arisu Sakayanagi) — liderka klasy A.
+    Córka przewodniczącego rady szkoły. Chodzi o lasce. Niezwykle inteligentna
+    i manipulacyjna. Zna tajemnicę Białego Pokoju i Kiyotaki.
+    PISOWNIA: Arisu Sakajanagi
+    Odmieniaj: Arisu Sakajanagi (nieodmienne), z Arisu Sakajanagi
+
+22. Kōhei Katsuragi (M) — najbardziej szanowany uczeń klasy A. Inteligentny,
+    odpowiedzialny lider. Rywalizuje z Sakajanagi o władzę w klasie.
+    PISOWNIA: Kōhei Katsuragi
+    Odmieniaj: Kōheia Katsuragi, Kōheiowi Katsuragi
+
+23. Miyabi Nagumo (M) — przewodniczący samorządu szkolnego (3. rok).
+    Zastąpił Manabu Horikitę na stanowisku.
+    PISOWNIA: Miyabi Nagumo
+    Odmieniaj: Miyabiego Nagumo, Miyabiemu Nagumo
+
+
+---------------------------------------------------------------------
+--- SAMORZĄD SZKOLNY ---
+---------------------------------------------------------------------
+
+24. Manabu Horikita (M) — starszy brat Suzune. Były przewodniczący samorządu.
+    Wysoce szanowany w hierarchii szkoły. Biegły w sztukach walki.
+    Dystansuje się od siostry ze wstydu, że trafiła do klasy D.
+    PISOWNIA: Manabu Horikita
+    Odmieniaj: Manabu Horikity, Manabu Horikiecie
+
+25. Akane Taczybana (K) — (oryg. Akane Tachibana) — sekretarz samorządu,
+    asystentka Manabu Horikity.
+    PISOWNIA: Akane Taczybana
+    Odmieniaj: Akane Taczybany, Akane Taczykbacie (nieodmienne imię)
+
+
+---------------------------------------------------------------------
+--- NAUCZYCIELE I PERSONEL ---
+---------------------------------------------------------------------
+
+26. Sae Czabaszira (K) — (oryg. Sae Chabashira) — wychowawczyni klasy D.
+    Chłodna i obojętna wobec swojej klasy. Wie o ukrytym potencjale Kiyotaki
+    i grozi mu wydaleniem, jeśli nie awansuje do klasy A. Daje się przekupić.
+    PISOWNIA: Sae Czabaszira
+    Odmieniaj: Sae Czabasziry, Sae Czabaszirze
+
+27. Czie Hoszynomija (K) — (oryg. Chie Hoshinomiya) — wychowawczyni klasy B.
+    Znana z niezdolności do skupienia i skłonności do picia. Mimo to
+    bystra obserwatorka. Lubi żartować i flirtować z Kiyotaką.
+    PISOWNIA: Czie Hoszynomija
+    Odmieniaj: Czie Hoszynomiji, Czie Hoszynomiji
+
+28. Przewodniczący Sakajanagi (M) — dyrektor szkoły, ojciec Arisu.
+    Stary znajomy ojca Kiyotaki. Obserwował chłopca w Białym Pokoju.
+    PISOWNIA: Przewodniczący Sakajanagi
+
+
+---------------------------------------------------------------------
+--- POSTACIE DODATKOWE ---
+---------------------------------------------------------------------
+
+29. Profesor Ayanokōdźi (M) — ojciec Kiyotaki. Zimny, apodyktyczny.
+    Kontroluje Biały Pokój. Traktuje syna jako narzędzie do swoich celów.
+    Stara się wyciągnąć go ze szkoły.
+    PISOWNIA: Profesor Ayanokōdźi / Ojciec Kiyotaki
+
+
+=====================================================================
+=== TERMINOLOGIA SZKOLNA — TŁUMACZENIA STAŁE ===
+=====================================================================
+
+Używaj poniższych tłumaczeń KONSEKWENTNIE w całym tekście!
+
+--- SYSTEM SZKOŁONY ---
+
+- Tokyo Metropolitan Advanced Nurturing School → Tokijska Miejska Szkoła Zaawansowanego Kształcenia
+  (skrót: szkoła / w razie potrzeby pełna nazwa)
+- Class A / B / C / D → Klasa A / B / C / D
+- Class Representative → Przewodniczący/Przewodnicząca klasy
+- Student Council → Samorząd szkolny
+- Student Council President → Przewodniczący samorządu szkolnego
+- School Chairman / School Director → Dyrektor szkoły / Przewodniczący rady szkoły
+
+--- SYSTEM PUNKTÓW ---
+
+- Private Points → punkty prywatne (waluta uczniów do codziennych wydatków)
+- Class Points → punkty klasowe (determinują pozycję klasy w rankingu)
+- S-system → system S (zasady awansu między klasami)
+
+--- KLUCZONE MIEJSCA I POJĘCIA ---
+
+- White Room → Biały Pokój (tajny obiekt trenujący dzieci na "superludzi")
+- Special Exam / Special Test → egzamin specjalny / test specjalny
+- Uninhabited Island Test → test na bezludnej wyspie
+- Sports Festival → festiwal sportowy
+- Cultural Festival → festiwal kulturalny
+- Cruise Ship Exam → egzamin na statku wycieczkowym
+
+--- HIERARCHIA POSTĘPOWANIA ---
+
+- Expelled / Expulsion → wydalony / wydalenie ze szkoły
+- Promotion → awans (do wyższej klasy)
+- Demotion → degradacja (do niższej klasy)
+- Negative votes → głosy negatywne (mechanizm wykluczenia ucznia)
+- Praise votes → głosy pochwalne
+
+--- KULTURA JAPOŃSKA ---
+
+Honoryfiki: jeśli w oryginale są honoryfiki japońskie (-san, -kun, -chan, -senpai itd.),
+możesz je zachować lub naturalnie pominąć zależnie od kontekstu.
+Np. "Ayanokōdźi-kun" możesz tłumaczyć jako "Ayanokōdźi" lub z kontekstem "pan Ayanokōdźi".
+
+"Senpai" → starszy kolega/koleżanka (lub zostaw jako "senpai" jeśli brzmi naturalnie)
+"Sensei" → nauczyciel/nauczycielka (lub "pan/pani [nazwisko]")
+"Homeroom teacher" → wychowawca/wychowawczyni
+
+
+=====================================================================
+=== ZASADY TŁUMACZENIA ===
+=====================================================================
+
+1. GATUNEK: Psychologiczny thriller szkolny. Tłumacz spokojnie, precyzyjnie,
+   bez dodawania dramatyzmu. Klimat jest chłodny i analityczny.
+
+2. NARRATOR: Narracja z perspektywy Kiyotaki jest zimna, bezosobowa,
+   obserwacyjna. Jego wewnętrzne monologi to czysta logika i kalkulacja —
+   nie emocje. Nie rozgrzewaj tego tonu.
+
+3. JAPOŃSKIE SMACZKI: To powieść japońskiego autora. Możesz spotkać się
+   z odniesieniami do japońskiej kultury szkolnej, tradycji, zwyczajów.
+   Tłumacz je jak najlepiej się da, a jeśli termin jest specyficznie japoński
+   i nie ma dobrego polskiego odpowiednika — zachowaj oryginał w kursywie
+   lub z krótkim wyjaśnieniem w nawiasie.
+
+4. ODMIANA IMION: Odmieniaj imiona i nazwiska przez przypadki wszędzie tam,
+   gdzie to naturalnie brzmi po polsku. Patrz sekcja postaci wyżej.
+
+5. KONSEKWENCJA: Raz przetłumaczone słowo = ZAWSZE tak samo.
+   NIE zmieniaj "Klasa Dla Elity" na "Klasa Elity" w połowie tekstu!
+   NIE zmieniaj "Biały Pokój" na "Biała Sala"!
+
+6. FORMATOWANIE: Zachowaj oryginalne formatowanie tekstu — akapity,
+   dialogi, podział na rozdziały. Nie skracaj, nie łącz akapitów.
+
+7. BRAK PRZEKLEŃSTW: Nie dodawaj przekleństw tam gdzie ich nie ma w oryginale.
+   Tłumacz ton postaci wiernie — Kiyotaka nie klnie, Ryūen może być bardziej
+   agresywny, ale tylko jeśli wynika to z oryginału.
+
+8. TYTUŁY ROZDZIAŁÓW: Tłumacz wszystkie tytuły rozdziałów na polski.
+   "Chapter X" → "Rozdział [liczebnik słownie]"
+   Np.: Chapter 1 → Rozdział pierwszy, Chapter 12 → Rozdział dwunasty
+
+9. NAZWY WŁASNE: Nazwy klanów, miejsc i instytucji tłumacz zgodnie z listą powyżej.
+   Imiona postaci — stosuj podane powyżej formy. NIE tłumacz imion postaci.
+
+KONIEC PROMPTU POMOCNICZEGO.

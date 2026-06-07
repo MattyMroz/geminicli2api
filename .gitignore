@@ -48,6 +48,9 @@ workspace/temp/*
 *.swp
 *.swo
 *~
+
+# ── GitHub Copilot customizations (personal) ──────────────
+.github/
 .DS_Store
 Thumbs.db
 desktop.ini

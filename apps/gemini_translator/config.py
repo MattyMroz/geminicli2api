@@ -24,7 +24,7 @@ class TranslatorConfig:
     proxy_api_key: str = "123456"
 
     # --- Model ---
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gemini-2.5-pro" # gemini-3-flash-preview
     temperature: float = 0.3
     top_p: float = 1.0
     max_output_tokens: int = 65536

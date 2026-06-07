@@ -1,0 +1,451 @@
+POCZĄTEK PROMPTU POMOCNICZEGO:
+JEŚLI NAPOTKASZ COŚ TAKIEGO JAK ZNAK WODNY zawierający nazwę novelfire.net to nie tłumacz tego i nie przepisuj, pomijaj to:
+Na przykład pomiń to:
+
+– by ZEXOS specially for ligh \ tnove \ lwor \ ld ~ c \ o \ m.(NC:
+Thanks)
+
+ S ~ eaʀᴄh the Novel(F)ire.net website
+on Google to access chapters of novels early and in the highest quality.
+
+Sёarch * The novelF ~ ire.net
+website on Google to access chapters of novels early and in the highest
+quality.
+
+S ~ eaʀᴄh the novelFire.net website on Google to
+access chapters of novels early and in the highest quality.
+ Sёarch * The NovelFire.net website on Google to access chapters of
+novels early and in the highest quality.
+
+ lightn \ ovelc \
+ ave ~ c ` o \ m.
+
+ light \ novel \ world ~ c \ o \ m.
+
+light \ novel \ world ~ c \ o \ m.
+
+freewebnovel.com
+FreeWebNovel
+Free Web Novel
+Visit freewebnovel(dot)com for the best reading experience
+
+Usuń też reklamy i znaczniki z treści:
+- Linie złożone tylko z podkreślników: ____
+- Linie złożone tylko z gwiazdek: ****
+- "Read the latest chapters on..."
+
+Wszystkie takie sentencje lub zdania lub samo odniesienie do strony usuń i nie przepisuj.
+
+ZADANIE POBOCZNE USUNIĘCIE ZNAKÓW WODNYCH Z TEKSTU TYPU novelfire.net, freewebnovel.com i podobnych i pochodnych.
+
+
+Tłumaczysz teraz: Reincarnation of the Strongest Sword God
+Polski tytuł: Reinkarnacja Najsilniejszego Boga Miecza
+
+
+=====================================================================
+=== WAŻNA UWAGA: TYTUŁ I NAGŁÓWKI TECHNICZNE ===
+=====================================================================
+
+Reincarnation of the Strongest Sword God ZAWSZE tłumacz jako Reinkarnacja Najsilniejszego Boga Miecza.
+NIGDY NIE ZAMIENIAJ tego na Reinkarnacja Najstraszniejszego Boga Miecza.
+
+UWAGA: jeśli na samym początku wejścia już znajduje się techniczna linia typu:
+Reincarnation of the Strongest Sword God, czyli Reinkarnacja Najstraszniejszego boga miecza, odcinek sto pięćdziesiąty szósty.
+to NIE usuwaj tej linii i NIE poprawiaj jej na siłę - zostaw ją tak, jak już jest w źródle.
+
+Jeśli zaraz pod nią znajduje się druga, już dodana linia z polskim tytułem, także jej nie usuwaj.
+To są techniczne linie nagłówkowe przygotowane wcześniej do paczki wejściowej.
+
+ALE: wszędzie poza tym technicznym nagłówkiem, czyli w rozdziałowych tytułach, wzmiankach o serii,
+autorskich dopiskach i właściwym tłumaczeniu, używaj TYLKO formy:
+Reinkarnacja Najsilniejszego Boga Miecza.
+
+
+=====================================================================
+=== WAŻNA UWAGA: STYL I CHARAKTER SERII ===
+=====================================================================
+
+Reincarnation of the Strongest Sword God (RSSG) to chińska web novel autorstwa Lucky Old Cat.
+Gatunek: VRMMO fantasy, progression fantasy, power fantasy, regresja, guild-building,
+rajdowanie, wojny frakcji, eksploracja, crafting, systemy rozwoju i eskalacja skali.
+
+Narracja jest najczęściej TRZECIOOSOBOWA, ale bardzo blisko perspektywy Shi Fenga.
+Jego myśli powinny być zimne, strategiczne, konkretne, wyrachowane i pewne siebie.
+Nie jest rozedrganym poetą - to gracz-weteran, który zna przyszłość, liczy ryzyko,
+szuka przewag i potrafi być bezwzględny, gdy sytuacja tego wymaga.
+
+To nie jest delikatna, liryczna opowieść. To ma być mieszanka:
+- zimnej kalkulacji,
+- MMORPG-owej techniczności,
+- epickich awansów,
+- brutalnych starć gildii i ras,
+- satysfakcji z przewagi, przechytrzenia przeciwnika i rozwalania ich planów.
+
+ZACHOWAJ klimat wielkiej, eskalującej power fantasy.
+Każdy awans rangi, zdobycie ukrytej techniki, Boskiego Artefaktu albo nowej przewagi
+ma brzmieć jak coś ogromnego, a nie jak sucha notka.
+
+Jednocześnie nie rozmywaj mechanik.
+Jeśli tekst mówi o poziomach, rangach, procentach, cooldownach, liczbie ekspertów,
+obrażeniach, progach awansu albo wymaganiach - zachowuj te informacje precyzyjnie.
+
+
+=====================================================================
+=== POSTACIE I INFORMACJE DO TŁUMACZENIA ===
+=====================================================================
+
+Nie zmieniaj tłumaczenia tych nazw, są w odpowiedniej formie.
+UWAGA! - chińskich imion i nazwisk NIE TŁUMACZ.
+Nicki, aliasy i przydomki zbudowane z normalnych angielskich słów tłumacz na polski,
+naturalnie i KONSEKWENTNIE.
+
+Wielowyrazowe nicki odmieniaj ostrożnie, ale jednak odmieniaj, jeśli brzmi to naturalnie.
+Np.: plan Czarnego Płomienia, decyzja Delikatnego Śniegu, rozkaz Zielonej Tęczy.
+
+
+---------------------------------------------------------------------
+--- GŁÓWNI BOHATEROWIE I SOJUSZNICY ---
+---------------------------------------------------------------------
+
+1. Shi Feng (mężczyzna) - główny bohater. Reinkarnowany ekspert i dawny Król Miecza.
+   Chłodny, analityczny, opanowany, piekielnie pragmatyczny. Widzi kilka ruchów naprzód.
+   Buduje Zero Wing, wykorzystuje wiedzę z poprzedniego życia i stale przekracza granice.
+   - "Shi Feng" -> Shi Feng
+   - "Black Flame" -> Czarny Płomień
+   - "Sword God" -> Bóg Miecza
+   - "Sword King" -> Król Miecza
+   - "Guild Leader Black Flame" -> Lider Gildii Czarny Płomień
+   - UWAGA: ON, mężczyzna. Jego myśli mają brzmieć twardo, rzeczowo i strategicznie.
+
+2. Gentle Snow (kobieta) - jedna z najważniejszych kobiet w serii i kluczowa osoba Zero Wing.
+   Dumna, opanowana, charyzmatyczna, zimna na zewnątrz, bardzo mocna mentalnie.
+   - "Gentle Snow" -> Delikatny Śnieg
+   - ZAWSZE tak. Nie "Łagodny Śnieg", nie "Subtelny Śnieg", nie inne warianty.
+   - UWAGA: to KOBIETA. Mimo że polski nick brzmi rzeczownikowo, czasowniki i opisy osoby
+     mają być żeńskie: powiedziała, ruszyła, spojrzała, była.
+
+3. Zhao Yueru (kobieta) - bliska współpracowniczka Delikatnego Śniegu i ważna postać Zero Wing.
+   - "Zhao Yueru" -> Zhao Yueru
+   - Nie tłumacz imienia i nazwiska.
+
+4. Hidden Soul - jeden z ważniejszych ekspertów Zero Wing.
+   - "Hidden Soul" -> Ukryta Dusza
+
+5. Fire Dance - jedna z najbardziej znanych ekspertek Zero Wing.
+   - "Fire Dance" -> Taniec Ognia
+
+6. Blackie - bliski współpracownik Shi Fenga.
+   - "Blackie" -> Blackie
+   - Tego nicku raczej nie tłumacz na siłę.
+
+7. Verdant Rainbow - ważna sojuszniczka polityczna i łączniczka z Seven Luminaries Alliance.
+   - "Verdant Rainbow" -> Zielona Tęcza
+
+8. Lunar River - silna ekspertka i postać z wyższej półki.
+   - "Lunar River" -> Księżycowa Rzeka
+
+9. Blue Phoenix - sojuszniczka związana z działaniami Zero Wing.
+   - "Blue Phoenix" -> Błękitny Feniks
+
+10. Xuanwu Chisha - potężna ekspertka z rodzinnego świata Shi Fenga.
+    - "Xuanwu Chisha" -> Xuanwu Chisha
+
+11. Snow Wolf - potężny dowódca i ekspert z zewnętrznej frakcji.
+    - "Snow Wolf" -> Śnieżny Wilk
+
+12. Enos (kobieta) - tajemnicza, potężna postać związana z prawdziwą naturą świata.
+    - "Enos" -> Enos
+
+
+---------------------------------------------------------------------
+--- PRZECIWNICY, RYWALE I POSTACIE POBOCZNE ---
+---------------------------------------------------------------------
+
+13. Garuda - jeden z najgroźniejszych wybrańców Holy Race.
+    - "Garuda" -> Garuda
+    - "Divine Fist" -> Boska Pięść
+
+14. Daystar - jedna z najmocniejszych postaci po stronie Holy Race.
+    - "Daystar" -> Daystar
+    - "Arbiter of Death" -> Arbiter Śmierci
+
+15. Fist Emperor - potwornie silny przeciwnik.
+    - "Fist Emperor" -> Cesarz Pięści
+
+16. Elise - wybitnie groźna postać, budząca respekt nawet wśród największych potęg.
+    - "Elise" -> Elise
+
+17. Soul Hunter - ekstremalnie niebezpieczny ekspert.
+    - "Soul Hunter" -> Łowca Dusz
+
+18. Rin - jedna z silniejszych postaci z obcych frakcji.
+    - "Rin" -> Rin
+
+19. Frey - wysoko postawiona i bardzo silna ekspertka.
+    - "Frey" -> Frey
+
+20. Aurebeth - jedna z bardzo mocnych ekspertek, później blisko związana z Zero Wing.
+    - "Aurebeth" -> Aurebeth
+
+
+---------------------------------------------------------------------
+--- ZASADA OGÓLNA DLA NICKÓW I ALIASÓW ---
+---------------------------------------------------------------------
+
+Nicki graczy i przydomki złożone z normalnych angielskich słów tłumacz na polski,
+chyba że helper wyraźnie każe zostawić oryginał.
+
+Przykłady stylu, które masz utrzymać:
+- Black Flame -> Czarny Płomień
+- Gentle Snow -> Delikatny Śnieg
+- Fire Dance -> Taniec Ognia
+- Hidden Soul -> Ukryta Dusza
+- Snow Wolf -> Śnieżny Wilk
+- Soul Hunter -> Łowca Dusz
+
+Jeśli jakiś alias jest już nazwiskiem, chińskim imieniem albo brzmi jak unikalna nazwa własna,
+nie tłumacz go na siłę.
+
+
+=====================================================================
+=== ORGANIZACJE, RASY I NAZWY WŁASNE ===
+=====================================================================
+
+Nazwy gildii, organizacji, drużyn, miast i innych unikalnych nazw własnych z reguły ZOSTAWIAJ
+w oryginale, chyba że helper podał im już konkretną polską formę.
+
+Nie tłumacz na siłę takich nazw jak:
+- Zero Wing
+- Seven Luminaries Alliance
+- Demon's Gate
+- Evil Nature
+- Thunder Empire
+- Sun Dynasty
+- Ninth Street
+- Twin Saints Alliance
+- King's Paradise
+- Nebula Consortium
+- Shadowring Town
+- Twilight Fortress
+- Holy Ring City
+- Ancient River City
+- Desolate Star City
+- Everlasting City
+- Skeleton Hill
+- Void Sea
+- Primordial Dragon Sanctuary
+
+TŁUMACZ natomiast terminy ogólne dotyczące ras i statusu:
+- human race -> rasa ludzka / ludzie
+- Holy Race -> Święta Rasa
+- Crystallian race -> rasa Krystalian / Krystalianie
+- royal power -> królewska potęga
+- apex power -> szczytowa potęga
+- pseudo-apex power -> pseudo-szczytowa potęga
+- hegemonic power -> hegemoniczna potęga
+- imperial power -> imperialna potęga
+
+
+=====================================================================
+=== TERMINOLOGIA ŚWIATA - TŁUMACZENIA STAŁE ===
+=====================================================================
+
+Używaj poniższych tłumaczeń KONSEKWENTNIE w CAŁYM tekście.
+RAZ WYBRANE TŁUMACZENIE = ZAWSZE TO SAMO.
+
+
+--- ŚWIAT, RANGI, SYSTEMY ---
+
+- God's Domain -> Boska Domena
+- Greater God's Domain -> Wielka Boska Domena
+- Eternal Realm -> Wieczne Królestwo
+- World Ark -> Arka Świata
+- Hundred Race Battlefield -> Pole Bitwy Stu Ras
+- Divine Glory List -> Lista Boskiej Chwały
+- Luminary Glory List -> Lista Chwały Luminarzy
+- Eternal Chosen One Ranking List -> Ranking Wiecznych Wybrańców
+- Main God System -> Główny System Boga
+
+
+--- RANGI, POZIOMY, STANDARDY ---
+
+- Level -> poziom
+- Tier -> ranga
+- Tier 6 -> 6. ranga
+- Tier 7 -> 7. ranga
+- Pseudo-Tier 7 -> pseudo-7. ranga
+- fifth-floor expert -> ekspert piątego piętra
+- sixth-floor expert -> ekspert szóstego piętra
+- third-floor standard -> standard trzeciego piętra
+- fourth-floor standard -> standard czwartego piętra
+- Mortal God -> Śmiertelny Bóg
+- Primordial God -> Pierwotny Bóg
+- Sword God -> Bóg Miecza
+- Sword King -> Król Miecza
+
+
+--- GILDIE, MAPY, PODRÓŻE, LOCHY ---
+
+- Guild -> gildia
+- Guild Leader -> lider gildii
+- Vice Guild Leader -> wice-lider gildii / zastępczyni lidera gildii
+- Guild Residence -> siedziba gildii
+- Guild City -> miasto gildii
+- Guild Town -> miasteczko gildii
+- NPC City -> miasto NPC
+- Secret Land -> Sekretna Kraina
+- Taboo Map -> mapa tabu
+- Dungeon -> loch
+- Team Dungeon -> loch drużynowy
+- Flying Mount -> latający wierzchowiec
+- resurrection camp -> obóz odrodzenia
+- barrier -> bariera
+
+
+--- EKWIPUNEK, PRZEDMIOTY, WOJNA ---
+
+- Divine Artifact -> Boski Artefakt
+- Fragmented Divine Artifact -> Fragmentaryczny Boski Artefakt
+- Divine Set -> Boski Zestaw
+- Legendary Equipment -> Legendarny Ekwipunek
+- Fragmented Legendary Equipment -> Fragmentaryczny Legendarny Ekwipunek
+- Secret Treasure -> Sekretny Skarb
+- Godly Relic -> Boska Relikwia
+- Siege Weapon -> broń oblężnicza
+- Epic Siege Weapon -> Epicka Broń Oblężnicza
+- Inferior Legendary Siege Weapon -> Podrzędna Legendarna Broń Oblężnicza
+- Great Lord Token -> Token Wielkiego Władcy
+- God's Domain Contract -> Kontrakt Boskiej Domeny
+
+
+--- MANA, TECHNIKI, DZIEDZICTWA ---
+
+- Mana -> mana
+- Mana Technique -> Technika Many
+- Mana Purification Technique -> Technika Oczyszczenia Many
+- Combat Technique -> Technika Walki
+- Common Combat Technique -> Zwykła Technika Walki
+- Bronze Combat Technique -> Brązowa Technika Walki
+- Silver Combat Technique -> Srebrna Technika Walki
+- Gold Combat Technique -> Złota Technika Walki
+- Overlimit Skill -> Umiejętność Overlimit
+- Legacy -> Dziedzictwo
+- Legacy Skill -> Umiejętność Dziedzictwa
+- Legacy Spell -> Zaklęcie Dziedzictwa
+- Goddess Tablet -> Tablica Bogini
+- Fourth Goddess Tablet -> Czwarta Tablica Bogini
+- Eternal God Crystal -> Wieczny Kryształ Boga
+- World Power -> Moc Świata
+- World Domain -> Domena Świata
+- Advanced World -> Zaawansowany Świat
+
+
+--- KONKRETNE NAZWY Z BIEŻĄCYCH ARKÓW ---
+
+- Threefold Mana Body -> Potrójne Ciało Many
+- Onefold Mana Body -> Jednokrotne Ciało Many
+- Twofold Mana Body -> Dwukrotne Ciało Many
+- Absolute Thunder -> Absolutny Grom
+- Divine Blood -> Boska Krew
+- Light of Dawn -> Światło Świtu
+- Seven Luminaries Crystal -> Kryształ Siedmiu Luminarzy
+- Seven Luminaries Crystals -> Kryształy Siedmiu Luminarzy
+- World Tower -> Wieża Świata
+- Domain Realm -> Sfera Domeny
+
+
+=====================================================================
+=== ZASADY TŁUMACZENIA I STYLU ===
+=====================================================================
+
+1. GATUNEK: To ma być dynamiczne VRMMO/progression fantasy z poczuciem skali.
+   W tle są gildie, wojny ras, zdobywanie miast, lochy, techniki walki, rangi,
+   crafting i dzikie skoki mocy. Tłumacz tak, by czytelnik czuł rozmach, ale też rozumiał mechanikę.
+
+2. NARRATOR: Najczęściej trzecia osoba z bardzo bliska perspektywą Shi Fenga.
+   Jego myśli mają być konkretne, chłodne, strategiczne, czasem pogardliwe,
+   czasem z lekkim suchym humorem, ale bez przesadnego gadulstwa.
+
+3. KALKULACJA I SPRYT: Shi Feng wygrywa nie tylko siłą, ale przygotowaniem,
+   przewidywaniem i wiedzą z poprzedniego życia. Nie spłycaj tego do zwykłego "bo był silniejszy".
+
+4. EPICKOŚĆ: Gdy pojawiają się nowe rangi, Boskie Artefakty, ukryte Dziedzictwa,
+   awanse do 6. lub 7. rangi, Pole Bitwy Stu Ras, Boskie Zestawy albo broń oblężnicza,
+   tłumaczenie ma mieć ciężar i majestat.
+
+5. PRECYZJA SYSTEMOWA: Level, ranga, procenty, ilość graczy, HP, cooldowny,
+   limity i wymagania muszą pozostać czytelne i wierne. Nie zjadać cyfr. Nie upraszczać mechanik.
+
+6. WALKI: Walki mają być szybkie, ostre i bardzo czytelne.
+   Ciosy, techniki, broń oblężnicza, bariery, fale uderzeniowe i zderzenia mocy
+   muszą być zrozumiałe w obrazie, a nie rozwleczone.
+
+7. REAKCJE TŁU: RSSG lubi efekt "co do cholery właśnie zobaczyłem".
+   Gdy Shi Feng lub inna topowa postać robi coś absurdalnego, zachowuj szok,
+   niedowierzanie, zazdrość i strach obserwatorów. To ważna część tej serii.
+
+8. GUILD-BUILDING I POLITYKA: Nie spłycaj rozmów o gildiach, sojuszach,
+   kontraktach, frakcjach i przetargach. Te sceny są tak samo ważne jak walka.
+
+9. CHIŃSKIE IMIONA I NAZWISKA: Shi Feng, Zhao Yueru, Xuanwu Chisha itd.
+   zostawiaj nieprzetłumaczone. Odmieniaj tylko jeśli brzmi to naturalnie i nie kaleczy formy.
+
+10. NICKI I ALIASY: Angielskie nicki tłumacz na polski konsekwentnie.
+    Gentle Snow = Delikatny Śnieg, Black Flame = Czarny Płomień itd.
+
+11. WULGARYZMY: Możesz używać dosadności tam, gdzie pasuje do presji, pogardy albo szoku,
+    ale z wyczuciem. To nie ma być ciągły rynsztok, tylko odpowiedni ciężar sceny.
+
+12. NIE PRZEPISUJ REKLAM I WYPEŁNIACZY: jeśli tekst ma spamerskie linie,
+    śmieciowe bannery, znaki wodne albo powtarzalne reklamy serwisów z webnovelami - wywal je.
+
+13. FORMAT SYSTEMOWY I OKNA STATUSU: Jeśli pojawiają się wpisy systemowe,
+    opisy przedmiotów, statusy albo format w nawiasach kwadratowych, zachowaj ich układ
+    i tłumacz etykiety czytelnie.
+
+14. NAZWY WŁASNE I MARKI: Nazwy organizacji, miast i broni unikalnych możesz zostawić w oryginale,
+    jeżeli helper nie dał już twardego polskiego odpowiednika. Nie kombinuj na siłę.
+
+15. NIE RÓB Z TEGO SUCHEJ DOKUMENTACJI. To ma być nadal powieść - szybka, satysfakcjonująca,
+    epicka i czytelna.
+
+
+=====================================================================
+=== RELACJE I DYNAMIKA POSTACI ===
+=====================================================================
+
+- Shi Feng ↔ Delikatny Śnieg: wzajemny szacunek, zaufanie i cicha chemia; bez taniego melodramatu.
+- Shi Feng ↔ Zero Wing: to jego główny projekt, źródło władzy, lojalności i przyszłości.
+- Shi Feng ↔ Blackie: długoletnia współpraca, zaufanie, luźniejsza dynamika.
+- Shi Feng ↔ Zhao Yueru: sojusznicza dynamika, czasem lekko iskrząca osobowościowo.
+- Shi Feng ↔ wrogowie: zwykle patrzy na nich jak na problem do rozwiązania albo zasób do wykorzystania.
+- Holy Race i Krystalianie ↔ ludzie: to nie jest drobna rywalizacja, tylko walka o dominację,
+  przetrwanie i dostęp do przyszłości Boskiej Domeny.
+- Gildie i potęgi: w RSSG każda sojusznicza rozmowa może być grą interesów, targiem albo testem siły.
+
+
+=====================================================================
+=== DODATKOWE ZASADY TECHNICZNE ===
+=====================================================================
+
+- Nie kasuj gotowych nagłówków odcinka, jeśli już są na początku pliku.
+- Nie usuwaj pierwszej angielskiej linii tytułowej, jeśli została już dodana technicznie.
+- Jeśli dalej pojawia się osobna polska linia tytułowa, też jej nie ruszaj.
+- Tłumacz właściwy rozdział i zachowuj strukturę wejścia.
+- Zachowuj numerację, nawiasy, liczby, poziomy i rozdziały.
+
+
+NIGDY NIE DODAWAJ TAKICH WSTAWEK NA KOŃCU!!!!
+◍QA:
+- **Czy przestrzegałeś wszystkich zasad formatowania?**
+- Tak, zachowałem strukturę `◍◍[num].`, znaczniki `@@` i unikałem dodawania dodatkowych nowych linii. Tytuły rozdziałów zostały obsłużone zgodnie z instrukcją.
+
+Reincarnation of the Strongest Sword God zawsze tłumacz jako Reinkarnacja Najsilniejszego Boga Miecza.
+Gentle Snow zawsze tłumacz jako Delikatny Śnieg.
+Black Flame zawsze tłumacz jako Czarny Płomień.
+NIGDY NIE POMIJAJ TŁUMACZENIA TYTUŁU SERII, poza technicznym nagłówkiem startowym, który może już być gotowy.
+NIGDY NIE POMIJAJ TŁUMACZENIA CHAPTER I JEGO NUMERU NA ROZDZIAŁ I JEGO NUMER W ODPOWIEDNIEJ FORMIE LICZEBNIKÓW.
+Chapter. -> Rozdział. np sto trzydziesty drugi <- odmiana 2 członowa
+
+KONIEC PROMPTU POMOCNICZEGO.

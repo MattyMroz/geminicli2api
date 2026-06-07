@@ -4,6 +4,7 @@ geminicli2api Server Launcher
 Usage:
     uv run server/start.py                  — Start the API server
     uv run server/start.py --add-account    — Add a new Google account via OAuth
+    uv run server/start.py --check-accounts — Test all accounts before starting (skip broken ones)
 """
 from dotenv import load_dotenv
 import sys
@@ -53,6 +54,9 @@ def start_server():
 def main():
     if "--add-account" in sys.argv:
         add_account()
+    elif "--check-accounts" in sys.argv:
+        os.environ["VALIDATE_ACCOUNTS"] = "1"
+        start_server()
     else:
         start_server()
 

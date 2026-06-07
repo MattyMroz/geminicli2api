@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 class AccountsManager:
     """Manages multiple Google OAuth accounts with round-robin rotation."""
 
-    def __init__(self, accounts_dir: Optional[str] = None):
+    def __init__(self, accounts_dir: Optional[str] = None, validate: bool = False):
         self._accounts_dir = Path(
             accounts_dir) if accounts_dir else ACCOUNTS_DIR
         # [{"file": Path, "creds": Credentials, "project_id": str|None}]
@@ -41,6 +41,7 @@ class AccountsManager:
         self._current_index: int = 0
         self._lock = asyncio.Lock()
         self._thread_lock = threading.Lock()  # Thread-safe lock for sync rotation
+        self._validate = validate
         self._load_accounts()
 
     # --- Public API ---
@@ -67,7 +68,8 @@ class AccountsManager:
             self._current_index = (
                 self._current_index + 1) % len(self._accounts)
             creds = account["creds"]
-            logger.info(f"Using account #{idx + 1} ({account['file'].name})")
+            alias = account.get("email") or account["file"].name
+            logger.info(f"Using account #{idx + 1} ({alias})")
             # Refresh and save INSIDE the lock to prevent race conditions
             if creds.expired and creds.refresh_token:
                 try:
@@ -110,19 +112,117 @@ class AccountsManager:
         json_files = sorted(self._accounts_dir.glob("*.json"))
         for json_file in json_files:
             account = self._load_single_account(json_file)
-            if account:
+            if not account:
+                continue
+            alias = account.get("email") or json_file.name
+            if self._validate:
+                if self._health_check(account):
+                    self._accounts.append(account)
+                    logger.info(f"[OK] {alias}")
+                else:
+                    logger.warning(f"[SKIP] {alias} — health check failed")
+            else:
                 self._accounts.append(account)
-                logger.info(f"Loaded account: {json_file.name}")
+                logger.info(f"Loaded account: {alias}")
 
         # Fallback: load legacy oauth_creds.json if no accounts found
         if not self._accounts and os.path.exists(CREDENTIAL_FILE):
             account = self._load_single_account(Path(CREDENTIAL_FILE))
             if account:
-                self._accounts.append(account)
-                logger.info(f"Loaded legacy credentials: {CREDENTIAL_FILE}")
+                if not self._validate or self._health_check(account):
+                    self._accounts.append(account)
+                    logger.info(f"Loaded legacy credentials: {CREDENTIAL_FILE}")
 
         logger.info(
             f"AccountsManager: {len(self._accounts)} account(s) loaded")
+
+    def _fetch_email(self, creds: Credentials) -> Optional[str]:
+        """Fetch Google account email via userinfo endpoint."""
+        import requests as _requests
+        try:
+            resp = _requests.get(
+                "https://www.googleapis.com/oauth2/v1/userinfo",
+                headers={"Authorization": f"Bearer {creds.token}"},
+                timeout=10,
+            )
+            if resp.status_code == 200:
+                return resp.json().get("email")
+        except Exception:
+            pass
+        return None
+
+    def _health_check(self, account: dict) -> bool:
+        """Send a minimal test request. Returns True if account is working."""
+        import requests as _requests
+        import platform
+
+        alias = account.get("email") or account["file"].name
+        creds = account["creds"]
+        if creds.expired and creds.refresh_token:
+            try:
+                creds.refresh(GoogleAuthRequest())
+            except Exception as e:
+                logger.warning(f"health_check refresh failed for {alias}: {e}")
+                return False
+
+        endpoint = "https://cloudcode-pa.googleapis.com"
+        ua = f"GeminiCLI/0.1.5 ({platform.system()}; {platform.machine()})"
+        headers = {
+            "Authorization": f"Bearer {creds.token}",
+            "Content-Type": "application/json",
+            "User-Agent": ua,
+        }
+        meta = {"ideType": "IDE_UNSPECIFIED", "platform": "PLATFORM_UNSPECIFIED", "pluginType": "GEMINI"}
+
+        project_id = account.get("project_id")
+        if not project_id:
+            try:
+                resp = _requests.post(
+                    f"{endpoint}/v1internal:loadCodeAssist",
+                    json={"metadata": meta}, headers=headers, timeout=30,
+                )
+                resp.raise_for_status()
+                project_id = resp.json().get("cloudaicompanionProject")
+                if project_id:
+                    account["project_id"] = project_id
+                    self._save_account(account)
+            except Exception as e:
+                logger.warning(f"health_check discover_project failed for {alias}: {e}")
+                return False
+
+        if not project_id:
+            logger.warning(f"health_check: no project_id for {alias}")
+            return False
+
+        payload = {
+            "model": "gemini-2.5-flash",
+            "project": project_id,
+            "request": {
+                "contents": [{"role": "user", "parts": [{"text": "Say hi"}]}],
+                "generationConfig": {"maxOutputTokens": 16},
+                "safetySettings": [
+                    {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+                    {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+                    {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+                    {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
+                ],
+            },
+        }
+        try:
+            resp = _requests.post(
+                f"{endpoint}/v1internal:generateContent",
+                json=payload, headers=headers, timeout=60,
+            )
+            ok = resp.status_code == 200
+            if not ok:
+                logger.warning(
+                    f"health_check HTTP {resp.status_code} for {alias}: "
+                    f"{resp.text[:120]}"
+                )
+            return ok
+        except Exception as e:
+            logger.warning(f"health_check request failed for {alias}: {e}")
+            return False
 
     def _load_single_account(self, filepath: Path) -> Optional[dict]:
         """Load a single credential JSON file."""
@@ -172,11 +272,18 @@ class AccountsManager:
                 except Exception as e:
                     logger.warning(f"Could not refresh {filepath.name}: {e}")
 
-            return {
+            email = data.get("email") or self._fetch_email(creds)
+
+            account: dict = {
                 "file": filepath,
                 "creds": creds,
                 "project_id": data.get("project_id"),
+                "email": email,
             }
+            # Persist email to JSON if it was freshly fetched
+            if email and not data.get("email"):
+                self._save_account(account)
+            return account
 
         except Exception as e:
             logger.error(f"Failed to load {filepath}: {e}")
@@ -201,6 +308,8 @@ class AccountsManager:
             data["expiry"] = expiry.isoformat()
         if account.get("project_id"):
             data["project_id"] = account["project_id"]
+        if account.get("email"):
+            data["email"] = account["email"]
         try:
             with open(account["file"], "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2)
