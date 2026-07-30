@@ -33,9 +33,22 @@ accounts/*.json
 oauth_creds.json
 
 # ── Workspace (user data) ─────────────────────────────────
-# Ignorujemy CAŁY workspace/ — trzymamy tylko README z opisem metody.
+# Ignorujemy CAŁĄ zawartość workspace/ — zostaje README z opisem metody
+# oraz .gitkeep w stałych katalogach, żeby struktura przetrwała klonowanie.
 workspace/*
 !workspace/README.md
+!workspace/input/
+!workspace/output/
+!workspace/output_txt/
+!workspace/temp/
+workspace/input/*
+workspace/output/*
+workspace/output_txt/*
+workspace/temp/*
+!workspace/input/.gitkeep
+!workspace/output/.gitkeep
+!workspace/output_txt/.gitkeep
+!workspace/temp/.gitkeep
 
 # ── IDE / editor ──────────────────────────────────────────
 .vscode/
