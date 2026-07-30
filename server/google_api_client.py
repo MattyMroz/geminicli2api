@@ -204,10 +204,19 @@ def _try_send_request_with_creds(payload: dict, is_streaming: bool, creds, reque
 async def send_gemini_request(payload: dict, is_streaming: bool = False) -> Response:
     """Send a request to Google's Gemini API, retrying with different accounts on errors.
 
+    When GEMINI_API_KEY is set the request goes through the official
+    generativelanguage endpoint instead; the OAuth/CodeAssist path below stays
+    as the fallback for key-less setups.
+
     Credentials are obtained in the async context (proper round-robin),
     then the blocking HTTP call runs in a thread.
     Retries with next account on ANY HTTP error (403, 429, 500, etc.).
     """
+    from server.gemini_api_client import is_api_key_configured, send_gemini_api_request
+
+    if is_api_key_configured():
+        return await send_gemini_api_request(payload, is_streaming=is_streaming)
+
     request_id = str(uuid.uuid4())[:8]
     max_retries = _get_account_count()
     last_response = None

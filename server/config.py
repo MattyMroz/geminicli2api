@@ -5,13 +5,25 @@ Centralizes all configuration to avoid duplication across modules.
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # --- Paths ---
 ROOT_DIR = Path(__file__).resolve().parent.parent
 SERVER_DIR = Path(__file__).resolve().parent
 ACCOUNTS_DIR = ROOT_DIR / "accounts"
 
+# Load .env before reading any variable below: the entry points call
+# load_dotenv() only after importing this module, so module-level os.getenv()
+# would otherwise miss the file.
+load_dotenv(ROOT_DIR / ".env")
+
 # API Endpoints
 CODE_ASSIST_ENDPOINT = "https://cloudcode-pa.googleapis.com"
+GEMINI_API_ENDPOINT = "https://generativelanguage.googleapis.com"
+
+# AI Studio API key (https://aistudio.google.com/apikey). When set, requests go
+# through the official API instead of the OAuth/CodeAssist backend.
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 
 # Client Configuration
 CLI_VERSION = "0.1.5"
@@ -52,15 +64,17 @@ DEFAULT_SAFETY_SETTINGS = [
     {"category": "HARM_CATEGORY_JAILBREAK", "threshold": "BLOCK_NONE"},
 ]
 
-# Base Models (only models verified to exist on Google's CodeAssist endpoint)
+# Base Models — verified live against generativelanguage.googleapis.com
+# (ListModels + a real generateContent call on 2026-07-30). Token limits come
+# from that response, so this list matches what the API key actually serves.
 BASE_MODELS = [
     {
-        "name": "models/gemini-2.5-flash",
+        "name": "models/gemini-3.5-flash-lite",
         "version": "001",
-        "displayName": "Gemini 2.5 Flash",
-        "description": "Fast and efficient multimodal model with latest improvements",
+        "displayName": "Gemini 3.5 Flash Lite",
+        "description": "Fastest, most cost-effective 3.5 model for high-throughput execution",
         "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
+        "outputTokenLimit": 65536,
         "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
         "temperature": 1.0,
         "maxTemperature": 2.0,
@@ -68,12 +82,12 @@ BASE_MODELS = [
         "topK": 64,
     },
     {
-        "name": "models/gemini-2.5-flash-lite",
+        "name": "models/gemini-3.5-flash",
         "version": "001",
-        "displayName": "Gemini 2.5 Flash Lite",
-        "description": "Lightweight version of Gemini 2.5 Flash — fast and cost-efficient",
+        "displayName": "Gemini 3.5 Flash",
+        "description": "Sustained frontier performance for agentic and coding tasks",
         "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
+        "outputTokenLimit": 65536,
         "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
         "temperature": 1.0,
         "maxTemperature": 2.0,
@@ -81,64 +95,12 @@ BASE_MODELS = [
         "topK": 64,
     },
     {
-        "name": "models/gemini-2.5-pro",
+        "name": "models/gemini-3.6-flash",
         "version": "001",
-        "displayName": "Gemini 2.5 Pro",
-        "description": "Advanced multimodal model with enhanced capabilities",
+        "displayName": "Gemini 3.6 Flash",
+        "description": "Balances speed with intelligence for agentic and multimodal tasks",
         "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
-        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
-        "temperature": 1.0,
-        "maxTemperature": 2.0,
-        "topP": 0.95,
-        "topK": 64,
-    },
-    {
-        "name": "models/gemini-3-flash-preview",
-        "version": "001",
-        "displayName": "Gemini 3.0 Flash Preview",
-        "description": "Preview version of Gemini 3.0 Flash — latest generation",
-        "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
-        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
-        "temperature": 1.0,
-        "maxTemperature": 2.0,
-        "topP": 0.95,
-        "topK": 64,
-    },
-    {
-        "name": "models/gemini-3-pro-preview",
-        "version": "001",
-        "displayName": "Gemini 3.0 Pro Preview",
-        "description": "Preview version of Gemini 3.0 Pro — most capable model",
-        "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
-        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
-        "temperature": 1.0,
-        "maxTemperature": 2.0,
-        "topP": 0.95,
-        "topK": 64,
-    },
-    {
-        "name": "models/gemini-3.1-pro-preview",
-        "version": "001",
-        "displayName": "Gemini 3.1 Pro Preview",
-        "description": "Advanced intelligence with complex problem-solving and agentic coding",
-        "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
-        "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
-        "temperature": 1.0,
-        "maxTemperature": 2.0,
-        "topP": 0.95,
-        "topK": 64,
-    },
-    {
-        "name": "models/gemini-3.1-flash-lite-preview",
-        "version": "001",
-        "displayName": "Gemini 3.1 Flash Lite Preview",
-        "description": "Frontier-class performance at a fraction of the cost — Gemini 3.1 generation",
-        "inputTokenLimit": 1048576,
-        "outputTokenLimit": 65535,
+        "outputTokenLimit": 65536,
         "supportedGenerationMethods": ["generateContent", "streamGenerateContent"],
         "temperature": 1.0,
         "maxTemperature": 2.0,
@@ -173,7 +135,10 @@ def _has_thinking_support(model_name: str) -> bool:
     if "gemini-2.5-flash-lite" in name:
         return False
     # Include models with thinking
-    if any(x in name for x in ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-3-pro", "gemini-3-flash", "gemini-3.1-pro"]):
+    if any(x in name for x in [
+        "gemini-2.5-flash", "gemini-2.5-pro", "gemini-3-pro", "gemini-3-flash", "gemini-3.1-pro",
+        "gemini-3.5-flash", "gemini-3.6-flash",
+    ]):
         return True
     return False
 
@@ -234,6 +199,10 @@ def get_thinking_budget(model_name: str) -> int:
             return 128
         elif "gemini-3-flash" in base_model:
             return 0
+        elif any(x in base_model for x in ("gemini-3.5-flash", "gemini-3.6-flash")):
+            # These reject thinkingBudget=0 with 400 (verified 2026-07-30), so
+            # -nothinking uses the dynamic budget and just hides the thoughts.
+            return -1
     elif is_maxthinking_model(model_name):
         if "gemini-2.5-flash" in base_model and "lite" not in base_model:
             return 24576
@@ -241,7 +210,7 @@ def get_thinking_budget(model_name: str) -> int:
             return 32768
         elif "gemini-3-pro" in base_model:
             return 45000
-        elif "gemini-3-flash" in base_model:
+        elif any(x in base_model for x in ("gemini-3-flash", "gemini-3.5-flash", "gemini-3.6-flash")):
             return 24576
     return -1
 
@@ -249,5 +218,9 @@ def get_thinking_budget(model_name: str) -> int:
 def should_include_thoughts(model_name: str) -> bool:
     if is_nothinking_model(model_name):
         base_model = get_base_model_name(model_name)
-        return "gemini-2.5-pro" in base_model or "gemini-3-pro" in base_model or "gemini-3-flash" in base_model
+        # 3.5/3.6 cannot take thinkingBudget=0, so -nothinking keeps a dynamic
+        # budget; hiding the thoughts is the only way it differs there.
+        if any(x in base_model for x in ("gemini-3.5-flash", "gemini-3.6-flash")):
+            return False
+        return any(x in base_model for x in ("gemini-2.5-pro", "gemini-3-pro", "gemini-3-flash"))
     return True
