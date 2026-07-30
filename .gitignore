@@ -33,8 +33,8 @@ accounts/*.json
 oauth_creds.json
 
 # ── Workspace (user data) ─────────────────────────────────
-# Ignorujemy CAŁĄ zawartość workspace/ — zostaje README z opisem metody
-# oraz .gitkeep w stałych katalogach, żeby struktura przetrwała klonowanie.
+# Ignore all workspace content except the README and the .gitkeep files
+# that keep the fixed directories alive across a fresh clone.
 workspace/*
 !workspace/README.md
 !workspace/input/
