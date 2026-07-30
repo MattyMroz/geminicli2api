@@ -24,14 +24,14 @@ class TranslatorConfig:
     proxy_api_key: str = "123456"
 
     # --- Model ---
-    model_name: str = "gemini-2.5-pro" # gemini-3-flash-preview
+    model_name: str = "gemini-3.5-flash-lite"  # gemini-3.5-flash | gemini-3.6-flash
     temperature: float = 0.3
     top_p: float = 1.0
     max_output_tokens: int = 65536
 
     # --- Translation ---
     translated_line_count: int = 100
-    concurrent_requests: int = 20
+    concurrent_requests: int = 15
     mode: str = "text"  # text | image | manga | subtitle | ocr
 
     # --- Formatter / pre-processing ---

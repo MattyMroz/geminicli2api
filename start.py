@@ -8,13 +8,19 @@ Usage:
     uv run start.py --list-models (-l) → List all supported models
     uv run start.py --help        (-h) → Show help
 """
-import sys
 import argparse
+import sys
 from pathlib import Path
 
 # Ensure project root on sys.path
 ROOT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT_DIR))
+
+# Windows consoles default to cp1250 here, which cannot encode the box-drawing
+# characters used below.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
 
 
 def list_models():

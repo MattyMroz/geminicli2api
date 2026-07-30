@@ -56,7 +56,14 @@ async def lifespan(app: FastAPI):
         env_creds_json = os.getenv("GEMINI_CREDENTIALS")
         creds_file_exists = os.path.exists(CREDENTIAL_FILE)
 
-        if accounts_manager.count > 0 or env_creds_json or creds_file_exists:
+        from server.config import GEMINI_API_KEY
+
+        if GEMINI_API_KEY:
+            # Requests go through generativelanguage.googleapis.com, so the
+            # CodeAssist onboarding below would only fail loudly for nothing.
+            logging.info(
+                "GEMINI_API_KEY set — using the official Gemini API (OAuth onboarding skipped).")
+        elif accounts_manager.count > 0 or env_creds_json or creds_file_exists:
             try:
                 creds = get_credentials(allow_oauth_flow=False)
                 if creds:
