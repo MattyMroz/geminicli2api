@@ -33,14 +33,9 @@ accounts/*.json
 oauth_creds.json
 
 # ── Workspace (user data) ─────────────────────────────────
-workspace/input/*
-workspace/output/*
-workspace/output_txt/*
-workspace/temp/*
-!workspace/input/.gitkeep
-!workspace/output/.gitkeep
-!workspace/output_txt/.gitkeep
-!workspace/temp/.gitkeep
+# Ignorujemy CAŁY workspace/ — trzymamy tylko README z opisem metody.
+workspace/*
+!workspace/README.md
 
 # ── IDE / editor ──────────────────────────────────────────
 .vscode/
