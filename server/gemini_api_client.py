@@ -39,7 +39,7 @@ SUPPORTED_HARM_CATEGORIES = frozenset({
 })
 
 # --- Connection-pooled HTTP session ---
-_http_session: requests.Session = None
+_http_session: requests.Session | None = None
 
 
 def _get_session() -> requests.Session:
@@ -75,9 +75,7 @@ def _clean_model_id(model: str) -> str:
     The OAuth backend never needed this: it sends the model in the body, and the
     native route hands it the name unresolved.
     """
-    cleaned = model.strip()
-    if cleaned.startswith("models/"):
-        cleaned = cleaned[len("models/"):]
+    cleaned = model.strip().removeprefix("models/")
     if ":" in cleaned:
         cleaned = cleaned.split(":", 1)[0]
     return get_base_model_name(cleaned)
@@ -178,11 +176,10 @@ def _try_send_request(payload: dict, is_streaming: bool, request_id: str = "") -
                 target_url, data=json.dumps(request_body), headers=request_headers,
                 stream=True, timeout=(CONNECT_TIMEOUT, STREAM_READ_TIMEOUT))
             return _handle_streaming_response(resp, rid)
-        else:
-            resp = session.post(
-                target_url, data=json.dumps(request_body), headers=request_headers,
-                timeout=(CONNECT_TIMEOUT, READ_TIMEOUT))
-            return _handle_non_streaming_response(resp, rid)
+        resp = session.post(
+            target_url, data=json.dumps(request_body), headers=request_headers,
+            timeout=(CONNECT_TIMEOUT, READ_TIMEOUT))
+        return _handle_non_streaming_response(resp, rid)
     except requests.exceptions.ConnectTimeout:
         logging.error(f"[{rid}] Connection timeout to Gemini API")
         return _error_response("Connection timeout to Gemini API. Try again.", 504)
@@ -245,7 +242,7 @@ def _handle_streaming_response(resp, rid: str = "") -> StreamingResponse:
                     "code": resp.status_code,
                 }
             }
-            yield f'data: {json.dumps(error_response)}\n\n'.encode('utf-8')
+            yield f'data: {json.dumps(error_response)}\n\n'.encode()
 
         return StreamingResponse(
             error_generator(),
