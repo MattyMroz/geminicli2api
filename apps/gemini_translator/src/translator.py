@@ -21,11 +21,11 @@ from natsort import natsorted
 
 from rich.markup import escape
 
-from apps.gemini_translator.src.api_client import GeminiAPIClient
+from apps.gemini_translator.src.api_client import GeminiAPIClient, FoundryClient
 from apps.gemini_translator.src.utils.console import console
 
 # Constants
-MAX_RETRIES = 100
+MAX_RETRIES = 10
 INITIAL_BACKOFF = 1.0
 MAX_BACKOFF = 60.0
 
@@ -45,6 +45,10 @@ class GeminiTranslator:
         model_name: str = "gemini-2.5-pro",
         mode: str = "text",
         concurrent_requests: int = 2,
+        backend: str = "proxy",
+        foundry_url: str = "",
+        foundry_token_file: str = "",
+        review_model: str = "",
     ):
         self.input_folder = input_folder
         self.output_folder = output_folder
@@ -56,13 +60,17 @@ class GeminiTranslator:
         self.model_name = model_name
         self.mode = mode
         self.concurrent_requests = concurrent_requests
+        self.review_model = review_model
 
         # API client — talks to our proxy
-        self.api_client = GeminiAPIClient(
-            base_url=proxy_url,
-            api_key=proxy_api_key,
-            timeout=300.0,
-        )
+        if backend == "foundry":
+            self.api_client = FoundryClient(base_url=foundry_url, token_file=foundry_token_file)
+        else:
+            self.api_client = GeminiAPIClient(
+                base_url=proxy_url,
+                api_key=proxy_api_key,
+                timeout=300.0,
+            )
 
         # Concurrency controls
         self.semaphore = asyncio.Semaphore(concurrent_requests)
@@ -209,6 +217,9 @@ class GeminiTranslator:
                                 return
                             continue
                         else:
+                            if self.review_model:
+                                translated_lines = await self.review_group(
+                                    group, translated_lines, prompt_helper)
                             self.update_subtitles(group, translated_lines)
                             async with self.write_lock:
                                 subs.save(output_path, encoding='utf-8')
@@ -236,6 +247,41 @@ class GeminiTranslator:
                 f"BŁĄD: Nie udało się przetłumaczyć grupy po {MAX_RETRIES} próbach.",
                 style="red_bold"
             )
+
+    # --- Stage 2: stylistic review ---
+
+    async def review_group(self, group: List[pysrt.SubRipItem], translated_lines: List[str], prompt_helper: str) -> List[str]:
+        """Stylistic pass by the review model; falls back to the stage-1 text on failure."""
+        with open(os.path.join(self.prompts_folder, 'prompt_review.txt'), 'r', encoding='utf-8') as f:
+            review_prompt = f.read()
+        system_prompt = f"{review_prompt}\n\n{prompt_helper}"
+        parts = [f"[{i}]\nORYGINAŁ: {sub.text}\nTŁUMACZENIE: {tr}"
+                 for i, (sub, tr) in enumerate(zip(group, translated_lines), start=1)]
+        text = f"Popraw {len(parts)} napisów:\n\n" + "\n\n".join(parts)
+
+        for attempt in range(3):
+            try:
+                response = await self.api_client.generate(
+                    model=self.review_model,
+                    prompt=text,
+                    temperature=self.temperature,
+                    top_p=self.top_p,
+                    max_tokens=self.max_output_tokens,
+                    system_prompt=system_prompt,
+                )
+                reviewed = self.format_response(response)
+                if reviewed is not None and len(reviewed) == len(translated_lines):
+                    console.print(
+                        f"\n[green_bold]Po korekcie ({escape(self.review_model)}):[/green_bold]\n{escape(response)}", style='white_bold')
+                    return reviewed
+                console.print(
+                    f"BŁĄD korekty: zła liczba napisów [próba {attempt + 1}/3]", style="red_bold")
+            except Exception as e:
+                console.print(
+                    f"BŁĄD korekty (próba {attempt + 1}/3): {e}", style="red_bold", markup=False)
+        console.print("Korekta nieudana — zostaje tłumaczenie z etapu 1",
+                      style="yellow_bold")
+        return translated_lines
 
     # --- Image / Manga modes ---
 

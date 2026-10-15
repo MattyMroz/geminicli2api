@@ -129,6 +129,10 @@ async def run_translation(config: TranslatorConfig):
         model_name=config.model_name,
         mode=config.mode,
         concurrent_requests=config.concurrent_requests,
+        backend=config.backend,
+        foundry_url=config.foundry_url,
+        foundry_token_file=config.foundry_token_file,
+        review_model=config.review_model,
     )
 
     try:
@@ -142,7 +146,8 @@ async def main():
     config.display()
 
     # 1. Ensure server is running
-    server_proc = await ensure_server_running(config)
+    server_proc = (await ensure_server_running(config)
+                   if config.backend == "proxy" else None)
 
     try:
         # ═══ Etap 1: Pre-processing — TXT → SRT in input_folder ═══

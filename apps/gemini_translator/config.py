@@ -24,14 +24,30 @@ class TranslatorConfig:
     proxy_api_key: str = "123456"
 
     # --- Model ---
-    model_name: str = "gemini-3.5-flash-lite"  # gemini-3.5-flash | gemini-3.6-flash
+    # backend: "foundry" (Palantir Foundry LLM proxy) | "proxy" (local geminicli2api server)
+    backend: str = "foundry"
+    foundry_url: str = "https://mattymroz.euw-3.palantirfoundry.co.uk"
+    # Token file shared with opencode; FOUNDRY_API_TOKEN is the fallback
+    foundry_token_file: str = str(Path.home() / ".config" / "opencode" / "foundry-token.txt")
+    # Stage 1 — translation. Foundry models ("<provider>/<model>"):
+    #   foundry-google:    gemini-3.1-pro-preview | gemini-3.5-flash | gemini-3.5-flash-lite
+    #                      | gemini-3.6-flash | gemini-3.7-flash | gemini-3.8-flash
+    #   foundry-anthropic: claude-opus-4-5 | claude-opus-4-6 | claude-opus-4-7 | claude-opus-4-8
+    #                      | claude-opus-5 | claude-opus-5-5 | claude-sonnet-4-6 | claude-sonnet-5
+    #   foundry:           gpt-5.5 | gpt-5.6-luna | gpt-5.6-sol | gpt-5.6-terra
+    #                      | gpt-6-astra | gpt-6-luna | gpt-6-sol | gpt-6.1-sol
+    #   foundry-xai:       grok-4.5 | grok-4.6 | grok-4.7
+    # With backend="proxy" use bare names instead (gemini-3.5-flash | gemini-3.6-flash).
+    model_name: str = "foundry-google/gemini-3.8-flash"
+    # Stage 2 — stylistic review of the stage-1 output (same list as above); "" disables it
+    review_model: str = "foundry-anthropic/claude-opus-5-5"
     temperature: float = 0.3
     top_p: float = 1.0
     max_output_tokens: int = 65536
 
     # --- Translation ---
-    translated_line_count: int = 100
-    concurrent_requests: int = 15
+    translated_line_count: int = 20
+    concurrent_requests: int = 4
     mode: str = "text"  # text | image | manga | subtitle | ocr
 
     # --- Formatter / pre-processing ---
@@ -51,7 +67,7 @@ class TranslatorConfig:
         default_factory=lambda: str(APP_DIR / "prompts"))
 
     # --- Server management ---
-    auto_start_server: bool = True
+    auto_start_server: bool = True  # only used with backend="proxy"
     server_startup_timeout: int = 15  # seconds to wait for server to start
     server_health_check_interval: float = 0.5  # seconds between health checks
 
@@ -66,7 +82,9 @@ class TranslatorConfig:
         from apps.gemini_translator.src.utils.console import console
         console.print(
             "\n[blue_bold]═══ Konfiguracja translatora ═══[/blue_bold]")
-        console.print(f"  Model:              {self.model_name}")
+        console.print(f"  Backend:            {self.backend}")
+        console.print(f"  Model (tłumaczenie): {self.model_name}")
+        console.print(f"  Model (korekta):    {self.review_model or '-'}")
         console.print(f"  Tryb:               {self.mode}")
         console.print(f"  Temperatura:        {self.temperature}")
         console.print(f"  Top P:              {self.top_p}")
