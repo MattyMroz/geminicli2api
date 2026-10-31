@@ -1,4 +1,5 @@
 import platform
+
 from server.config import CLI_VERSION
 
 

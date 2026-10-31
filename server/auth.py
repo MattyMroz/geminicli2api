@@ -8,32 +8,32 @@ Provides:
 - Integration with AccountsManager for multi-account support
 """
 
-import os
-import json
 import base64
-import time
+import json
 import logging
+import os
 import threading
-from datetime import datetime, timezone
-from fastapi import Request, HTTPException
-from fastapi.security import HTTPBasic
+import time
+from datetime import UTC, datetime
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
 
+from fastapi import HTTPException, Request
+from fastapi.security import HTTPBasic
+from google.auth.transport.requests import Request as GoogleAuthRequest
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
-from google.auth.transport.requests import Request as GoogleAuthRequest
 
-from server.utils import get_user_agent, get_client_metadata
 from server.config import (
     CLIENT_ID,
     CLIENT_SECRET,
-    SCOPES,
-    CREDENTIAL_FILE,
     CODE_ASSIST_ENDPOINT,
+    CREDENTIAL_FILE,
     GEMINI_AUTH_PASSWORD,
     OAUTH_CALLBACK_PORT,
+    SCOPES,
 )
+from server.utils import get_client_metadata, get_user_agent
 
 # --- Global State (protected by _auth_lock) ---
 _auth_lock = threading.Lock()
@@ -66,10 +66,7 @@ class _OAuthCallbackHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            self.wfile.write(
-                b"<h1>OAuth authentication successful!</h1>"
-                b"<p>You can close this window.</p>"
-            )
+            self.wfile.write(b"<h1>OAuth authentication successful!</h1><p>You can close this window.</p>")
         else:
             self.send_response(400)
             self.send_header("Content-type", "text/html")
@@ -94,19 +91,17 @@ def authenticate_user(request: Request):
 
     # Bearer token
     auth_header = request.headers.get("authorization", "")
-    if auth_header.startswith("Bearer "):
-        if auth_header[7:] == GEMINI_AUTH_PASSWORD:
-            return "bearer_user"
+    if auth_header.startswith("Bearer ") and auth_header[7:] == GEMINI_AUTH_PASSWORD:
+        return "bearer_user"
 
     # HTTP Basic
     if auth_header.startswith("Basic "):
         try:
-            decoded = base64.b64decode(
-                auth_header[6:]).decode("utf-8", "ignore")
+            decoded = base64.b64decode(auth_header[6:]).decode("utf-8", "ignore")
             _, password = decoded.split(":", 1)
             if password == GEMINI_AUTH_PASSWORD:
                 return "basic_user"
-        except Exception:
+        except Exception:  # noqa: S110 - a malformed Basic header falls through to the 401 below
             pass
 
     raise HTTPException(
@@ -118,7 +113,6 @@ def authenticate_user(request: Request):
 
 def save_credentials(creds, project_id=None):
     """Save credentials to file."""
-    global credentials_from_env
     if credentials_from_env:
         return
 
@@ -132,10 +126,9 @@ def save_credentials(creds, project_id=None):
     }
 
     if creds.expiry:
-        from datetime import timezone
         expiry = creds.expiry
         if expiry.tzinfo is None:
-            expiry = expiry.replace(tzinfo=timezone.utc)
+            expiry = expiry.replace(tzinfo=UTC)
         creds_data["expiry"] = expiry.isoformat()
 
     if project_id:
@@ -146,7 +139,7 @@ def save_credentials(creds, project_id=None):
                 existing = json.load(f)
             if "project_id" in existing:
                 creds_data["project_id"] = existing["project_id"]
-        except Exception:
+        except Exception:  # noqa: S110 - an unreadable old file only means no project_id to carry over
             pass
 
     with open(CREDENTIAL_FILE, "w") as f:
@@ -187,8 +180,7 @@ def get_credentials(allow_oauth_flow=True):
                     creds_data["scopes"] = creds_data["scope"].split()
                 if "expiry" in creds_data:
                     _fix_expiry(creds_data)
-                creds = Credentials.from_authorized_user_info(
-                    creds_data, SCOPES)
+                creds = Credentials.from_authorized_user_info(creds_data, SCOPES)
                 if creds.expired and creds.refresh_token:
                     try:
                         creds.refresh(GoogleAuthRequest())
@@ -216,15 +208,13 @@ def get_credentials(allow_oauth_flow=True):
                     creds_data["scopes"] = creds_data["scope"].split()
                 if "expiry" in creds_data:
                     _fix_expiry(creds_data)
-                creds = Credentials.from_authorized_user_info(
-                    creds_data, SCOPES)
+                creds = Credentials.from_authorized_user_info(creds_data, SCOPES)
                 if creds.expired and creds.refresh_token:
                     try:
                         creds.refresh(GoogleAuthRequest())
                         save_credentials(creds)
                     except Exception as e:
-                        logging.warning(
-                            f"File credentials refresh failed: {e}")
+                        logging.warning(f"File credentials refresh failed: {e}")
                 with _auth_lock:
                     credentials = creds
                     if data.get("project_id"):
@@ -248,13 +238,11 @@ def _fix_expiry(creds_data: dict):
             if "+00:00" in expiry_str:
                 parsed = datetime.fromisoformat(expiry_str)
             elif expiry_str.endswith("Z"):
-                parsed = datetime.fromisoformat(
-                    expiry_str.replace("Z", "+00:00"))
+                parsed = datetime.fromisoformat(expiry_str.replace("Z", "+00:00"))  # noqa: FURB162 - the replace keeps a date-only 'YYYY-MM-DDZ' parseable; the plain call rejects it
             else:
                 parsed = datetime.fromisoformat(expiry_str)
             ts = parsed.timestamp()
-            creds_data["expiry"] = datetime.fromtimestamp(
-                ts, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            creds_data["expiry"] = datetime.fromtimestamp(ts, tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
         except Exception:
             del creds_data["expiry"]
 
@@ -271,11 +259,9 @@ def _run_oauth_flow():
         }
     }
 
-    flow = Flow.from_client_config(
-        client_config, scopes=SCOPES, redirect_uri=f"http://localhost:{OAUTH_CALLBACK_PORT}")
+    flow = Flow.from_client_config(client_config, scopes=SCOPES, redirect_uri=f"http://localhost:{OAUTH_CALLBACK_PORT}")
     flow.oauth2session.scope = SCOPES
-    auth_url, _ = flow.authorization_url(
-        access_type="offline", prompt="consent", include_granted_scopes="true")
+    auth_url, _ = flow.authorization_url(access_type="offline", prompt="consent", include_granted_scopes="true")
 
     print(f"\n{'=' * 80}")
     print("AUTHENTICATION REQUIRED")
@@ -291,6 +277,7 @@ def _run_oauth_flow():
         return None
 
     import oauthlib.oauth2.rfc6749.parameters
+
     orig = oauthlib.oauth2.rfc6749.parameters.validate_token_parameters
     oauthlib.oauth2.rfc6749.parameters.validate_token_parameters = lambda p: None
 
@@ -355,12 +342,10 @@ def onboard_user(creds, project_id):
                     tier = t
                     break
             if not tier:
-                tier = {"name": "", "description": "", "id": "legacy-tier",
-                        "userDefinedCloudaicompanionProject": True}
+                tier = {"name": "", "description": "", "id": "legacy-tier", "userDefinedCloudaicompanionProject": True}
 
         if tier.get("userDefinedCloudaicompanionProject") and not project_id:
-            raise ValueError(
-                "This account requires GOOGLE_CLOUD_PROJECT env var.")
+            raise ValueError("This account requires GOOGLE_CLOUD_PROJECT env var.")
 
         if data.get("currentTier"):
             with _auth_lock:
@@ -438,7 +423,7 @@ def get_user_project_id(creds):
                 with _auth_lock:
                     user_project_id = cached
                 return cached
-        except Exception:
+        except Exception:  # noqa: S110 - a missing or broken credential file falls back to the next source
             pass
 
     # API discovery

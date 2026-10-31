@@ -37,6 +37,16 @@ testpaths = ["tests"]
 line-length = 120
 target-version = "py311"
 
+[tool.ruff.lint]
+ignore = [
+    # The proxy, translator and scripts catch any failure on purpose and turn it into a log line, error response or fallback.
+    "BLE001",
+    # Logging goes through the root logger; a module logger would change the logger name printed in every log line.
+    "LOG015",
+    # Failures are raised as plain Exception and callers catch them as one kind; a custom class adds a type nobody checks.
+    "TRY002",
+]
+
 [dependency-groups]
 dev = [
     "pillow>=12.1.1",

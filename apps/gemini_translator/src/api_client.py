@@ -3,10 +3,12 @@ API Client — httpx-based client for communicating with the geminicli2api proxy
 
 Replaces direct google.generativeai SDK calls with HTTP requests to our local proxy.
 """
-import httpx
+
 import logging
 import os
-from typing import Optional
+from typing import ClassVar
+
+import httpx
 
 
 class GeminiAPIClient:
@@ -16,7 +18,7 @@ class GeminiAPIClient:
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
         self.timeout = timeout
-        self._client: Optional[httpx.AsyncClient] = None
+        self._client: httpx.AsyncClient | None = None
 
     async def _get_client(self) -> httpx.AsyncClient:
         if self._client is None or self._client.is_closed:
@@ -51,8 +53,8 @@ class GeminiAPIClient:
         temperature: float = 0.3,
         top_p: float = 1.0,
         max_tokens: int = 65536,
-        system_prompt: Optional[str] = None,
-        response_format: Optional[dict] = None,
+        system_prompt: str | None = None,
+        response_format: dict | None = None,
     ) -> str:
         """
         Send a chat completion request to the proxy server.
@@ -121,13 +123,15 @@ class GeminiAPIClient:
         b64_data = base64.b64encode(image_data).decode("utf-8")
         data_uri = f"data:{mime_type};base64,{b64_data}"
 
-        messages = [{
-            "role": "user",
-            "content": [
-                {"type": "image_url", "image_url": {"url": data_uri}},
-                {"type": "text", "text": prompt},
-            ]
-        }]
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "image_url", "image_url": {"url": data_uri}},
+                    {"type": "text", "text": prompt},
+                ],
+            }
+        ]
 
         payload = {
             "model": model,
@@ -177,7 +181,7 @@ class FoundryClient:
     The token is read from `token_file` (the one opencode uses), else FOUNDRY_API_TOKEN.
     """
 
-    ROUTES = {
+    ROUTES: ClassVar[dict[str, str]] = {
         "foundry-google": "/api/v2/llm/proxy/google/v1",
         "foundry-anthropic": "/api/v2/llm/proxy/anthropic/v1",
         "foundry": "/api/v2/llm/proxy/openai/v1",
@@ -199,7 +203,7 @@ class FoundryClient:
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
-        self._client: Optional[httpx.AsyncClient] = None
+        self._client: httpx.AsyncClient | None = None
 
     async def _get_client(self) -> httpx.AsyncClient:
         if self._client is None or self._client.is_closed:
@@ -221,8 +225,8 @@ class FoundryClient:
         temperature: float = 0.3,
         top_p: float = 1.0,
         max_tokens: int = 65536,
-        system_prompt: Optional[str] = None,
-        response_format: Optional[dict] = None,
+        system_prompt: str | None = None,
+        response_format: dict | None = None,
     ) -> str:
         provider, _, model_id = model.partition("/")
         if provider not in self.ROUTES or not model_id:
@@ -234,16 +238,14 @@ class FoundryClient:
             generation = {"temperature": temperature, "topP": top_p, "maxOutputTokens": max_tokens}
             if response_format:
                 generation["responseMimeType"] = "application/json"
-            body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
-                    "generationConfig": generation}
+            body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}], "generationConfig": generation}
             if system_prompt:
                 body["systemInstruction"] = {"parts": [{"text": system_prompt}]}
             headers = None
         elif provider == "foundry-anthropic":
             url = f"{base}/messages"
             # Recent Claude models reject sampling parameters (temperature is deprecated)
-            body = {"model": model_id, "max_tokens": max_tokens,
-                    "messages": [{"role": "user", "content": prompt}]}
+            body = {"model": model_id, "max_tokens": max_tokens, "messages": [{"role": "user", "content": prompt}]}
             if system_prompt:
                 body["system"] = system_prompt
             headers = {"anthropic-version": "2023-06-01"}
@@ -278,8 +280,13 @@ class FoundryClient:
             finish = data.get("stop_reason")
             truncated = finish == "max_tokens"
         else:
-            content = "".join(c.get("text", "") for item in data.get("output", []) if item.get("type") == "message"
-                              for c in item.get("content", []) if c.get("type") == "output_text")
+            content = "".join(
+                c.get("text", "")
+                for item in data.get("output", [])
+                if item.get("type") == "message"
+                for c in item.get("content", [])
+                if c.get("type") == "output_text"
+            )
             finish = data.get("status")
             truncated = finish == "incomplete"
 

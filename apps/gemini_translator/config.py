@@ -4,10 +4,10 @@ Configuration for the Gemini Translator application.
 All parameters are set here for easy modification.
 In the future, a UI can dynamically adjust these parameters.
 """
+
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-
 
 # Root of the entire project (geminicli2api/)
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
@@ -57,14 +57,10 @@ class TranslatorConfig:
     sentence_length: int = 750
 
     # --- Paths ---
-    input_folder: str = field(default_factory=lambda: str(
-        ROOT_DIR / "workspace" / "input"))
-    output_folder: str = field(default_factory=lambda: str(
-        ROOT_DIR / "workspace" / "output"))
-    output_txt_folder: str = field(default_factory=lambda: str(
-        ROOT_DIR / "workspace" / "output_txt"))
-    prompts_folder: str = field(
-        default_factory=lambda: str(APP_DIR / "prompts"))
+    input_folder: str = field(default_factory=lambda: str(ROOT_DIR / "workspace" / "input"))
+    output_folder: str = field(default_factory=lambda: str(ROOT_DIR / "workspace" / "output"))
+    output_txt_folder: str = field(default_factory=lambda: str(ROOT_DIR / "workspace" / "output_txt"))
+    prompts_folder: str = field(default_factory=lambda: str(APP_DIR / "prompts"))
 
     # --- Server management ---
     auto_start_server: bool = True  # only used with backend="proxy"
@@ -80,8 +76,8 @@ class TranslatorConfig:
     def display(self):
         """Print current config to console."""
         from apps.gemini_translator.src.utils.console import console
-        console.print(
-            "\n[blue_bold]═══ Konfiguracja translatora ═══[/blue_bold]")
+
+        console.print("\n[blue_bold]═══ Konfiguracja translatora ═══[/blue_bold]")
         console.print(f"  Backend:            {self.backend}")
         console.print(f"  Model (tłumaczenie): {self.model_name}")
         console.print(f"  Model (korekta):    {self.review_model or '-'}")
@@ -100,5 +96,4 @@ class TranslatorConfig:
         console.print(f"  Output (SRT):       {self.output_folder}")
         console.print(f"  Output (TXT):       {self.output_txt_folder}")
         console.print(f"  Prompty:            {self.prompts_folder}")
-        console.print(
-            "[blue_bold]════════════════════════════════[/blue_bold]\n")
+        console.print("[blue_bold]════════════════════════════════[/blue_bold]\n")

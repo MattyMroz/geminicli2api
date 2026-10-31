@@ -6,6 +6,7 @@ FastAPI application providing:
 - Native Gemini API proxy (/v1beta/*)
 - Multi-account Google OAuth with key rotation
 """
+
 import logging
 import os
 from contextlib import asynccontextmanager
@@ -13,24 +14,22 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
+from server.accounts_manager import AccountsManager
+from server.auth import get_credentials, get_user_project_id, onboard_user, set_accounts_manager
+from server.config import ACCOUNTS_DIR, CREDENTIAL_FILE
 from server.gemini_routes import router as gemini_router
 from server.openai_routes import router as openai_router
-from server.auth import get_credentials, get_user_project_id, onboard_user, set_accounts_manager
-from server.accounts_manager import AccountsManager
-from server.config import ACCOUNTS_DIR, CREDENTIAL_FILE
 
 # Load environment variables
 try:
     from dotenv import load_dotenv
+
     load_dotenv()
 except ImportError:
     pass
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 # Global AccountsManager instance
 _validate_accounts = os.getenv("VALIDATE_ACCOUNTS", "").lower() in ("1", "true", "yes")
@@ -47,8 +46,7 @@ async def lifespan(app: FastAPI):
         set_accounts_manager(accounts_manager)
 
         if accounts_manager.count > 0:
-            logging.info(
-                f"Loaded {accounts_manager.count} account(s) from {ACCOUNTS_DIR}")
+            logging.info(f"Loaded {accounts_manager.count} account(s) from {ACCOUNTS_DIR}")
         else:
             logging.info("No accounts found in accounts/ directory.")
 
@@ -61,8 +59,7 @@ async def lifespan(app: FastAPI):
         if GEMINI_API_KEY:
             # Requests go through generativelanguage.googleapis.com, so the
             # CodeAssist onboarding below would only fail loudly for nothing.
-            logging.info(
-                "GEMINI_API_KEY set — using the official Gemini API (OAuth onboarding skipped).")
+            logging.info("GEMINI_API_KEY set — using the official Gemini API (OAuth onboarding skipped).")
         elif accounts_manager.count > 0 or env_creds_json or creds_file_exists:
             try:
                 creds = get_credentials(allow_oauth_flow=False)
@@ -71,23 +68,18 @@ async def lifespan(app: FastAPI):
                         proj_id = get_user_project_id(creds)
                         if proj_id:
                             onboard_user(creds, proj_id)
-                            logging.info(
-                                f"Successfully onboarded with project ID: {proj_id}")
-                        logging.info(
-                            "Server started successfully with existing credentials.")
+                            logging.info(f"Successfully onboarded with project ID: {proj_id}")
+                        logging.info("Server started successfully with existing credentials.")
                     except Exception as e:
-                        logging.error(f"Setup failed: {str(e)}")
-                        logging.warning(
-                            "Server started but may not function properly.")
+                        logging.error(f"Setup failed: {e!s}")
+                        logging.warning("Server started but may not function properly.")
                 else:
-                    logging.warning(
-                        "Could not load credentials. Will authenticate on first request.")
+                    logging.warning("Could not load credentials. Will authenticate on first request.")
             except Exception as e:
-                logging.error(f"Credential loading error: {str(e)}")
+                logging.error(f"Credential loading error: {e!s}")
         else:
             # No credentials found — run OAuth flow
-            logging.info(
-                "No credentials found. Starting OAuth authentication flow...")
+            logging.info("No credentials found. Starting OAuth authentication flow...")
             try:
                 creds = get_credentials(allow_oauth_flow=True)
                 if creds:
@@ -95,23 +87,24 @@ async def lifespan(app: FastAPI):
                         proj_id = get_user_project_id(creds)
                         if proj_id:
                             onboard_user(creds, proj_id)
-                            logging.info(
-                                f"Onboarded with project ID: {proj_id}")
+                            logging.info(f"Onboarded with project ID: {proj_id}")
                     except Exception as e:
-                        logging.error(f"Setup failed: {str(e)}")
+                        logging.error(f"Setup failed: {e!s}")
                 else:
-                    logging.error(
-                        "Authentication failed. Server will not function until credentials are provided.")
+                    logging.error("Authentication failed. Server will not function until credentials are provided.")
             except Exception as e:
-                logging.error(f"Authentication error: {str(e)}")
+                logging.error(f"Authentication error: {e!s}")
 
         from server.config import GEMINI_AUTH_PASSWORD, HOST, PORT
+
         logging.info(f"Server ready at http://{HOST}:{PORT}")
-        logging.info(f"Auth password: {'*' * max(0, len(GEMINI_AUTH_PASSWORD) - 4)}{GEMINI_AUTH_PASSWORD[-4:] if len(GEMINI_AUTH_PASSWORD) > 4 else '****'}")
+        logging.info(
+            f"Auth password: {'*' * max(0, len(GEMINI_AUTH_PASSWORD) - 4)}{GEMINI_AUTH_PASSWORD[-4:] if len(GEMINI_AUTH_PASSWORD) > 4 else '****'}"
+        )
         logging.info(f"Accounts loaded: {accounts_manager.count}")
 
     except Exception as e:
-        logging.error(f"Startup error: {str(e)}")
+        logging.error(f"Startup error: {e!s}")
 
     yield  # app is running
 
@@ -146,7 +139,7 @@ async def handle_preflight(request: Request, full_path: str):
             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Credentials": "true",
-        }
+        },
     )
 
 
@@ -159,16 +152,13 @@ async def root():
         "version": "2.0.0",
         "accounts": accounts_manager.count,
         "endpoints": {
-            "openai_compatible": {
-                "chat_completions": "/v1/chat/completions",
-                "models": "/v1/models"
-            },
+            "openai_compatible": {"chat_completions": "/v1/chat/completions", "models": "/v1/models"},
             "native_gemini": {
                 "models": "/v1beta/models",
                 "generate": "/v1beta/models/{model}/generateContent",
-                "stream": "/v1beta/models/{model}/streamGenerateContent"
+                "stream": "/v1beta/models/{model}/streamGenerateContent",
             },
-            "health": "/health"
+            "health": "/health",
         },
         "authentication": "Required. Use Bearer token, Basic Auth, 'key' query param, or 'x-goog-api-key' header.",
     }

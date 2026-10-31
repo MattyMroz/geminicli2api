@@ -15,6 +15,7 @@ import os
 import platform
 import sys
 import time
+from datetime import UTC
 
 import requests
 from google.auth.transport.requests import Request as GoogleAuthRequest
@@ -38,6 +39,7 @@ SCOPES = [
 sys.path.insert(0, os.path.join(ROOT_DIR, "server"))
 try:
     import config as server_config
+
     CONFIG_MODELS = [m["name"].replace("models/", "") for m in server_config.BASE_MODELS]
 except Exception:
     CONFIG_MODELS = []
@@ -46,8 +48,10 @@ README_ONLY = ["gemini-2.0-flash"]  # w README, brak w config.BASE_MODELS
 
 _UA = f"GeminiCLI/{CLI_VERSION} ({platform.system()}; {platform.machine()})"
 _PLAT_MAP = {
-    ("DARWIN", True): "DARWIN_ARM64", ("DARWIN", False): "DARWIN_AMD64",
-    ("LINUX", True): "LINUX_ARM64", ("LINUX", False): "LINUX_AMD64",
+    ("DARWIN", True): "DARWIN_ARM64",
+    ("DARWIN", False): "DARWIN_AMD64",
+    ("LINUX", True): "LINUX_ARM64",
+    ("LINUX", False): "LINUX_AMD64",
     ("WINDOWS", False): "WINDOWS_AMD64",
 }
 _PLAT = _PLAT_MAP.get(
@@ -66,6 +70,7 @@ def _headers(token):
 
 # --- Ładowanie konta (jak w test_accounts.py) ---
 
+
 def load_account(filepath: str):
     with open(filepath, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -80,9 +85,10 @@ def load_account(filepath: str):
         exp = cd["expiry"]
         if isinstance(exp, str) and ("+00:00" in exp or "Z" in exp):
             try:
-                from datetime import datetime, timezone
+                from datetime import datetime
+
                 parsed = datetime.fromisoformat(exp.replace("Z", "+00:00") if exp.endswith("Z") else exp)
-                cd["expiry"] = parsed.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+                cd["expiry"] = parsed.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
             except Exception:
                 del cd["expiry"]
     creds = Credentials.from_authorized_user_info(cd, SCOPES)
@@ -94,7 +100,9 @@ def load_account(filepath: str):
 def discover_project_id(creds):
     r = requests.post(
         f"{ENDPOINT}/v1internal:loadCodeAssist",
-        json={"metadata": _meta()}, headers=_headers(creds.token), timeout=30,
+        json={"metadata": _meta()},
+        headers=_headers(creds.token),
+        timeout=30,
     )
     r.raise_for_status()
     pid = r.json().get("cloudaicompanionProject")
@@ -107,7 +115,8 @@ def onboard(creds, project_id):
     r = requests.post(
         f"{ENDPOINT}/v1internal:loadCodeAssist",
         json={"cloudaicompanionProject": project_id, "metadata": _meta(project_id)},
-        headers=_headers(creds.token), timeout=30,
+        headers=_headers(creds.token),
+        timeout=30,
     )
     r.raise_for_status()
     data = r.json()
@@ -120,7 +129,9 @@ def onboard(creds, project_id):
     for _ in range(24):
         resp = requests.post(
             f"{ENDPOINT}/v1internal:onboardUser",
-            json=payload, headers=_headers(creds.token), timeout=30,
+            json=payload,
+            headers=_headers(creds.token),
+            timeout=30,
         )
         resp.raise_for_status()
         if resp.json().get("done"):
@@ -147,7 +158,9 @@ def test_model(creds, project_id, model: str):
     }
     r = requests.post(
         f"{ENDPOINT}/v1internal:generateContent",
-        json=payload, headers=_headers(creds.token), timeout=TIMEOUT,
+        json=payload,
+        headers=_headers(creds.token),
+        timeout=TIMEOUT,
     )
     if r.status_code != 200:
         try:
@@ -198,12 +211,12 @@ def main():
 
     if not models:
         print("Brak modeli do przetestowania.")
-        exit(1)
+        sys.exit(1)
 
     name, creds, project_id = pick_account()
     if not creds:
         print("Brak działającego konta w accounts/")
-        exit(1)
+        sys.exit(1)
 
     print(f"\n Test {len(models)} modeli  konto: {name}  project: {project_id}\n")
     ok = 0
@@ -222,7 +235,7 @@ def main():
         print(f" {mark}  {dt:>4.1f}s  [{src:>6}]  {model:<32}  {info}")
 
     print(f"\n {ok}/{len(models)} OK  {time.perf_counter() - t0:.0f}s\n")
-    exit(0 if ok == len(models) else 1)
+    sys.exit(0 if ok == len(models) else 1)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,6 @@
 Konwertuje plik SRT na plik TXT z każdym napisem w osobnej linii.
 """
 
-import re
 from pathlib import Path
 
 

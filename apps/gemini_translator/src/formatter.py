@@ -1,10 +1,11 @@
 """
 TextRefactor — SRT/TXT file processing with number conversion and chunking.
 """
+
 import os
 import re
 from dataclasses import dataclass, field
-from typing import List
+
 from natsort import natsorted
 from pysubs2 import SSAEvent, SSAFile
 
@@ -19,7 +20,7 @@ class TextRefactor:
     output_folder: str
     convert_numbers: bool
     output_format: str
-    chunk_method: str = field(default='word')
+    chunk_method: str = field(default="word")
     chunk_limit: int = field(default=250)
     sentence_length: int = field(default=750)
 
@@ -28,8 +29,7 @@ class TextRefactor:
             self._create_output_folders()
             self._process_directory(self.input_folder)
         except Exception as e:
-            console.print(
-                f"Wystąpił błąd podczas przetwarzania plików: {str(e)}", style="red_bold")
+            console.print(f"Wystąpił błąd podczas przetwarzania plików: {e!s}", style="red_bold")
 
     def _create_output_folders(self) -> None:
         os.makedirs(self.output_folder, exist_ok=True)
@@ -39,46 +39,43 @@ class TextRefactor:
         files_to_process = []
         for root, dirs, files in os.walk(directory):
             for file in natsorted(files):
-                if file.endswith(('.txt', '.srt')):
+                if file.endswith((".txt", ".srt")):
                     input_path = os.path.join(root, file)
                     relative_path = os.path.relpath(root, self.input_folder)
-                    output_dir = os.path.join(
-                        self.output_folder, relative_path)
+                    output_dir = os.path.join(self.output_folder, relative_path)
                     files_to_process.append((input_path, output_dir, file))
 
         for input_path, output_dir, file in files_to_process:
             os.makedirs(output_dir, exist_ok=True)
 
-            if file.endswith('.txt') and self.output_format == 'srt':
+            if file.endswith(".txt") and self.output_format == "srt":
                 self._txt_to_srt(input_path, output_dir)
-            elif file.endswith('.srt') and self.output_format == 'txt':
+            elif file.endswith(".srt") and self.output_format == "txt":
                 self._srt_to_txt(input_path, output_dir)
-            elif file.endswith('.srt') and self.output_format == 'srt':
+            elif file.endswith(".srt") and self.output_format == "srt":
                 self._process_input_srt(input_path, output_dir)
-            elif file.endswith('.txt') and self.output_format == 'txt':
+            elif file.endswith(".txt") and self.output_format == "txt":
                 self._process_input_txt(input_path, output_dir)
 
     def _txt_to_srt(self, input_path: str, output_dir: str) -> None:
         try:
-            output_srt_path = os.path.join(
-                output_dir, os.path.basename(input_path).replace('.txt', '.srt'))
+            output_srt_path = os.path.join(output_dir, os.path.basename(input_path).replace(".txt", ".srt"))
 
-            with open(input_path, 'r', encoding='utf-8') as file:
+            with open(input_path, "r", encoding="utf-8") as file:
                 text = file.read()
 
             if not text.strip():
                 text = "."
 
-            text = text.replace('\n\n', '\n').replace('\n', ' ')
+            text = text.replace("\n\n", "\n").replace("\n", " ")
 
             if self.convert_numbers:
                 number_converter = NumberInWords()
                 text = number_converter.convert_numbers_in_text(text)
 
-            text = re.sub(r'\s+\.', '.', text)
+            text = re.sub(r"\s+\.", ".", text)
 
-            initial_chunks = chunk_text(
-                text, method=self.chunk_method, limit=self.chunk_limit)
+            initial_chunks = chunk_text(text, method=self.chunk_method, limit=self.chunk_limit)
             captions = self._create_captions(initial_chunks)
 
             subs = SSAFile()
@@ -86,53 +83,44 @@ class TextRefactor:
                 event = SSAEvent(start=0, end=0, text=caption.strip())
                 subs.append(event)
 
-            subs.save(output_srt_path, encoding='utf-8')
+            subs.save(output_srt_path, encoding="utf-8")
         except Exception as e:
-            console.print(
-                f"Błąd podczas przetwarzania pliku {input_path}: {str(e)}", style="red_bold")
+            console.print(f"Błąd podczas przetwarzania pliku {input_path}: {e!s}", style="red_bold")
 
     def _process_input_srt(self, input_path: str, output_dir: str) -> None:
         try:
-            output_srt_path = os.path.join(
-                output_dir, os.path.basename(input_path))
+            output_srt_path = os.path.join(output_dir, os.path.basename(input_path))
             subs = SSAFile.load(input_path)
 
             if self.convert_numbers:
                 number_converter = NumberInWords()
                 for event in subs:
-                    event.text = number_converter.convert_numbers_in_text(
-                        event.text)
-                    event.text = re.sub(r'\s+\.', '.', event.text)
+                    event.text = number_converter.convert_numbers_in_text(event.text)
+                    event.text = re.sub(r"\s+\.", ".", event.text)
             subs.save(output_srt_path)
         except Exception as e:
-            console.print(
-                f"Błąd podczas przetwarzania pliku {input_path}: {str(e)}", style="red_bold")
+            console.print(f"Błąd podczas przetwarzania pliku {input_path}: {e!s}", style="red_bold")
 
     def _srt_to_txt(self, input_path: str, output_dir: str) -> None:
         try:
-            output_txt_path = os.path.join(
-                output_dir, os.path.basename(input_path).replace('.srt', '.txt'))
+            output_txt_path = os.path.join(output_dir, os.path.basename(input_path).replace(".srt", ".txt"))
             subs = SSAFile.load(input_path)
 
-            full_text = '\n'.join(event.text.replace('\\N', '\n')
-                                  for event in subs)
+            full_text = "\n".join(event.text.replace("\\N", "\n") for event in subs)
             if not full_text.strip():
                 full_text = "."
 
-            sentences = chunk_text(full_text, method='word', limit=100)
+            sentences = chunk_text(full_text, method="word", limit=100)
 
-            with open(output_txt_path, 'w', encoding='utf-8') as file:
-                for sentence in sentences:
-                    file.write(f"{sentence.strip()}\n")
+            with open(output_txt_path, "w", encoding="utf-8") as file:
+                file.writelines(f"{sentence.strip()}\n" for sentence in sentences)
         except Exception as e:
-            console.print(
-                f"Błąd podczas przetwarzania pliku {input_path}: {str(e)}", style="red_bold")
+            console.print(f"Błąd podczas przetwarzania pliku {input_path}: {e!s}", style="red_bold")
 
     def _process_input_txt(self, input_path: str, output_dir: str) -> None:
         try:
-            output_txt_path = os.path.join(
-                output_dir, os.path.basename(input_path))
-            with open(input_path, 'r', encoding='utf-8') as file:
+            output_txt_path = os.path.join(output_dir, os.path.basename(input_path))
+            with open(input_path, "r", encoding="utf-8") as file:
                 text = file.read()
 
             if not text.strip():
@@ -142,18 +130,16 @@ class TextRefactor:
                 number_converter = NumberInWords()
                 text = number_converter.convert_numbers_in_text(text)
 
-            text = re.sub(r'\s+\.', '.', text)
+            text = re.sub(r"\s+\.", ".", text)
 
-            sentences = chunk_text(text, method='word', limit=100)
+            sentences = chunk_text(text, method="word", limit=100)
 
-            with open(output_txt_path, 'w', encoding='utf-8') as file:
-                for sentence in sentences:
-                    file.write(f"{sentence.strip()}\n")
+            with open(output_txt_path, "w", encoding="utf-8") as file:
+                file.writelines(f"{sentence.strip()}\n" for sentence in sentences)
         except Exception as e:
-            console.print(
-                f"Błąd podczas przetwarzania pliku {input_path}: {str(e)}", style="red_bold")
+            console.print(f"Błąd podczas przetwarzania pliku {input_path}: {e!s}", style="red_bold")
 
-    def _create_captions(self, initial_chunks: List[str]) -> List[str]:
+    def _create_captions(self, initial_chunks: list[str]) -> list[str]:
         if self.sentence_length == 0:
             return initial_chunks
 
@@ -172,8 +158,7 @@ class TextRefactor:
             if len(chunk) <= self.sentence_length:
                 add_chunk_to_caption(chunk)
             else:
-                sub_chunks = chunk_text(
-                    chunk, method=self.chunk_method, limit=self.sentence_length // 2)
+                sub_chunks = chunk_text(chunk, method=self.chunk_method, limit=self.sentence_length // 2)
                 for sub_chunk in sub_chunks:
                     add_chunk_to_caption(sub_chunk)
 

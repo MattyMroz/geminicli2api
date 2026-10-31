@@ -6,9 +6,11 @@ Usage:
     uv run server/start.py --add-account    — Add a new Google account via OAuth
     uv run server/start.py --check-accounts — Test all accounts before starting (skip broken ones)
 """
-from dotenv import load_dotenv
-import sys
+
 import os
+import sys
+
+from dotenv import load_dotenv
 
 # Ensure project root is on sys.path
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,8 +22,8 @@ load_dotenv(os.path.join(ROOT_DIR, ".env"))
 
 def add_account():
     """Interactive OAuth flow to add a new Google account."""
-    from server.config import ACCOUNTS_DIR, CREDENTIAL_FILE
     from server.accounts_manager import AccountsManager
+    from server.config import ACCOUNTS_DIR
 
     os.makedirs(ACCOUNTS_DIR, exist_ok=True)
 
@@ -35,10 +37,11 @@ def add_account():
 def start_server():
     """Start the uvicorn server."""
     import uvicorn
+
     from server.config import HOST, PORT
 
     print(f"\n{'=' * 60}")
-    print(f"  geminicli2api — Universal Gemini API Proxy")
+    print("  geminicli2api — Universal Gemini API Proxy")
     print(f"  Starting on http://{HOST}:{PORT}")
     print(f"{'=' * 60}\n")
 

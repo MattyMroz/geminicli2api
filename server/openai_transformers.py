@@ -1,23 +1,23 @@
 """
 OpenAI Format Transformers - Handles conversion between OpenAI and Gemini API formats.
 """
-import json
+
+import re
 import time
 import uuid
-import re
-from typing import Dict, Any
+from typing import Any
 
-from server.models import OpenAIChatCompletionRequest, OpenAIChatCompletionResponse
 from server.config import (
     DEFAULT_SAFETY_SETTINGS,
-    is_search_model,
+    _has_thinking_support,
     get_base_model_name,
     get_thinking_budget,
-    should_include_thoughts,
-    is_nothinking_model,
     is_maxthinking_model,
-    _has_thinking_support,
+    is_nothinking_model,
+    is_search_model,
+    should_include_thoughts,
 )
+from server.models import OpenAIChatCompletionRequest
 
 # MIME type prefixes supported by Gemini API via inlineData
 _SUPPORTED_MIME_PREFIXES = (
@@ -28,7 +28,7 @@ _SUPPORTED_MIME_PREFIXES = (
 )
 
 
-def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dict[str, Any]:
+def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> dict[str, Any]:
     """Transform an OpenAI chat completion request to Gemini format."""
     contents = []
     system_parts = []
@@ -54,7 +54,7 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
             for part in message.content:
                 if part.get("type") == "text":
                     text_value = part.get("text", "") or ""
-                    pattern = re.compile(r'!\[[^\]]*\]\(([^)]+)\)')
+                    pattern = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
                     matches = list(pattern.finditer(text_value))
                     if not matches:
                         parts.append({"text": text_value})
@@ -63,7 +63,7 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                         for m in matches:
                             url = m.group(1).strip().strip('"').strip("'")
                             if m.start() > last_idx:
-                                before = text_value[last_idx:m.start()]
+                                before = text_value[last_idx : m.start()]
                                 if before:
                                     parts.append({"text": before})
                             if url.startswith("data:"):
@@ -71,21 +71,15 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                                     header, base64_data = url.split(",", 1)
                                     mime_type = ""
                                     if ":" in header:
-                                        mime_type = header.split(
-                                            ":", 1)[1].split(";", 1)[0] or ""
+                                        mime_type = header.split(":", 1)[1].split(";", 1)[0] or ""
                                     if mime_type.startswith(_SUPPORTED_MIME_PREFIXES):
-                                        parts.append({
-                                            "inlineData": {"mimeType": mime_type, "data": base64_data}
-                                        })
+                                        parts.append({"inlineData": {"mimeType": mime_type, "data": base64_data}})
                                     else:
-                                        parts.append(
-                                            {"text": text_value[m.start():m.end()]})
+                                        parts.append({"text": text_value[m.start() : m.end()]})
                                 except Exception:
-                                    parts.append(
-                                        {"text": text_value[m.start():m.end()]})
+                                    parts.append({"text": text_value[m.start() : m.end()]})
                             else:
-                                parts.append(
-                                    {"text": text_value[m.start():m.end()]})
+                                parts.append({"text": text_value[m.start() : m.end()]})
                             last_idx = m.end()
                         if last_idx < len(text_value):
                             tail = text_value[last_idx:]
@@ -98,21 +92,19 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                             mime_type, base64_data = image_url.split(";")
                             _, mime_type = mime_type.split(":")
                             _, base64_data = base64_data.split(",")
-                            parts.append({
-                                "inlineData": {"mimeType": mime_type, "data": base64_data}
-                            })
+                            parts.append({"inlineData": {"mimeType": mime_type, "data": base64_data}})
                         except ValueError:
                             continue
             contents.append({"role": role, "parts": parts})
         else:
             text = message.content or ""
             parts = []
-            pattern = re.compile(r'!\[[^\]]*\]\(([^)]+)\)')
+            pattern = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
             last_idx = 0
             for m in pattern.finditer(text):
                 url = m.group(1).strip().strip('"').strip("'")
                 if m.start() > last_idx:
-                    before = text[last_idx:m.start()]
+                    before = text[last_idx : m.start()]
                     if before:
                         parts.append({"text": before})
                 if url.startswith("data:"):
@@ -120,25 +112,21 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
                         header, base64_data = url.split(",", 1)
                         mime_type = ""
                         if ":" in header:
-                            mime_type = header.split(
-                                ":", 1)[1].split(";", 1)[0] or ""
+                            mime_type = header.split(":", 1)[1].split(";", 1)[0] or ""
                         if mime_type.startswith(_SUPPORTED_MIME_PREFIXES):
-                            parts.append({
-                                "inlineData": {"mimeType": mime_type, "data": base64_data}
-                            })
+                            parts.append({"inlineData": {"mimeType": mime_type, "data": base64_data}})
                         else:
-                            parts.append({"text": text[m.start():m.end()]})
+                            parts.append({"text": text[m.start() : m.end()]})
                     except Exception:
-                        parts.append({"text": text[m.start():m.end()]})
+                        parts.append({"text": text[m.start() : m.end()]})
                 else:
-                    parts.append({"text": text[m.start():m.end()]})
+                    parts.append({"text": text[m.start() : m.end()]})
                 last_idx = m.end()
             if last_idx < len(text):
                 tail = text[last_idx:]
                 if tail:
                     parts.append({"text": tail})
-            contents.append(
-                {"role": role, "parts": parts if parts else [{"text": text}]})
+            contents.append({"role": role, "parts": parts if parts else [{"text": text}]})
 
     generation_config = {}
     if openai_request.temperature is not None:
@@ -160,23 +148,19 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
         generation_config["candidateCount"] = openai_request.n
     if openai_request.seed is not None:
         generation_config["seed"] = openai_request.seed
-    if openai_request.response_format is not None:
-        if openai_request.response_format.get("type") == "json_object":
-            generation_config["responseMimeType"] = "application/json"
+    if openai_request.response_format is not None and openai_request.response_format.get("type") == "json_object":
+        generation_config["responseMimeType"] = "application/json"
 
     request_payload = {
         "contents": contents,
         "generationConfig": generation_config,
         "safetySettings": DEFAULT_SAFETY_SETTINGS,
-        "model": get_base_model_name(openai_request.model)
+        "model": get_base_model_name(openai_request.model),
     }
 
     # Add systemInstruction if system messages were present
     if system_parts:
-        request_payload["systemInstruction"] = {
-            "role": "user",
-            "parts": system_parts
-        }
+        request_payload["systemInstruction"] = {"role": "user", "parts": system_parts}
 
     if is_search_model(openai_request.model):
         request_payload["tools"] = [{"googleSearch": {}}]
@@ -187,8 +171,7 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
         if is_nothinking_model(openai_request.model) or is_maxthinking_model(openai_request.model):
             thinking_budget = get_thinking_budget(openai_request.model)
         else:
-            reasoning_effort = getattr(
-                openai_request, 'reasoning_effort', None)
+            reasoning_effort = getattr(openai_request, "reasoning_effort", None)
             if reasoning_effort:
                 base_model = get_base_model_name(openai_request.model)
                 if reasoning_effort == "minimal":
@@ -217,13 +200,13 @@ def openai_request_to_gemini(openai_request: OpenAIChatCompletionRequest) -> Dic
         if thinking_budget is not None:
             request_payload["generationConfig"]["thinkingConfig"] = {
                 "thinkingBudget": thinking_budget,
-                "includeThoughts": should_include_thoughts(openai_request.model)
+                "includeThoughts": should_include_thoughts(openai_request.model),
             }
 
     return request_payload
 
 
-def gemini_response_to_openai(gemini_response: Dict[str, Any], model: str) -> Dict[str, Any]:
+def gemini_response_to_openai(gemini_response: dict[str, Any], model: str) -> dict[str, Any]:
     """Transform a Gemini API response to OpenAI chat completion format."""
     choices = []
 
@@ -250,11 +233,9 @@ def gemini_response_to_openai(gemini_response: Dict[str, Any], model: str) -> Di
                 if isinstance(mime, str) and mime.startswith(_SUPPORTED_MIME_PREFIXES):
                     data_b64 = inline.get("data")
                     if mime.startswith("image/"):
-                        content_parts.append(
-                            f"![image](data:{mime};base64,{data_b64})")
+                        content_parts.append(f"![image](data:{mime};base64,{data_b64})")
                     else:
-                        content_parts.append(
-                            f"[media](data:{mime};base64,{data_b64})")
+                        content_parts.append(f"[media](data:{mime};base64,{data_b64})")
                 continue
 
         content = "\n\n".join([p for p in content_parts if p is not None])
@@ -263,11 +244,13 @@ def gemini_response_to_openai(gemini_response: Dict[str, Any], model: str) -> Di
         if reasoning_content:
             message["reasoning_content"] = reasoning_content
 
-        choices.append({
-            "index": candidate.get("index", 0),
-            "message": message,
-            "finish_reason": _map_finish_reason(candidate.get("finishReason")),
-        })
+        choices.append(
+            {
+                "index": candidate.get("index", 0),
+                "message": message,
+                "finish_reason": _map_finish_reason(candidate.get("finishReason")),
+            }
+        )
 
     return {
         "id": str(uuid.uuid4()),
@@ -278,7 +261,7 @@ def gemini_response_to_openai(gemini_response: Dict[str, Any], model: str) -> Di
     }
 
 
-def gemini_stream_chunk_to_openai(gemini_chunk: Dict[str, Any], model: str, response_id: str) -> Dict[str, Any]:
+def gemini_stream_chunk_to_openai(gemini_chunk: dict[str, Any], model: str, response_id: str) -> dict[str, Any]:
     """Transform a Gemini streaming response chunk to OpenAI streaming format."""
     choices = []
 
@@ -305,11 +288,9 @@ def gemini_stream_chunk_to_openai(gemini_chunk: Dict[str, Any], model: str, resp
                 if isinstance(mime, str) and mime.startswith(_SUPPORTED_MIME_PREFIXES):
                     data_b64 = inline.get("data")
                     if mime.startswith("image/"):
-                        content_parts.append(
-                            f"![image](data:{mime};base64,{data_b64})")
+                        content_parts.append(f"![image](data:{mime};base64,{data_b64})")
                     else:
-                        content_parts.append(
-                            f"[media](data:{mime};base64,{data_b64})")
+                        content_parts.append(f"[media](data:{mime};base64,{data_b64})")
                 continue
 
         content = "\n\n".join([p for p in content_parts if p is not None])
@@ -320,11 +301,13 @@ def gemini_stream_chunk_to_openai(gemini_chunk: Dict[str, Any], model: str, resp
         if reasoning_content:
             delta["reasoning_content"] = reasoning_content
 
-        choices.append({
-            "index": candidate.get("index", 0),
-            "delta": delta,
-            "finish_reason": _map_finish_reason(candidate.get("finishReason")),
-        })
+        choices.append(
+            {
+                "index": candidate.get("index", 0),
+                "delta": delta,
+                "finish_reason": _map_finish_reason(candidate.get("finishReason")),
+            }
+        )
 
     return {
         "id": response_id,

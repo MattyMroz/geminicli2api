@@ -11,20 +11,20 @@ import json
 import logging
 import os
 import threading
+from datetime import UTC
 from pathlib import Path
-from typing import List, Optional
 
+from google.auth.transport.requests import Request as GoogleAuthRequest
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
-from google.auth.transport.requests import Request as GoogleAuthRequest
 
 from server.config import (
     ACCOUNTS_DIR,
     CLIENT_ID,
     CLIENT_SECRET,
     CREDENTIAL_FILE,
-    SCOPES,
     OAUTH_CALLBACK_PORT,
+    SCOPES,
 )
 
 logger = logging.getLogger(__name__)
@@ -33,11 +33,10 @@ logger = logging.getLogger(__name__)
 class AccountsManager:
     """Manages multiple Google OAuth accounts with round-robin rotation."""
 
-    def __init__(self, accounts_dir: Optional[str] = None, validate: bool = False):
-        self._accounts_dir = Path(
-            accounts_dir) if accounts_dir else ACCOUNTS_DIR
+    def __init__(self, accounts_dir: str | None = None, validate: bool = False):
+        self._accounts_dir = Path(accounts_dir) if accounts_dir else ACCOUNTS_DIR
         # [{"file": Path, "creds": Credentials, "project_id": str|None}]
-        self._accounts: List[dict] = []
+        self._accounts: list[dict] = []
         self._current_index: int = 0
         self._lock = asyncio.Lock()
         self._thread_lock = threading.Lock()  # Thread-safe lock for sync rotation
@@ -50,11 +49,11 @@ class AccountsManager:
     def count(self) -> int:
         return len(self._accounts)
 
-    def get_all_accounts(self) -> List[dict]:
+    def get_all_accounts(self) -> list[dict]:
         """Return list of all accounts [{"file": Path, "creds": Credentials, "project_id": str|None}]."""
         return list(self._accounts)
 
-    def get_credentials_sync(self) -> Optional[Credentials]:
+    def get_credentials_sync(self) -> Credentials | None:
         """Synchronous version — returns next credentials (rotates). Thread-safe.
 
         Token refresh and save are performed inside the lock to prevent
@@ -65,8 +64,7 @@ class AccountsManager:
         with self._thread_lock:
             account = self._accounts[self._current_index]
             idx = self._current_index
-            self._current_index = (
-                self._current_index + 1) % len(self._accounts)
+            self._current_index = (self._current_index + 1) % len(self._accounts)
             creds = account["creds"]
             alias = account.get("email") or account["file"].name
             logger.info(f"Using account #{idx + 1} ({alias})")
@@ -75,19 +73,17 @@ class AccountsManager:
                 try:
                     creds.refresh(GoogleAuthRequest())
                     self._save_account(account)
-                    logger.info(
-                        f"Refreshed credentials for {account['file'].name}")
+                    logger.info(f"Refreshed credentials for {account['file'].name}")
                 except Exception as e:
-                    logger.warning(
-                        f"Failed to refresh {account['file'].name}: {e}")
+                    logger.warning(f"Failed to refresh {account['file'].name}: {e}")
         return creds
 
-    async def get_next_credentials(self) -> Optional[Credentials]:
+    async def get_next_credentials(self) -> Credentials | None:
         """Async round-robin rotation with auto-refresh."""
         async with self._lock:
             return self.get_credentials_sync()
 
-    def get_project_id(self, creds: Credentials) -> Optional[str]:
+    def get_project_id(self, creds: Credentials) -> str | None:
         """Get cached project_id for given credentials."""
         for account in self._accounts:
             if account["creds"] is creds:
@@ -128,17 +124,16 @@ class AccountsManager:
         # Fallback: load legacy oauth_creds.json if no accounts found
         if not self._accounts and os.path.exists(CREDENTIAL_FILE):
             account = self._load_single_account(Path(CREDENTIAL_FILE))
-            if account:
-                if not self._validate or self._health_check(account):
-                    self._accounts.append(account)
-                    logger.info(f"Loaded legacy credentials: {CREDENTIAL_FILE}")
+            if account and (not self._validate or self._health_check(account)):
+                self._accounts.append(account)
+                logger.info(f"Loaded legacy credentials: {CREDENTIAL_FILE}")
 
-        logger.info(
-            f"AccountsManager: {len(self._accounts)} account(s) loaded")
+        logger.info(f"AccountsManager: {len(self._accounts)} account(s) loaded")
 
-    def _fetch_email(self, creds: Credentials) -> Optional[str]:
+    def _fetch_email(self, creds: Credentials) -> str | None:
         """Fetch Google account email via userinfo endpoint."""
         import requests as _requests
+
         try:
             resp = _requests.get(
                 "https://www.googleapis.com/oauth2/v1/userinfo",
@@ -147,14 +142,15 @@ class AccountsManager:
             )
             if resp.status_code == 200:
                 return resp.json().get("email")
-        except Exception:
+        except Exception:  # noqa: S110 - the account email is optional, the account works without it
             pass
         return None
 
     def _health_check(self, account: dict) -> bool:
         """Send a minimal test request. Returns True if account is working."""
-        import requests as _requests
         import platform
+
+        import requests as _requests
 
         alias = account.get("email") or account["file"].name
         creds = account["creds"]
@@ -179,7 +175,9 @@ class AccountsManager:
             try:
                 resp = _requests.post(
                     f"{endpoint}/v1internal:loadCodeAssist",
-                    json={"metadata": meta}, headers=headers, timeout=30,
+                    json={"metadata": meta},
+                    headers=headers,
+                    timeout=30,
                 )
                 resp.raise_for_status()
                 project_id = resp.json().get("cloudaicompanionProject")
@@ -211,28 +209,26 @@ class AccountsManager:
         try:
             resp = _requests.post(
                 f"{endpoint}/v1internal:generateContent",
-                json=payload, headers=headers, timeout=60,
+                json=payload,
+                headers=headers,
+                timeout=60,
             )
             ok = resp.status_code == 200
             if not ok:
-                logger.warning(
-                    f"health_check HTTP {resp.status_code} for {alias}: "
-                    f"{resp.text[:120]}"
-                )
+                logger.warning(f"health_check HTTP {resp.status_code} for {alias}: {resp.text[:120]}")
             return ok
         except Exception as e:
             logger.warning(f"health_check request failed for {alias}: {e}")
             return False
 
-    def _load_single_account(self, filepath: Path) -> Optional[dict]:
+    def _load_single_account(self, filepath: Path) -> dict | None:
         """Load a single credential JSON file."""
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             if not data.get("refresh_token"):
-                logger.warning(
-                    f"No refresh_token in {filepath.name}, skipping")
+                logger.warning(f"No refresh_token in {filepath.name}, skipping")
                 return None
 
             creds_data = data.copy()
@@ -248,17 +244,16 @@ class AccountsManager:
                 expiry_str = creds_data["expiry"]
                 if isinstance(expiry_str, str) and ("+00:00" in expiry_str or "Z" in expiry_str):
                     try:
-                        from datetime import datetime, timezone
+                        from datetime import datetime
+
                         if "+00:00" in expiry_str:
                             parsed = datetime.fromisoformat(expiry_str)
                         elif expiry_str.endswith("Z"):
-                            parsed = datetime.fromisoformat(
-                                expiry_str.replace("Z", "+00:00"))
+                            parsed = datetime.fromisoformat(expiry_str.replace("Z", "+00:00"))  # noqa: FURB162 - the replace keeps a date-only 'YYYY-MM-DDZ' parseable; the plain call rejects it
                         else:
                             parsed = datetime.fromisoformat(expiry_str)
                         ts = parsed.timestamp()
-                        creds_data["expiry"] = datetime.fromtimestamp(
-                            ts, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+                        creds_data["expiry"] = datetime.fromtimestamp(ts, tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
                     except Exception:
                         del creds_data["expiry"]
 
@@ -301,10 +296,9 @@ class AccountsManager:
             "token_uri": "https://oauth2.googleapis.com/token",
         }
         if creds.expiry:
-            from datetime import timezone
             expiry = creds.expiry
             if expiry.tzinfo is None:
-                expiry = expiry.replace(tzinfo=timezone.utc)
+                expiry = expiry.replace(tzinfo=UTC)
             data["expiry"] = expiry.isoformat()
         if account.get("project_id"):
             data["project_id"] = account["project_id"]
@@ -318,10 +312,11 @@ class AccountsManager:
 
     # --- Add new account (interactive OAuth flow) ---
 
-    def _onboard_new_account(self, creds) -> Optional[str]:
+    def _onboard_new_account(self, creds) -> str | None:
         """Onboard a new account to Gemini Code Assist. Returns project_id or None."""
-        import requests
         import time
+
+        import requests
 
         if creds.expired and creds.refresh_token:
             creds.refresh(GoogleAuthRequest())
@@ -329,7 +324,7 @@ class AccountsManager:
         headers = {
             "Authorization": f"Bearer {creds.token}",
             "Content-Type": "application/json",
-            "User-Agent": f"GeminiCLI/0.1.5",
+            "User-Agent": "GeminiCLI/0.1.5",
         }
         meta = {"ideType": "IDE_UNSPECIFIED", "platform": "PLATFORM_UNSPECIFIED", "pluginType": "GEMINI"}
 
@@ -337,7 +332,9 @@ class AccountsManager:
             # 1. Check current state
             resp = requests.post(
                 "https://cloudcode-pa.googleapis.com/v1internal:loadCodeAssist",
-                json={"metadata": meta}, headers=headers, timeout=30,
+                json={"metadata": meta},
+                headers=headers,
+                timeout=30,
             )
             resp.raise_for_status()
             data = resp.json()
@@ -364,7 +361,9 @@ class AccountsManager:
             while time.time() < deadline:
                 r = requests.post(
                     "https://cloudcode-pa.googleapis.com/v1internal:onboardUser",
-                    json=payload, headers=headers, timeout=30,
+                    json=payload,
+                    headers=headers,
+                    timeout=30,
                 )
                 r.raise_for_status()
                 if r.json().get("done"):
@@ -377,7 +376,9 @@ class AccountsManager:
             # 3. Fetch project_id
             resp2 = requests.post(
                 "https://cloudcode-pa.googleapis.com/v1internal:loadCodeAssist",
-                json={"metadata": meta}, headers=headers, timeout=30,
+                json={"metadata": meta},
+                headers=headers,
+                timeout=30,
             )
             resp2.raise_for_status()
             return resp2.json().get("cloudaicompanionProject")
@@ -389,7 +390,7 @@ class AccountsManager:
     def add_account_interactive(self) -> bool:
         """Run OAuth flow interactively to add a new account."""
         from http.server import BaseHTTPRequestHandler, HTTPServer
-        from urllib.parse import urlparse, parse_qs
+        from urllib.parse import parse_qs, urlparse
 
         class _Handler(BaseHTTPRequestHandler):
             auth_code = None
@@ -402,8 +403,7 @@ class AccountsManager:
                     self.send_response(200)
                     self.send_header("Content-type", "text/html")
                     self.end_headers()
-                    self.wfile.write(
-                        b"<h1>OK! Account added. You can close this window.</h1>")
+                    self.wfile.write(b"<h1>OK! Account added. You can close this window.</h1>")
                 else:
                     self.send_response(400)
                     self.send_header("Content-type", "text/html")
@@ -423,9 +423,9 @@ class AccountsManager:
         }
 
         flow = Flow.from_client_config(
-            client_config, scopes=SCOPES, redirect_uri=f"http://localhost:{OAUTH_CALLBACK_PORT}")
-        auth_url, _ = flow.authorization_url(
-            access_type="offline", prompt="consent", include_granted_scopes="true")
+            client_config, scopes=SCOPES, redirect_uri=f"http://localhost:{OAUTH_CALLBACK_PORT}"
+        )
+        auth_url, _ = flow.authorization_url(access_type="offline", prompt="consent", include_granted_scopes="true")
 
         print(f"\n{'=' * 60}")
         print("DODAWANIE NOWEGO KONTA GOOGLE")
@@ -442,6 +442,7 @@ class AccountsManager:
 
         # Patch validation
         import oauthlib.oauth2.rfc6749.parameters
+
         orig = oauthlib.oauth2.rfc6749.parameters.validate_token_parameters
         oauthlib.oauth2.rfc6749.parameters.validate_token_parameters = lambda p: None
 

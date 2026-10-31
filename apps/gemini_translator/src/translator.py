@@ -6,22 +6,19 @@ Adapted from GeminiTranslatorCOTE.py:
 - No API keys needed — proxy handles all OAuth/auth
 - Supports: text (SRT), image, manga, subtitle, OCR modes
 """
+
+import asyncio
+import json
 import os
 import re
-import json
-import asyncio
 import shutil
-import time
-from pathlib import Path
-from typing import List, Deque
 from collections import deque
 
 import pysrt
 from natsort import natsorted
-
 from rich.markup import escape
 
-from apps.gemini_translator.src.api_client import GeminiAPIClient, FoundryClient
+from apps.gemini_translator.src.api_client import FoundryClient, GeminiAPIClient
 from apps.gemini_translator.src.utils.console import console
 
 # Constants
@@ -75,37 +72,40 @@ class GeminiTranslator:
         # Concurrency controls
         self.semaphore = asyncio.Semaphore(concurrent_requests)
         self.write_lock = asyncio.Lock()
-        self.file_queue: Deque[str] = deque()
+        self.file_queue: deque[str] = deque()
 
         # Stats
         self._translated_groups = 0
         self._failed_groups = 0
 
-        self.supported_image_extensions = (
-            '.png', '.jpg', '.jpeg', '.webp', '.heic', '.heif')
+        self.supported_image_extensions = (".png", ".jpg", ".jpeg", ".webp", ".heic", ".heif")
 
     async def close(self):
         """Close the HTTP client."""
         await self.api_client.close()
 
     def _get_mime_type(self, path: str) -> str:
-        extension = path.lower().split('.')[-1]
+        extension = path.lower().split(".")[-1]
         mime_types = {
-            'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
-            'png': 'image/png', 'webp': 'image/webp',
-            'heic': 'image/heic', 'heif': 'image/heif'
+            "jpg": "image/jpeg",
+            "jpeg": "image/jpeg",
+            "png": "image/png",
+            "webp": "image/webp",
+            "heic": "image/heic",
+            "heif": "image/heif",
         }
-        return mime_types.get(extension, 'application/octet-stream')
+        return mime_types.get(extension, "application/octet-stream")
 
-    async def translate_with_api(self, text: str, prompt_main: str, prompt_helper: str, image_path: str = None, use_json: bool = False) -> str:
+    async def translate_with_api(
+        self, text: str, prompt_main: str, prompt_helper: str, image_path: str | None = None, use_json: bool = False
+    ) -> str:
         """Send translation request via proxy."""
         system_prompt = f"{prompt_main}\n\n{prompt_helper}"
 
         if image_path:
             try:
-                console.print(
-                    f"Processing image: {image_path}", style="purple_bold")
-                with open(image_path, "rb") as f:
+                console.print(f"Processing image: {image_path}", style="purple_bold")
+                with open(image_path, "rb") as f:  # noqa: ASYNC230 - small local file, read or written synchronously on purpose
                     image_data = f.read()
                 mime_type = self._get_mime_type(image_path)
                 response = await self.api_client.generate_with_image(
@@ -140,17 +140,18 @@ class GeminiTranslator:
             for attempt in range(MAX_RETRIES):
                 try:
                     response = await self.translate_with_api("", prompt_main, prompt_helper, image_path)
-                    console.print(
-                        f"\n[green_bold]OCR tekst:[/green_bold]\n{escape(response)}", style='white_bold')
+                    console.print(f"\n[green_bold]OCR tekst:[/green_bold]\n{escape(response)}", style="white_bold")
 
                     async with self.write_lock:
-                        with open(output_file, 'a', encoding='utf-8') as f:
+                        with open(output_file, "a", encoding="utf-8") as f:  # noqa: ASYNC230 - small local file, read or written synchronously on purpose
                             f.write(response + "\n\n")
                     return response
                 except Exception as e:
                     await self.handle_translation_error(e, attempt)
             self._failed_groups += 1
-            console.print(f"BŁĄD: OCR nie powiodło się po {MAX_RETRIES} próbach: {image_path}", style="red_bold", markup=False)
+            console.print(
+                f"BŁĄD: OCR nie powiodło się po {MAX_RETRIES} próbach: {image_path}", style="red_bold", markup=False
+            )
             return ""
 
     async def process_folder_ocr(self, folder_path: str) -> None:
@@ -163,77 +164,80 @@ class GeminiTranslator:
         folder_name = os.path.basename(folder_path)
         output_file = os.path.join(self.output_folder, f"{folder_name}.txt")
         os.makedirs(self.output_folder, exist_ok=True)
-        open(output_file, 'w', encoding='utf-8').close()
+        open(output_file, "w", encoding="utf-8").close()  # noqa: ASYNC230 - small local file, read or written synchronously on purpose
 
         prompt_main, prompt_helper = self.load_prompts()
-        tasks = [asyncio.create_task(self.ocr_image(
-            ip, prompt_main, prompt_helper, output_file)) for ip in files]
+        tasks = [asyncio.create_task(self.ocr_image(ip, prompt_main, prompt_helper, output_file)) for ip in files]
         await asyncio.gather(*tasks)
-        console.print(
-            f"Saved OCR results for {folder_name} to {output_file}", style="green_bold")
+        console.print(f"Saved OCR results for {folder_name} to {output_file}", style="green_bold")
 
     async def process_all_folders_ocr(self):
-        tasks = [asyncio.create_task(self.process_folder_ocr(
-            root)) for root, dirs, _ in os.walk(self.input_folder)]
+        tasks = [asyncio.create_task(self.process_folder_ocr(root)) for root, dirs, _ in os.walk(self.input_folder)]
         await asyncio.gather(*tasks)
 
     # --- SRT translation ---
 
-    async def translate_group(self, text: str, prompt_main: str, prompt_helper: str, group: List[pysrt.SubRipItem], subs: pysrt.SubRipFile, output_path: str, image_path: str = None):
+    async def translate_group(
+        self,
+        text: str,
+        prompt_main: str,
+        prompt_helper: str,
+        group: list[pysrt.SubRipItem],
+        subs: pysrt.SubRipFile,
+        output_path: str,
+        image_path: str | None = None,
+    ):
         async with self.semaphore:
             error_prefix = ""
             expected_count = len(group)
             for attempt in range(MAX_RETRIES):
                 try:
                     retry_text = f"{error_prefix}{text}" if error_prefix else text
+                    console.print("[yellow_bold]Napisy do tłumaczenia:[/yellow_bold]\n" + escape(retry_text))
+                    response = await self.translate_with_api(
+                        retry_text, prompt_main, prompt_helper, image_path, use_json=True
+                    )
                     console.print(
-                        "[yellow_bold]Napisy do tłumaczenia:[/yellow_bold]\n" + escape(retry_text))
-                    response = await self.translate_with_api(retry_text, prompt_main, prompt_helper, image_path, use_json=True)
-                    console.print(
-                        f"\n[green_bold]Przetłumaczone napisy:[/green_bold]\n{escape(response)}", style='white_bold')
+                        f"\n[green_bold]Przetłumaczone napisy:[/green_bold]\n{escape(response)}", style="white_bold"
+                    )
 
                     translated_lines = self.format_response(response)
                     if translated_lines is not None:
                         if len(translated_lines) != expected_count:
                             console.print(
                                 f"BŁĄD: liczba napisów po tłumaczeniu ({len(translated_lines)}) != przed ({expected_count}) [próba {attempt + 1}/{MAX_RETRIES}]",
-                                style="red_bold"
+                                style="red_bold",
                             )
                             error_prefix = (
                                 f"BŁĄD W POPRZEDNIEJ ODPOWIEDZI: Zwróciłeś {len(translated_lines)} elementów zamiast {expected_count}. "
-                                f"Tym razem zwróć DOKŁADNIE {expected_count} elementów w tablicy \"t\". "
+                                f'Tym razem zwróć DOKŁADNIE {expected_count} elementów w tablicy "t". '
                                 f"Każdy napis [N] = jeden element. NIE POMIJAJ ŻADNEGO.\n\n"
                             )
                             # On last attempt — save whatever we got (partial is better than nothing)
                             if attempt == MAX_RETRIES - 1:
-                                console.print(
-                                    "Ostatnia próba — zapisuję częściowy wynik",
-                                    style="yellow_bold"
-                                )
+                                console.print("Ostatnia próba — zapisuję częściowy wynik", style="yellow_bold")
                                 self._apply_partial_translation(group, translated_lines)
                                 async with self.write_lock:
-                                    subs.save(output_path, encoding='utf-8')
+                                    subs.save(output_path, encoding="utf-8")
                                 self._failed_groups += 1
                                 return
                             continue
                         else:
                             if self.review_model:
-                                translated_lines = await self.review_group(
-                                    group, translated_lines, prompt_helper)
+                                translated_lines = await self.review_group(group, translated_lines, prompt_helper)
                             self.update_subtitles(group, translated_lines)
                             async with self.write_lock:
-                                subs.save(output_path, encoding='utf-8')
+                                subs.save(output_path, encoding="utf-8")
                             self._translated_groups += 1
                             return
                     else:
                         # format_response returned None — no JSON parsed
                         console.print(
-                            f"BŁĄD: Brak poprawnego JSON [próba {attempt + 1}/{MAX_RETRIES}]",
-                            style="red_bold"
+                            f"BŁĄD: Brak poprawnego JSON [próba {attempt + 1}/{MAX_RETRIES}]", style="red_bold"
                         )
                         error_prefix = (
                             f"BŁĄD W POPRZEDNIEJ ODPOWIEDZI: Nie zwróciłeś poprawnego JSON. "
-                            f"Odpowiedz WYŁĄCZNIE czystym JSON: {{\"t\": [\"napis1\", ..., \"napis{expected_count}\"]}}. "
+                            f'Odpowiedz WYŁĄCZNIE czystym JSON: {{"t": ["napis1", ..., "napis{expected_count}"]}}. '
                             f"Bez markdown, bez komentarzy, bez tekstu przed/po JSON.\n\n"
                         )
                         if attempt == MAX_RETRIES - 1:
@@ -243,20 +247,21 @@ class GeminiTranslator:
                 except Exception as e:
                     await self.handle_translation_error(e, attempt)
             self._failed_groups += 1
-            console.print(
-                f"BŁĄD: Nie udało się przetłumaczyć grupy po {MAX_RETRIES} próbach.",
-                style="red_bold"
-            )
+            console.print(f"BŁĄD: Nie udało się przetłumaczyć grupy po {MAX_RETRIES} próbach.", style="red_bold")
 
     # --- Stage 2: stylistic review ---
 
-    async def review_group(self, group: List[pysrt.SubRipItem], translated_lines: List[str], prompt_helper: str) -> List[str]:
+    async def review_group(
+        self, group: list[pysrt.SubRipItem], translated_lines: list[str], prompt_helper: str
+    ) -> list[str]:
         """Stylistic pass by the review model; falls back to the stage-1 text on failure."""
-        with open(os.path.join(self.prompts_folder, 'prompt_review.txt'), 'r', encoding='utf-8') as f:
+        with open(os.path.join(self.prompts_folder, "prompt_review.txt"), "r", encoding="utf-8") as f:  # noqa: ASYNC230 - small local file, read or written synchronously on purpose
             review_prompt = f.read()
         system_prompt = f"{review_prompt}\n\n{prompt_helper}"
-        parts = [f"[{i}]\nORYGINAŁ: {sub.text}\nTŁUMACZENIE: {tr}"
-                 for i, (sub, tr) in enumerate(zip(group, translated_lines), start=1)]
+        parts = [
+            f"[{i}]\nORYGINAŁ: {sub.text}\nTŁUMACZENIE: {tr}"
+            for i, (sub, tr) in enumerate(zip(group, translated_lines), start=1)
+        ]
         text = f"Popraw {len(parts)} napisów:\n\n" + "\n\n".join(parts)
 
         for attempt in range(3):
@@ -272,15 +277,14 @@ class GeminiTranslator:
                 reviewed = self.format_response(response)
                 if reviewed is not None and len(reviewed) == len(translated_lines):
                     console.print(
-                        f"\n[green_bold]Po korekcie ({escape(self.review_model)}):[/green_bold]\n{escape(response)}", style='white_bold')
+                        f"\n[green_bold]Po korekcie ({escape(self.review_model)}):[/green_bold]\n{escape(response)}",
+                        style="white_bold",
+                    )
                     return reviewed
-                console.print(
-                    f"BŁĄD korekty: zła liczba napisów [próba {attempt + 1}/3]", style="red_bold")
+                console.print(f"BŁĄD korekty: zła liczba napisów [próba {attempt + 1}/3]", style="red_bold")
             except Exception as e:
-                console.print(
-                    f"BŁĄD korekty (próba {attempt + 1}/3): {e}", style="red_bold", markup=False)
-        console.print("Korekta nieudana — zostaje tłumaczenie z etapu 1",
-                      style="yellow_bold")
+                console.print(f"BŁĄD korekty (próba {attempt + 1}/3): {e}", style="red_bold", markup=False)
+        console.print("Korekta nieudana — zostaje tłumaczenie z etapu 1", style="yellow_bold")
         return translated_lines
 
     # --- Image / Manga modes ---
@@ -291,11 +295,11 @@ class GeminiTranslator:
                 try:
                     response = await self.translate_with_api("", prompt_main, prompt_helper, image_path)
                     console.print(
-                        f"\n[green_bold]Przetłumaczony obraz:[/green_bold]\n{escape(response)}", style='white_bold')
+                        f"\n[green_bold]Przetłumaczony obraz:[/green_bold]\n{escape(response)}", style="white_bold"
+                    )
                     translated_text = self._format_response_plain(response)
                     if translated_text:
-                        self.save_image_translation_as_srt(
-                            translated_text, output_path)
+                        self.save_image_translation_as_srt(translated_text, output_path)
                         return
                 except Exception as e:
                     await self.handle_translation_error(e, attempt)
@@ -306,15 +310,14 @@ class GeminiTranslator:
         async with self.semaphore:
             for attempt in range(MAX_RETRIES):
                 try:
-                    console.print(
-                        "[yellow_bold]Tekst do tłumaczenia:[/yellow_bold]\n" + escape(text))
+                    console.print("[yellow_bold]Tekst do tłumaczenia:[/yellow_bold]\n" + escape(text))
                     response = await self.translate_with_api(text, prompt_main, prompt_helper, image_path)
                     console.print(
-                        f"\n[green_bold]Przetłumaczony tekst:[/green_bold]\n{escape(response)}", style='white_bold')
+                        f"\n[green_bold]Przetłumaczony tekst:[/green_bold]\n{escape(response)}", style="white_bold"
+                    )
                     translated_text = self._format_response_plain(response)
                     if translated_text:
-                        self.save_image_translation_as_srt(
-                            translated_text, output_path.replace('.txt', '.srt'))
+                        self.save_image_translation_as_srt(translated_text, output_path.replace(".txt", ".srt"))
                         return
                 except Exception as e:
                     await self.handle_translation_error(e, attempt)
@@ -328,15 +331,15 @@ class GeminiTranslator:
         text = response.strip()
         # Strip markdown code fences if present
         if text.startswith("```"):
-            text = re.sub(r'^```\w*\n?', '', text)
-            text = re.sub(r'\n?```$', '', text)
+            text = re.sub(r"^```\w*\n?", "", text)
+            text = re.sub(r"\n?```$", "", text)
             text = text.strip()
 
         try:
             data = json.loads(text)
         except json.JSONDecodeError:
             # Fallback: try to extract JSON from response
-            match = re.search(r'\{.*\}', text, re.DOTALL)
+            match = re.search(r"\{.*\}", text, re.DOTALL)
             if match:
                 try:
                     data = json.loads(match.group())
@@ -378,31 +381,29 @@ class GeminiTranslator:
 
         return result
 
-    def update_subtitles(self, group: List[pysrt.SubRipItem], translated_lines: List[str]):
+    def update_subtitles(self, group: list[pysrt.SubRipItem], translated_lines: list[str]):
         for sub, trans_text in zip(group, translated_lines):
             sub.text = trans_text.strip()
 
-    def _apply_partial_translation(self, group: List[pysrt.SubRipItem], translated_lines: List[str]):
+    def _apply_partial_translation(self, group: list[pysrt.SubRipItem], translated_lines: list[str]):
         """Apply partial translation — fill as many subs as we have translations for."""
         for i, trans_text in enumerate(translated_lines):
             if i < len(group):
                 group[i].text = trans_text
 
-
     def save_image_translation_as_srt(self, translated_text: str, output_path: str):
-        lines = translated_text.split(' @@\n')
+        lines = translated_text.split(" @@\n")
         subs = pysrt.SubRipFile()
         for i, line in enumerate(lines, start=1):
             start_time = pysrt.SubRipTime(0, 0, 0)
             end_time = pysrt.SubRipTime(0, 0, 0)
-            item = pysrt.SubRipItem(
-                index=i, start=start_time, end=end_time, text=line)
+            item = pysrt.SubRipItem(index=i, start=start_time, end=end_time, text=line)
             subs.append(item)
-        subs.save(output_path, encoding='utf-8')
+        subs.save(output_path, encoding="utf-8")
 
     def _format_response_plain(self, response: str) -> str:
         """Legacy plain text format response (for image/manga modes)."""
-        translated_text = response.rstrip(" @@")
+        translated_text = response.rstrip(" @")
         translated_text = re.sub(r"\u25cd+\d+\.\s*", "", translated_text)
         translated_text = translated_text.replace(" \u25cd\u25cd\u25cd\u25cd, ", ",\n")
         translated_text = translated_text.replace(" \u25cd\u25cd\u25cd\u25cd ", "\n")
@@ -413,32 +414,34 @@ class GeminiTranslator:
         error_message = str(e)
         console.print(
             f"Wystąpił błąd podczas tłumaczenia (próba {attempt + 1}/{MAX_RETRIES}): {error_message}",
-            style="red_bold", markup=False
+            style="red_bold",
+            markup=False,
         )
 
         if attempt >= MAX_RETRIES - 1:
-            console.print(
-                f"Nie udało się przetłumaczyć po {MAX_RETRIES} próbach.", style="red_bold")
+            console.print(f"Nie udało się przetłumaczyć po {MAX_RETRIES} próbach.", style="red_bold")
             return
 
-        wait_time = min(INITIAL_BACKOFF * (2 ** attempt), MAX_BACKOFF)
+        wait_time = min(INITIAL_BACKOFF * (2**attempt), MAX_BACKOFF)
         console.print(f"Czekam {wait_time:.1f}s przed ponowną próbą...", style="yellow_bold")
         await asyncio.sleep(wait_time)
 
     # --- Main translation flow ---
 
-    async def translate_srt(self, input_path: str, output_path: str, translated_line_count: int, image_path: str = None):
+    async def translate_srt(
+        self, input_path: str, output_path: str, translated_line_count: int, image_path: str | None = None
+    ):
         prompt_main, prompt_helper = self.load_prompts()
 
-        if self.mode == 'image':
-            await self.translate_image(prompt_main, prompt_helper, input_path, output_path.replace('.png', '.srt'))
+        if self.mode == "image":
+            await self.translate_image(prompt_main, prompt_helper, input_path, output_path.replace(".png", ".srt"))
             return
-        elif self.mode == 'manga':
-            with open(input_path, 'r', encoding='utf-8') as f:
+        elif self.mode == "manga":
+            with open(input_path, "r", encoding="utf-8") as f:  # noqa: ASYNC230 - small local file, read or written synchronously on purpose
                 text = f.read()
             await self.translate_manga(prompt_main, prompt_helper, text, image_path, output_path)
             return
-        elif self.mode == 'ocr':
+        elif self.mode == "ocr":
             await self.process_all_folders_ocr()
             return
 
@@ -446,17 +449,17 @@ class GeminiTranslator:
         if not os.path.exists(output_path):
             shutil.copy2(input_path, output_path)
 
-        subs = pysrt.open(output_path, encoding='utf-8')
-        groups = [subs[i:i+translated_line_count]
-                  for i in range(0, len(subs), translated_line_count)]
+        subs = pysrt.open(output_path, encoding="utf-8")
+        groups = [subs[i : i + translated_line_count] for i in range(0, len(subs), translated_line_count)]
 
         tasks = []
         counter = 1
         for group in groups:
             text = self.prepare_text_for_translation(group, counter)
             counter += len(group)
-            task = asyncio.create_task(self.translate_group(
-                text, prompt_main, prompt_helper, group, subs, output_path, image_path))
+            task = asyncio.create_task(
+                self.translate_group(text, prompt_main, prompt_helper, group, subs, output_path, image_path)
+            )
             tasks.append(task)
 
         await asyncio.gather(*tasks)
@@ -467,29 +470,28 @@ class GeminiTranslator:
 
     def load_prompts(self):
         prompt_files = {
-            'text': ('prompt_main.txt', 'prompt_helper.txt'),
-            'image': ('prompt_main_image.txt', 'prompt_helper_image.txt'),
-            'manga': ('prompt_main_manga.txt', 'prompt_helper_manga.txt'),
-            'subtitle': ('prompt_main_subtitle.txt', 'prompt_helper_subtitle.txt'),
-            'ocr': ('prompt_main_ocr.txt', 'prompt_helper_ocr.txt')
+            "text": ("prompt_main.txt", "prompt_helper.txt"),
+            "image": ("prompt_main_image.txt", "prompt_helper_image.txt"),
+            "manga": ("prompt_main_manga.txt", "prompt_helper_manga.txt"),
+            "subtitle": ("prompt_main_subtitle.txt", "prompt_helper_subtitle.txt"),
+            "ocr": ("prompt_main_ocr.txt", "prompt_helper_ocr.txt"),
         }
 
-        main_file, helper_file = prompt_files.get(
-            self.mode, ('prompt_main.txt', 'prompt_helper.txt'))
+        main_file, helper_file = prompt_files.get(self.mode, ("prompt_main.txt", "prompt_helper.txt"))
 
-        with open(os.path.join(self.prompts_folder, main_file), 'r', encoding='utf-8') as f:
+        with open(os.path.join(self.prompts_folder, main_file), "r", encoding="utf-8") as f:
             prompt_main = f.read()
-        with open(os.path.join(self.prompts_folder, helper_file), 'r', encoding='utf-8') as f:
+        with open(os.path.join(self.prompts_folder, helper_file), "r", encoding="utf-8") as f:
             prompt_helper = f.read()
 
         return prompt_main, prompt_helper
 
-    def prepare_text_for_translation(self, group: List[pysrt.SubRipItem], counter: int) -> str:
+    def prepare_text_for_translation(self, group: list[pysrt.SubRipItem], counter: int) -> str:
         lines = []
         for sub in group:
             # Clean old markers if re-translating
             clean_text = re.sub(r"◍+\d+\.\s*", "", sub.text)
-            clean_text = clean_text.replace(" ◍◍◍◍ ", "\n").replace(" ◍◍◍◍", "").rstrip(" @@")
+            clean_text = clean_text.replace(" ◍◍◍◍ ", "\n").replace(" ◍◍◍◍", "").rstrip(" @")
             lines.append(f"[{counter}]\n{clean_text}")
             counter += 1
         return f"Przetłumacz {len(lines)} napisów:\n\n" + "\n\n".join(lines)
@@ -497,71 +499,62 @@ class GeminiTranslator:
     async def translate_file(self, input_path: str, output_path: str):
         try:
             image_path = None
-            if self.mode == 'manga':
-                image_path = input_path.replace(
-                    'transcription', 'transcription_images').replace('.txt', '.png')
-                with open(input_path, 'r', encoding='utf-8') as f:
+            if self.mode == "manga":
+                image_path = input_path.replace("transcription", "transcription_images").replace(".txt", ".png")
+                with open(input_path, "r", encoding="utf-8") as f:  # noqa: ASYNC230 - small local file, read or written synchronously on purpose
                     text_content = f.read()
                 prompts = self.load_prompts()
                 await self.translate_manga(prompts[0], prompts[1], text_content, image_path, output_path)
-            elif self.mode == 'image':
+            elif self.mode == "image":
                 image_path = input_path
                 prompts = self.load_prompts()
-                await self.translate_image(prompts[0], prompts[1], image_path, output_path.replace('.png', '.srt'))
-            elif self.mode == 'ocr':
+                await self.translate_image(prompts[0], prompts[1], image_path, output_path.replace(".png", ".srt"))
+            elif self.mode == "ocr":
                 await self.process_all_folders_ocr()
             else:
                 await self.translate_srt(input_path, output_path, self.translated_line_count, image_path)
-            console.print(
-                f"Zakończono tłumaczenie pliku: {input_path}", style="green_bold")
+            console.print(f"Zakończono tłumaczenie pliku: {input_path}", style="green_bold")
         except Exception as e:
-            console.print(
-                f"Błąd podczas tłumaczenia pliku {input_path}: {str(e)}", style="red_bold", markup=False)
+            console.print(f"Błąd podczas tłumaczenia pliku {input_path}: {e!s}", style="red_bold", markup=False)
 
     async def process_file(self, file_path: str):
-        if self.mode == 'manga':
-            input_path = os.path.join(
-                self.input_folder, 'transcription', file_path)
+        if self.mode == "manga":
+            input_path = os.path.join(self.input_folder, "transcription", file_path)
         else:
             input_path = os.path.join(self.input_folder, file_path)
-        relative_path = os.path.relpath(
-            os.path.dirname(input_path), self.input_folder)
+        relative_path = os.path.relpath(os.path.dirname(input_path), self.input_folder)
         output_subdir = os.path.join(self.output_folder, relative_path)
         os.makedirs(output_subdir, exist_ok=True)
         output_path = os.path.join(output_subdir, os.path.basename(file_path))
 
-        console.print(
-            f"Rozpoczęto tłumaczenie pliku: {input_path}", style="blue_bold")
+        console.print(f"Rozpoczęto tłumaczenie pliku: {input_path}", style="blue_bold")
         await self.translate_file(input_path, output_path)
 
     async def translate_all_files(self):
-        if self.mode == 'ocr':
+        if self.mode == "ocr":
             await self.process_all_folders_ocr()
             return
 
         all_files = []
-        if self.mode == 'manga':
-            input_folder = os.path.join(self.input_folder, 'transcription')
-        elif self.mode == 'image':
+        if self.mode == "manga":
+            input_folder = os.path.join(self.input_folder, "transcription")
+        elif self.mode == "image":
             input_folder = self.input_folder
         else:
             input_folder = self.input_folder
 
         for root, _, files in os.walk(input_folder):
             for file in files:
-                if self.mode == 'image':
+                if self.mode == "image":
                     if file.lower().endswith(self.supported_image_extensions):
-                        relative_path = os.path.relpath(
-                            os.path.join(root, file), input_folder)
+                        relative_path = os.path.relpath(os.path.join(root, file), input_folder)
                         all_files.append(relative_path)
-                elif self.mode == 'manga':
-                    if file.endswith('.txt'):
-                        relative_path = os.path.relpath(
-                            os.path.join(root, file), input_folder)
+                elif self.mode == "manga":
+                    if file.endswith(".txt"):
+                        relative_path = os.path.relpath(os.path.join(root, file), input_folder)
                         all_files.append(relative_path)
-                elif file.endswith('.srt'):
-                    relative_path = os.path.relpath(
-                        os.path.join(root, file), input_folder)
+                elif file.endswith(".srt"):
+                    relative_path = os.path.relpath(os.path.join(root, file), input_folder)
                     all_files.append(relative_path)
 
         sorted_files = natsorted(all_files)

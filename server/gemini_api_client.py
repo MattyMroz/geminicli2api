@@ -8,6 +8,7 @@ instead of the internal Gemini CLI endpoint.
 Both backends speak the same native Gemini shapes, so the routers and the
 OpenAI compatibility layer call this through send_gemini_request() unchanged.
 """
+
 import asyncio
 import json
 import logging
@@ -29,14 +30,16 @@ STREAM_READ_TIMEOUT = 600  # 10 min for streaming
 # CodeAssist-only ones (HARM_CATEGORY_IMAGE_*, HARM_CATEGORY_UNSPECIFIED) which
 # this endpoint rejects with 400, so they are dropped per request.
 # Probed against v1beta on 2026-07-30.
-SUPPORTED_HARM_CATEGORIES = frozenset({
-    "HARM_CATEGORY_HARASSMENT",
-    "HARM_CATEGORY_HATE_SPEECH",
-    "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-    "HARM_CATEGORY_DANGEROUS_CONTENT",
-    "HARM_CATEGORY_CIVIC_INTEGRITY",
-    "HARM_CATEGORY_JAILBREAK",
-})
+SUPPORTED_HARM_CATEGORIES = frozenset(
+    {
+        "HARM_CATEGORY_HARASSMENT",
+        "HARM_CATEGORY_HATE_SPEECH",
+        "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "HARM_CATEGORY_DANGEROUS_CONTENT",
+        "HARM_CATEGORY_CIVIC_INTEGRITY",
+        "HARM_CATEGORY_JAILBREAK",
+    }
+)
 
 # --- Connection-pooled HTTP session ---
 _http_session: requests.Session | None = None
@@ -173,12 +176,16 @@ def _try_send_request(payload: dict, is_streaming: bool, request_id: str = "") -
         session = _get_session()
         if is_streaming:
             resp = session.post(
-                target_url, data=json.dumps(request_body), headers=request_headers,
-                stream=True, timeout=(CONNECT_TIMEOUT, STREAM_READ_TIMEOUT))
+                target_url,
+                data=json.dumps(request_body),
+                headers=request_headers,
+                stream=True,
+                timeout=(CONNECT_TIMEOUT, STREAM_READ_TIMEOUT),
+            )
             return _handle_streaming_response(resp, rid)
         resp = session.post(
-            target_url, data=json.dumps(request_body), headers=request_headers,
-            timeout=(CONNECT_TIMEOUT, READ_TIMEOUT))
+            target_url, data=json.dumps(request_body), headers=request_headers, timeout=(CONNECT_TIMEOUT, READ_TIMEOUT)
+        )
         return _handle_non_streaming_response(resp, rid)
     except requests.exceptions.ConnectTimeout:
         logging.error(f"[{rid}] Connection timeout to Gemini API")
@@ -242,7 +249,7 @@ def _handle_streaming_response(resp, rid: str = "") -> StreamingResponse:
                     "code": resp.status_code,
                 }
             }
-            yield f'data: {json.dumps(error_response)}\n\n'.encode()
+            yield f"data: {json.dumps(error_response)}\n\n".encode()
 
         return StreamingResponse(
             error_generator(),
@@ -282,29 +289,27 @@ def _handle_streaming_response(resp, rid: str = "") -> StreamingResponse:
 
                 if chunk:
                     if not isinstance(chunk, str):
-                        chunk = chunk.decode('utf-8', "ignore")
+                        chunk = chunk.decode("utf-8", "ignore")
 
-                    if chunk.startswith('data: '):
-                        chunk = chunk[len('data: '):]
+                    if chunk.startswith("data: "):
+                        chunk = chunk[len("data: ") :]
                         try:
                             obj = json.loads(chunk)
                         except json.JSONDecodeError:
                             continue
-                        obj_json = json.dumps(obj, separators=(',', ':'))
-                        yield f"data: {obj_json}\n\n".encode('utf-8', "ignore")
+                        obj_json = json.dumps(obj, separators=(",", ":"))
+                        yield f"data: {obj_json}\n\n".encode("utf-8", "ignore")
                         await asyncio.sleep(0)
         except requests.exceptions.RequestException as e:
             logging.error(f"Streaming request failed: {e}")
-            error_response = {
-                "error": {"message": f"Upstream request failed: {e}", "type": "api_error", "code": 502}
-            }
-            yield f'data: {json.dumps(error_response)}\n\n'.encode('utf-8', "ignore")
+            error_response = {"error": {"message": f"Upstream request failed: {e}", "type": "api_error", "code": 502}}
+            yield f"data: {json.dumps(error_response)}\n\n".encode("utf-8", "ignore")
         except Exception as e:
             logging.error(f"Unexpected error during streaming: {e}")
             error_response = {
                 "error": {"message": f"An unexpected error occurred: {e}", "type": "api_error", "code": 500}
             }
-            yield f'data: {json.dumps(error_response)}\n\n'.encode('utf-8', "ignore")
+            yield f"data: {json.dumps(error_response)}\n\n".encode("utf-8", "ignore")
 
     return StreamingResponse(
         stream_generator(),

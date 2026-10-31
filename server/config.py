@@ -2,6 +2,7 @@
 Configuration constants for the geminicli2api proxy server.
 Centralizes all configuration to avoid duplication across modules.
 """
+
 import os
 from pathlib import Path
 
@@ -38,8 +39,7 @@ SCOPES = [
 ]
 
 # File Paths — legacy single-account (for backward compat)
-CREDENTIAL_FILE = str(
-    ROOT_DIR / os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "oauth_creds.json"))
+CREDENTIAL_FILE = str(ROOT_DIR / os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "oauth_creds.json"))
 
 # Authentication
 GEMINI_AUTH_PASSWORD = os.getenv("GEMINI_AUTH_PASSWORD", "123456")
@@ -112,16 +112,15 @@ BASE_MODELS = [
 
 # --- Model variant generators ---
 
+
 def _generate_search_variants():
     search_models = []
     for model in BASE_MODELS:
         if "generateContent" in model["supportedGenerationMethods"]:
             variant = model.copy()
             variant["name"] = model["name"] + "-search"
-            variant["displayName"] = model["displayName"] + \
-                " with Google Search"
-            variant["description"] = model["description"] + \
-                " (includes Google Search grounding)"
+            variant["displayName"] = model["displayName"] + " with Google Search"
+            variant["description"] = model["description"] + " (includes Google Search grounding)"
             search_models.append(variant)
     return search_models
 
@@ -135,12 +134,18 @@ def _has_thinking_support(model_name: str) -> bool:
     if "gemini-2.5-flash-lite" in name:
         return False
     # Include models with thinking
-    if any(x in name for x in [
-        "gemini-2.5-flash", "gemini-2.5-pro", "gemini-3-pro", "gemini-3-flash", "gemini-3.1-pro",
-        "gemini-3.5-flash", "gemini-3.6-flash",
-    ]):
-        return True
-    return False
+    return any(
+        x in name
+        for x in [
+            "gemini-2.5-flash",
+            "gemini-2.5-pro",
+            "gemini-3-pro",
+            "gemini-3-flash",
+            "gemini-3.1-pro",
+            "gemini-3.5-flash",
+            "gemini-3.6-flash",
+        ]
+    )
 
 
 def _generate_thinking_variants():
@@ -150,26 +155,23 @@ def _generate_thinking_variants():
             nothinking = model.copy()
             nothinking["name"] = model["name"] + "-nothinking"
             nothinking["displayName"] = model["displayName"] + " (No Thinking)"
-            nothinking["description"] = model["description"] + \
-                " (thinking disabled)"
+            nothinking["description"] = model["description"] + " (thinking disabled)"
             thinking_models.append(nothinking)
 
             maxthinking = model.copy()
             maxthinking["name"] = model["name"] + "-maxthinking"
-            maxthinking["displayName"] = model["displayName"] + \
-                " (Max Thinking)"
-            maxthinking["description"] = model["description"] + \
-                " (maximum thinking budget)"
+            maxthinking["displayName"] = model["displayName"] + " (Max Thinking)"
+            maxthinking["description"] = model["description"] + " (maximum thinking budget)"
             thinking_models.append(maxthinking)
     return thinking_models
 
 
-all_models = BASE_MODELS + _generate_search_variants() + \
-    _generate_thinking_variants()
+all_models = BASE_MODELS + _generate_search_variants() + _generate_thinking_variants()
 SUPPORTED_MODELS = sorted(all_models, key=lambda x: x["name"])
 
 
 # --- Helper functions ---
+
 
 def get_base_model_name(model_name: str) -> str:
     for suffix in ["-maxthinking", "-nothinking", "-search"]:

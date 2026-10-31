@@ -8,10 +8,11 @@ Jeśli serwer obsługuje je współbieżnie, wszystkie powinny:
 
 Użycie:  uv run python test_concurrency.py
 """
+
 import asyncio
 import time
-import httpx
 
+import httpx
 
 PROXY_URL = "http://127.0.0.1:8888"
 API_KEY = "123456"
@@ -61,10 +62,10 @@ async def send_request(client: httpx.AsyncClient, req_id: int) -> dict:
 
 
 async def main():
-    print(f"\n{'='*60}")
-    print(f"TEST WSPÓŁBIEŻNOŚCI SERWERA PROXY")
+    print(f"\n{'=' * 60}")
+    print("TEST WSPÓŁBIEŻNOŚCI SERWERA PROXY")
     print(f"Wysyłam {CONCURRENT} równoległych requestów...")
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
     async with httpx.AsyncClient() as client:
         total_start = time.perf_counter()
@@ -76,12 +77,11 @@ async def main():
         total_elapsed = time.perf_counter() - total_start
 
     # Wyświetl wyniki
-    print(f"\n{'='*60}")
-    print(f"WYNIKI:")
-    print(f"{'='*60}")
+    print(f"\n{'=' * 60}")
+    print("WYNIKI:")
+    print(f"{'=' * 60}")
     for r in sorted(results, key=lambda x: x["id"]):
-        print(
-            f"  Request #{r['id']}:  status={r['status']}  czas={r['time']:.2f}s  odpowiedź: {r['response']}")
+        print(f"  Request #{r['id']}:  status={r['status']}  czas={r['time']:.2f}s  odpowiedź: {r['response']}")
 
     times = [r["time"] for r in results]
     print(f"\n  Najszybszy: {min(times):.2f}s")
@@ -92,14 +92,12 @@ async def main():
     # Jeśli równoległe: total ≈ max(times)
     sum_times = sum(times)
     if total_elapsed < sum_times * 0.7:
-        print(
-            f"\n  ✓ WSPÓŁBIEŻNOŚĆ DZIAŁA! (total {total_elapsed:.1f}s << suma {sum_times:.1f}s)")
+        print(f"\n  ✓ WSPÓŁBIEŻNOŚĆ DZIAŁA! (total {total_elapsed:.1f}s << suma {sum_times:.1f}s)")
     else:
-        print(
-            f"\n  ✗ BRAK WSPÓŁBIEŻNOŚCI! (total {total_elapsed:.1f}s ≈ suma {sum_times:.1f}s)")
-        print(f"    Requesty były przetwarzane sekwencyjnie!")
+        print(f"\n  ✗ BRAK WSPÓŁBIEŻNOŚCI! (total {total_elapsed:.1f}s ≈ suma {sum_times:.1f}s)")
+        print("    Requesty były przetwarzane sekwencyjnie!")
 
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
 
 if __name__ == "__main__":

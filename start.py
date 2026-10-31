@@ -8,6 +8,7 @@ Usage:
     uv run start.py --list-models (-l) → List all supported models
     uv run start.py --help        (-h) → Show help
 """
+
 import argparse
 import sys
 from pathlib import Path
@@ -41,8 +42,7 @@ def list_models():
         print(f"  • {name:<45} in:{tokens_in:>10}  out:{tokens_out:>7}")
 
     # All variants
-    print(
-        f"\n  ALL VARIANTS (incl. -search, -nothinking, -maxthinking): {len(SUPPORTED_MODELS)}")
+    print(f"\n  ALL VARIANTS (incl. -search, -nothinking, -maxthinking): {len(SUPPORTED_MODELS)}")
     print(f"  {'─' * 66}")
     for m in SUPPORTED_MODELS:
         name = m["name"].replace("models/", "")
@@ -76,17 +76,20 @@ Short aliases:
         """,
     )
     parser.add_argument(
-        "-a", "--add-account",
+        "-a",
+        "--add-account",
         action="store_true",
         help="Interactively add a new Google OAuth account",
     )
     parser.add_argument(
-        "-t", "--translate",
+        "-t",
+        "--translate",
         action="store_true",
         help="Run the Gemini Translator (auto-starts server if needed)",
     )
     parser.add_argument(
-        "-l", "--list-models",
+        "-l",
+        "--list-models",
         action="store_true",
         help="List all supported Gemini models and variants",
     )
@@ -95,15 +98,19 @@ Short aliases:
 
     if args.add_account:
         from server.start import add_account
+
         add_account()
     elif args.translate:
         import asyncio
+
         from apps.gemini_translator.start import main as translator_main
+
         asyncio.run(translator_main())
     elif args.list_models:
         list_models()
     else:
         from server.start import start_server
+
         start_server()
 
 

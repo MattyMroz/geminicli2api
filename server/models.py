@@ -1,37 +1,38 @@
-from pydantic import BaseModel, ConfigDict
-from typing import List, Optional, Union, Dict, Any
+from typing import Any
 
+from pydantic import BaseModel, ConfigDict
 
 # --- OpenAI Models ---
 
+
 class OpenAIChatMessage(BaseModel):
     role: str
-    content: Union[str, List[Dict[str, Any]]]
-    reasoning_content: Optional[str] = None
+    content: str | list[dict[str, Any]]
+    reasoning_content: str | None = None
 
 
 class OpenAIChatCompletionRequest(BaseModel):
     model_config = ConfigDict(extra="allow")
 
     model: str
-    messages: List[OpenAIChatMessage]
+    messages: list[OpenAIChatMessage]
     stream: bool = False
-    temperature: Optional[float] = None
-    top_p: Optional[float] = None
-    max_tokens: Optional[int] = None
-    stop: Optional[Union[str, List[str]]] = None
-    frequency_penalty: Optional[float] = None
-    presence_penalty: Optional[float] = None
-    n: Optional[int] = None
-    seed: Optional[int] = None
-    response_format: Optional[Dict[str, Any]] = None
-    reasoning_effort: Optional[str] = None
+    temperature: float | None = None
+    top_p: float | None = None
+    max_tokens: int | None = None
+    stop: str | list[str] | None = None
+    frequency_penalty: float | None = None
+    presence_penalty: float | None = None
+    n: int | None = None
+    seed: int | None = None
+    response_format: dict[str, Any] | None = None
+    reasoning_effort: str | None = None
 
 
 class OpenAIChatCompletionChoice(BaseModel):
     index: int
     message: OpenAIChatMessage
-    finish_reason: Optional[str] = None
+    finish_reason: str | None = None
 
 
 class OpenAIChatCompletionResponse(BaseModel):
@@ -39,18 +40,18 @@ class OpenAIChatCompletionResponse(BaseModel):
     object: str
     created: int
     model: str
-    choices: List[OpenAIChatCompletionChoice]
+    choices: list[OpenAIChatCompletionChoice]
 
 
 class OpenAIDelta(BaseModel):
-    content: Optional[str] = None
-    reasoning_content: Optional[str] = None
+    content: str | None = None
+    reasoning_content: str | None = None
 
 
 class OpenAIChatCompletionStreamChoice(BaseModel):
     index: int
     delta: OpenAIDelta
-    finish_reason: Optional[str] = None
+    finish_reason: str | None = None
 
 
 class OpenAIChatCompletionStreamResponse(BaseModel):
@@ -58,10 +59,11 @@ class OpenAIChatCompletionStreamResponse(BaseModel):
     object: str
     created: int
     model: str
-    choices: List[OpenAIChatCompletionStreamChoice]
+    choices: list[OpenAIChatCompletionStreamChoice]
 
 
 # --- Gemini Models ---
+
 
 class GeminiPart(BaseModel):
     text: str
@@ -69,18 +71,18 @@ class GeminiPart(BaseModel):
 
 class GeminiContent(BaseModel):
     role: str
-    parts: List[GeminiPart]
+    parts: list[GeminiPart]
 
 
 class GeminiRequest(BaseModel):
-    contents: List[GeminiContent]
+    contents: list[GeminiContent]
 
 
 class GeminiCandidate(BaseModel):
     content: GeminiContent
-    finish_reason: Optional[str] = None
+    finish_reason: str | None = None
     index: int
 
 
 class GeminiResponse(BaseModel):
-    candidates: List[GeminiCandidate]
+    candidates: list[GeminiCandidate]
