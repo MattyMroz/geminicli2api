@@ -4,7 +4,7 @@ Dokument opisuje, jak podszedłem do tłumaczenia plików napisów `Shadow Slave
 (EN → PL) z użyciem wielu równoległych subagentów. Metoda pozwala przetłumaczyć
 duży plik szybko, dzieląc pracę na kawałki i uruchamiając agentów jednocześnie.
 
----
+______________________________________________________________________
 
 ## Idea w skrócie
 
@@ -32,32 +32,37 @@ plik.srt (N napisów)
               → nadpisanie plik.srt (numeracja i czasy nietknięte)
 ```
 
----
+______________________________________________________________________
 
 ## Krok po kroku
 
 ### 1. Wczytanie promptów tłumaczeniowych
+
 Prompt tłumaczeniowy to jeden lub dwa pliki tekstowe z zasadami (terminologia
 świata, nazwy i płeć postaci, liczebniki słownie, usuwanie znaków wodnych,
 formatowanie 1:1, ton pod audiobook). Każdy agent czyta je **w całości** —
 to jego „instrukcja systemowa".
 
 Użyte prompty:
+
 - `apps/gemini_translator/prompts/prompt_helper.txt`
 - `apps/gemini_translator/prompts/prompt_helperSS.txt`
   (lub `prompt_main.txt` — zależnie od zlecenia)
 
 ### 2. Parsowanie SRT
+
 Plik SRT rozbijamy na bloki (rozdzielone pustą linią). Z każdego bloku
 wyciągamy trójkę: **numer**, **timestamp** (`--> `) i **tekst**. Zapisujemy do
 `parsed.json`.
 
 ### 3. Podział na paczki po 30 napisów
+
 Napisy tniemy na paczki po 30 (ostatnia paczka może być mniejsza). Każda paczka
 zapisywana jest jako plik `agent_NN.txt`, w którym napisy są ponumerowane
 lokalnie `[1]`, `[2]`, … — dzięki temu agent wie, ile ma zwrócić elementów.
 
 Przykład podziału pliku z 253 napisami:
+
 ```
 agent_01: napisy 1-30   (30 szt.)
 agent_02: napisy 31-60  (30 szt.)
@@ -66,8 +71,10 @@ agent_09: napisy 241-253 (13 szt.)
 ```
 
 ### 4. Uruchomienie agentów równolegle
+
 Wszystkie subagenty startują **w jednej turze** (jednocześnie). Każdy dostaje
 identyczne polecenie:
+
 1. przeczytaj oba pliki promptów w całości,
 2. przeczytaj swój `agent_NN.txt`,
 3. przetłumacz wszystkie napisy na polski wg zasad,
@@ -80,7 +87,9 @@ identyczne polecenie:
 Oba sprawdzają się w tym zadaniu.
 
 ### 5. Walidacja
+
 Przed scaleniem sprawdzamy:
+
 - czy każdy `out_NN.json` istnieje i jest poprawnym JSON-em,
 - czy **suma elementów = liczbie napisów w oryginale** (np. 246),
 - czy w żadnym tłumaczeniu nie ma **podwójnego entera `\n\n`** wewnątrz napisu —
@@ -89,18 +98,21 @@ Przed scaleniem sprawdzamy:
   zamieniamy go na spacje zgodnie z formatem oryginału.
 
 ### 6. Scalenie i nadpisanie
+
 Sklejamy: **numer** i **timestamp** bierzemy z oryginału (`parsed.json`),
 **tekst** z tłumaczeń (`out_*.json`), w tej samej kolejności. Zapisujemy w
 kodowaniu **UTF-8** z końcówkami linii `\n`. Przed nadpisaniem robimy **kopię
 zapasową** oryginału.
 
 ### 7. Weryfikacja końcowa
+
 Po zapisie sprawdzamy, że:
+
 - liczba bloków = liczbie napisów,
 - numeracja jest ciągła (`1..N`),
 - każdy blok ma timestamp.
 
----
+______________________________________________________________________
 
 ## Kluczowe zasady jakości
 
@@ -119,7 +131,7 @@ Po zapisie sprawdzamy, że:
   (np. `1%` → „jeden procent", `Chapter 3051` → „Rozdział trzy tysiące
   pięćdziesiąty pierwszy").
 
----
+______________________________________________________________________
 
 ## Ograniczenia metody
 
@@ -131,7 +143,7 @@ Po zapisie sprawdzamy, że:
 - Zawsze warto zrobić **szybki przegląd** krytycznych miejsc (przejścia
   rozdziałów, nazwy i płeć postaci) po scaleniu.
 
----
+______________________________________________________________________
 
 ## Struktura plików roboczych
 
@@ -148,11 +160,11 @@ workspace/
 └─ README.md                    # ten dokument
 ```
 
----
+______________________________________________________________________
 
 ## Historia wykonanych plików
 
-| Plik                | Napisów | Podział          | Model     | Uwagi |
-|---------------------|---------|------------------|-----------|-------|
-| `SS_3026-3050.srt`  | 253     | 8×30 + 1×13      | Opus 4.8  | — |
-| `SS_3051-3075.srt`  | 246     | 8×30 + 1×6       | Sonnet 5  | naprawiono 3 podwójne entery na przejściach rozdziałów; poprawiono płeć `Nightwalker` (mężczyzna) i rodzaj `kohorty` (grupa mieszana) |
+| Plik               | Napisów | Podział     | Model    | Uwagi                                                                                                                                 |
+| ------------------ | ------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `SS_3026-3050.srt` | 253     | 8×30 + 1×13 | Opus 4.8 | —                                                                                                                                     |
+| `SS_3051-3075.srt` | 246     | 8×30 + 1×6  | Sonnet 5 | naprawiono 3 podwójne entery na przejściach rozdziałów; poprawiono płeć `Nightwalker` (mężczyzna) i rodzaj `kohorty` (grupa mieszana) |

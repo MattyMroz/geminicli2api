@@ -4,13 +4,13 @@ Jak budować aplikacje korzystające z geminicli2api jako backendu AI.
 
 > **TL;DR**: geminicli2api to lokalny serwer proxy, który udostępnia modele Google Gemini przez standardowe API kompatybilne z OpenAI. Wystarczy wysłać request HTTP — tak samo jak do OpenAI, tylko na `localhost:8888`.
 
----
+______________________________________________________________________
 
 ## Spis treści
 
-- [Wymagania wstępne](#wymagania-wstępne)
+- [Wymagania wstępne](#wymagania-wst%C4%99pne)
 - [Pierwsze kroki](#pierwsze-kroki)
-- [API Endpoints — przegląd](#api-endpoints--przegląd)
+- [API Endpoints — przegląd](#api-endpoints--przegl%C4%85d)
 - [Format OpenAI (zalecany)](#format-openai-zalecany)
   - [Chat Completions](#chat-completions)
   - [Streaming](#streaming)
@@ -18,45 +18,49 @@ Jak budować aplikacje korzystające z geminicli2api jako backendu AI.
   - [Obrazy (vision)](#obrazy-vision)
   - [Lista modeli](#lista-modeli)
 - [Format natywny Gemini](#format-natywny-gemini)
-- [Dostępne modele i warianty](#dostępne-modele-i-warianty)
+- [Dostępne modele i warianty](#dost%C4%99pne-modele-i-warianty)
 - [Parametry generowania](#parametry-generowania)
 - [Autentykacja](#autentykacja)
-- [Gotowe przykłady w Pythonie](#gotowe-przykłady-w-pythonie)
+- [Gotowe przykłady w Pythonie](#gotowe-przyk%C5%82ady-w-pythonie)
   - [Minimalny klient (requests)](#minimalny-klient-requests)
   - [Klient async (httpx)](#klient-async-httpx)
   - [Streaming w Pythonie](#streaming-w-pythonie)
-  - [Wysyłanie obrazów](#wysyłanie-obrazów)
-  - [Równoległe requesty (concurrency)](#równoległe-requesty-concurrency)
-- [Przykłady curl](#przykłady-curl)
-- [Obsługa błędów](#obsługa-błędów)
-- [Wzorce z translatora — co warto skopiować](#wzorce-z-translatora--co-warto-skopiować)
-- [Budowanie własnej aplikacji — checklist](#budowanie-własnej-aplikacji--checklist)
-- [Kompatybilność z bibliotekami OpenAI](#kompatybilność-z-bibliotekami-openai)
+  - [Wysyłanie obrazów](#wysy%C5%82anie-obraz%C3%B3w)
+  - [Równoległe requesty (concurrency)](#r%C3%B3wnoleg%C5%82e-requesty-concurrency)
+- [Przykłady curl](#przyk%C5%82ady-curl)
+- [Obsługa błędów](#obs%C5%82uga-b%C5%82%C4%99d%C3%B3w)
+- [Wzorce z translatora — co warto skopiować](#wzorce-z-translatora--co-warto-skopiowa%C4%87)
+- [Budowanie własnej aplikacji — checklist](#budowanie-w%C5%82asnej-aplikacji--checklist)
+- [Kompatybilność z bibliotekami OpenAI](#kompatybilno%C5%9B%C4%87-z-bibliotekami-openai)
 - [FAQ](#faq)
 
----
+______________________________________________________________________
 
 ## Wymagania wstępne
 
 Zanim zaczniesz budować aplikację, upewnij się że:
 
 1. **Serwer proxy działa** — uruchom go w osobnym terminalu:
+
    ```bash
    uv run start.py
    ```
 
 2. **Masz co najmniej 1 konto Google** dodane:
+
    ```bash
    uv run start.py --add-account   # lub: uv run start.py -a
    ```
 
 3. **Serwer odpowiada** — sprawdź health check:
+
    ```bash
    curl http://127.0.0.1:8888/health
    ```
+
    Oczekiwana odpowiedź: `{"status": "healthy", "service": "geminicli2api", "accounts": 1}`
 
----
+______________________________________________________________________
 
 ## Pierwsze kroki
 
@@ -74,23 +78,23 @@ curl http://127.0.0.1:8888/v1/chat/completions \
 
 To wszystko. Format jest identyczny jak OpenAI API.
 
----
+______________________________________________________________________
 
 ## API Endpoints — przegląd
 
-| Endpoint | Metoda | Opis |
-|----------|--------|------|
-| `/v1/chat/completions` | POST | Chat completions (format OpenAI) |
-| `/v1/models` | GET | Lista modeli (format OpenAI) |
-| `/v1beta/models` | GET | Lista modeli (format Gemini) |
-| `/v1beta/models/{model}:generateContent` | POST | Generowanie (format Gemini) |
-| `/v1beta/models/{model}:streamGenerateContent` | POST | Streaming (format Gemini) |
-| `/health` | GET | Health check (bez autentykacji) |
-| `/` | GET | Info o serwerze (bez autentykacji) |
+| Endpoint                                       | Metoda | Opis                               |
+| ---------------------------------------------- | ------ | ---------------------------------- |
+| `/v1/chat/completions`                         | POST   | Chat completions (format OpenAI)   |
+| `/v1/models`                                   | GET    | Lista modeli (format OpenAI)       |
+| `/v1beta/models`                               | GET    | Lista modeli (format Gemini)       |
+| `/v1beta/models/{model}:generateContent`       | POST   | Generowanie (format Gemini)        |
+| `/v1beta/models/{model}:streamGenerateContent` | POST   | Streaming (format Gemini)          |
+| `/health`                                      | GET    | Health check (bez autentykacji)    |
+| `/`                                            | GET    | Info o serwerze (bez autentykacji) |
 
 **Rekomendacja**: Używaj formatu OpenAI (`/v1/chat/completions`) — jest prostszy i kompatybilny z wieloma bibliotekami.
 
----
+______________________________________________________________________
 
 ## Format OpenAI (zalecany)
 
@@ -140,7 +144,7 @@ POST /v1/chat/completions
 
 > **Uwaga**: Pole `reasoning_content` zawiera "myślenie" modelu (jeśli model to obsługuje). Nie pojawi się dla modeli z sufiksem `-nothinking`.
 
----
+______________________________________________________________________
 
 ### Streaming
 
@@ -165,7 +169,7 @@ data: {"id":"chatcmpl-abc","object":"chat.completion.chunk","choices":[{"delta":
 data: [DONE]
 ```
 
----
+______________________________________________________________________
 
 ### System prompt
 
@@ -180,7 +184,7 @@ System prompt przesyłaj jako wiadomość o roli `"system"` — **musi być pier
 }
 ```
 
----
+______________________________________________________________________
 
 ### Obrazy (vision)
 
@@ -213,7 +217,7 @@ Modele Gemini obsługują multimodalne wejście. Obrazy przesyłaj jako base64 w
 
 **Wskazówka**: `content` może być stringiem (tylko tekst) albo tablicą (tekst + multimedia).
 
----
+______________________________________________________________________
 
 ### Audio (transkrypcja i analiza)
 
@@ -242,7 +246,7 @@ Modele Gemini obsługują multimodalne wejście. Obrazy przesyłaj jako base64 w
 
 **Obsługiwane formaty audio**: MP3, WAV, AIFF, AAC, OGG, FLAC, WebM (audio)
 
----
+______________________________________________________________________
 
 ### Video (analiza)
 
@@ -271,7 +275,7 @@ Modele Gemini obsługują multimodalne wejście. Obrazy przesyłaj jako base64 w
 
 **Obsługiwane formaty video**: MP4, MPEG, MOV, AVI, FLV, MPG, WebM, WMV, 3GPP
 
----
+______________________________________________________________________
 
 ### PDF (analiza dokumentów)
 
@@ -300,7 +304,7 @@ Modele Gemini obsługują multimodalne wejście. Obrazy przesyłaj jako base64 w
 
 > **Uwaga**: Wszystkie multimedia przesyłane są jako base64 w formacie `data:{mime};base64,{dane}`. Użyj `type: "image_url"` dla wszystkich typów mediów (obrazy, audio, video, PDF) — to format kompatybilny z OpenAI API.
 
----
+______________________________________________________________________
 
 ### Lista modeli
 
@@ -321,7 +325,7 @@ Zwraca listę w formacie OpenAI:
 }
 ```
 
----
+______________________________________________________________________
 
 ## Format natywny Gemini
 
@@ -352,92 +356,94 @@ POST /v1beta/models/gemini-2.5-flash:generateContent
 ```
 
 **Streaming natywny:**
+
 ```
 POST /v1beta/models/gemini-2.5-flash:streamGenerateContent
 ```
 
----
+______________________________________________________________________
 
 ## Dostępne modele i warianty
 
 ### Modele bazowe
 
-| Model | Opis | Max output |
-|-------|------|------------|
-| `gemini-2.0-flash` | Starszy, szybki | 8 192 |
-| `gemini-2.5-flash` | Szybki, dobry do testów | 65 535 |
-| `gemini-2.5-flash-lite` | Najszybszy, najlżejszy | 65 535 |
-| `gemini-2.5-pro` | Najlepszy do złożonych zadań | 65 535 |
-| `gemini-3-flash-preview` | Nowa generacja, preview | 65 535 |
-| `gemini-3-pro-preview` | Najsilniejszy, preview | 65 535 |
+| Model                    | Opis                         | Max output |
+| ------------------------ | ---------------------------- | ---------- |
+| `gemini-2.0-flash`       | Starszy, szybki              | 8 192      |
+| `gemini-2.5-flash`       | Szybki, dobry do testów      | 65 535     |
+| `gemini-2.5-flash-lite`  | Najszybszy, najlżejszy       | 65 535     |
+| `gemini-2.5-pro`         | Najlepszy do złożonych zadań | 65 535     |
+| `gemini-3-flash-preview` | Nowa generacja, preview      | 65 535     |
+| `gemini-3-pro-preview`   | Najsilniejszy, preview       | 65 535     |
 
 ### Warianty (sufiksy)
 
 Każdy model bazowy (oprócz `gemini-2.0-flash` i `gemini-2.5-flash-lite`) jest dostępny w wariantach:
 
-| Sufiks | Działanie | Kiedy używać |
-|--------|-----------|--------------|
-| *(brak)* | Domyślny tryb myślenia | Większość zastosowań |
-| `-search` | Dodaje Google Search grounding | Pytania o aktualności, fakty |
-| `-nothinking` | Wyłącza myślenie | Szybkie odpowiedzi, niski koszt |
-| `-maxthinking` | Maksymalny budżet myślenia | Matematyka, coding, logika |
+| Sufiks         | Działanie                      | Kiedy używać                    |
+| -------------- | ------------------------------ | ------------------------------- |
+| *(brak)*       | Domyślny tryb myślenia         | Większość zastosowań            |
+| `-search`      | Dodaje Google Search grounding | Pytania o aktualności, fakty    |
+| `-nothinking`  | Wyłącza myślenie               | Szybkie odpowiedzi, niski koszt |
+| `-maxthinking` | Maksymalny budżet myślenia     | Matematyka, coding, logika      |
 
 **Przykłady**: `gemini-2.5-pro-search`, `gemini-2.5-flash-nothinking`, `gemini-3-pro-preview-maxthinking`
 
 ### Który model wybrać?
 
-| Scenariusz | Rekomendacja |
-|-----------|--------------|
-| Szybki prototyp | `gemini-2.5-flash-nothinking` |
-| Tłumaczenia, pisanie | `gemini-2.5-pro` |
-| Analiza kodu / matematyka | `gemini-2.5-pro-maxthinking` |
-| Asystent z aktualnymi danymi | `gemini-2.5-flash-search` |
-| Najszybsza odpowiedź | `gemini-2.5-flash-lite` |
-| Najlepsza jakość (preview) | `gemini-3-pro-preview` |
+| Scenariusz                   | Rekomendacja                  |
+| ---------------------------- | ----------------------------- |
+| Szybki prototyp              | `gemini-2.5-flash-nothinking` |
+| Tłumaczenia, pisanie         | `gemini-2.5-pro`              |
+| Analiza kodu / matematyka    | `gemini-2.5-pro-maxthinking`  |
+| Asystent z aktualnymi danymi | `gemini-2.5-flash-search`     |
+| Najszybsza odpowiedź         | `gemini-2.5-flash-lite`       |
+| Najlepsza jakość (preview)   | `gemini-3-pro-preview`        |
 
 Pełna lista: `uv run start.py --list-models` (skrót: `-l`)
 
----
+______________________________________________________________________
 
 ## Parametry generowania
 
-| Parametr | Typ | Domyślnie | Zakres | Opis |
-|----------|-----|-----------|--------|------|
-| `model` | string | *wymagany* | — | Nazwa modelu |
-| `messages` | array | *wymagany* | — | Lista wiadomości |
-| `stream` | bool | `false` | — | Streaming SSE |
-| `temperature` | float | `1.0` | 0.0–2.0 | Losowość odpowiedzi (niższa = bardziej deterministyczna) |
-| `top_p` | float | `0.95` | 0.0–1.0 | Nucleus sampling |
-| `max_tokens` | int | *model default* | 1–65535 | Maks. tokenów w odpowiedzi |
-| `stop` | string/array | `null` | — | Sekwencje stopu |
-| `frequency_penalty` | float | `null` | — | Kara za częstotliwość |
-| `presence_penalty` | float | `null` | — | Kara za obecność |
-| `seed` | int | `null` | — | Seed dla powtarzalności |
-| `response_format` | object | `null` | — | Format odpowiedzi (np. JSON) |
-| `reasoning_effort` | string | `null` | — | Kontrola intensywności myślenia |
+| Parametr            | Typ          | Domyślnie       | Zakres  | Opis                                                     |
+| ------------------- | ------------ | --------------- | ------- | -------------------------------------------------------- |
+| `model`             | string       | *wymagany*      | —       | Nazwa modelu                                             |
+| `messages`          | array        | *wymagany*      | —       | Lista wiadomości                                         |
+| `stream`            | bool         | `false`         | —       | Streaming SSE                                            |
+| `temperature`       | float        | `1.0`           | 0.0–2.0 | Losowość odpowiedzi (niższa = bardziej deterministyczna) |
+| `top_p`             | float        | `0.95`          | 0.0–1.0 | Nucleus sampling                                         |
+| `max_tokens`        | int          | *model default* | 1–65535 | Maks. tokenów w odpowiedzi                               |
+| `stop`              | string/array | `null`          | —       | Sekwencje stopu                                          |
+| `frequency_penalty` | float        | `null`          | —       | Kara za częstotliwość                                    |
+| `presence_penalty`  | float        | `null`          | —       | Kara za obecność                                         |
+| `seed`              | int          | `null`          | —       | Seed dla powtarzalności                                  |
+| `response_format`   | object       | `null`          | —       | Format odpowiedzi (np. JSON)                             |
+| `reasoning_effort`  | string       | `null`          | —       | Kontrola intensywności myślenia                          |
 
 **Rekomendacje**:
+
 - **Tłumaczenia**: `temperature: 0.3`, `top_p: 1.0`
 - **Kreatywne pisanie**: `temperature: 1.0`, `top_p: 0.95`
 - **Kodowanie**: `temperature: 0.2`, `max_tokens: 65536`
 - **Streszczenia**: `temperature: 0.5`
 
----
+______________________________________________________________________
 
 ## Autentykacja
 
 Serwer akceptuje 4 sposoby autentykacji (użyj jednego):
 
-| Metoda | Header / Parametr | Przykład |
-|--------|-------------------|---------|
-| Bearer token | `Authorization: Bearer <hasło>` | `Bearer 123456` |
-| Basic auth | `Authorization: Basic <base64>` | `Basic dXNlcjoxMjM0NTY=` |
-| Query param | `?key=<hasło>` | `?key=123456` |
-| Header Gemini | `x-goog-api-key: <hasło>` | `x-goog-api-key: 123456` |
+| Metoda        | Header / Parametr               | Przykład                 |
+| ------------- | ------------------------------- | ------------------------ |
+| Bearer token  | `Authorization: Bearer <hasło>` | `Bearer 123456`          |
+| Basic auth    | `Authorization: Basic <base64>` | `Basic dXNlcjoxMjM0NTY=` |
+| Query param   | `?key=<hasło>`                  | `?key=123456`            |
+| Header Gemini | `x-goog-api-key: <hasło>`       | `x-goog-api-key: 123456` |
 
 Domyślne hasło: `123456` (zmień w `.env` → `GEMINI_AUTH_PASSWORD`)
 
----
+______________________________________________________________________
 
 ## Gotowe przykłady w Pythonie
 
@@ -461,7 +467,7 @@ print(response.json()["choices"][0]["message"]["content"])
 
 **Zależności**: `pip install requests`
 
----
+______________________________________________________________________
 
 ### Klient async (httpx)
 
@@ -491,7 +497,7 @@ print(result)
 
 **Zależności**: `pip install httpx`
 
----
+______________________________________________________________________
 
 ### Streaming w Pythonie
 
@@ -524,7 +530,7 @@ stream_chat("Wyjaśnij czym jest API w 3 zdaniach")
 
 **Zależności**: `pip install httpx`
 
----
+______________________________________________________________________
 
 ### Wysyłanie obrazów
 
@@ -565,7 +571,7 @@ print(analyze_image("screenshot.png", "Opisz co jest na tym zrzucie ekranu"))
 
 **Zależności**: `pip install httpx`
 
----
+______________________________________________________________________
 
 ### Równoległe requesty (concurrency)
 
@@ -609,7 +615,7 @@ for original, translated in zip(texts, results):
 
 **Zależności**: `pip install httpx`
 
----
+______________________________________________________________________
 
 ## Przykłady curl
 
@@ -658,7 +664,7 @@ curl -s http://127.0.0.1:8888/v1beta/models/gemini-2.5-flash:generateContent \
   }'
 ```
 
----
+______________________________________________________________________
 
 ## Obsługa błędów
 
@@ -676,15 +682,15 @@ Serwer zwraca błędy w formacie OpenAI:
 
 ### Kody błędów
 
-| Kod | Znaczenie | Co robić |
-|-----|-----------|----------|
-| 400 | Nieprawidłowy request | Sprawdź format JSON i wymagane pola |
-| 401 | Brak/złe hasło | Dodaj header `Authorization` z poprawnym hasłem |
-| 403 | Konto odrzucone | Serwer automatycznie próbuje inne konto |
-| 404 | Nieznany model/endpoint | Sprawdź nazwę modelu w `GET /v1/models` |
-| 500 | Błąd wewnętrzny | Sprawdź logi serwera, spróbuj ponownie |
-| 502 | Brak połączenia z Google | Sprawdź internet |
-| 504 | Timeout | Model potrzebuje więcej czasu, zwiększ timeout |
+| Kod | Znaczenie                | Co robić                                        |
+| --- | ------------------------ | ----------------------------------------------- |
+| 400 | Nieprawidłowy request    | Sprawdź format JSON i wymagane pola             |
+| 401 | Brak/złe hasło           | Dodaj header `Authorization` z poprawnym hasłem |
+| 403 | Konto odrzucone          | Serwer automatycznie próbuje inne konto         |
+| 404 | Nieznany model/endpoint  | Sprawdź nazwę modelu w `GET /v1/models`         |
+| 500 | Błąd wewnętrzny          | Sprawdź logi serwera, spróbuj ponownie          |
+| 502 | Brak połączenia z Google | Sprawdź internet                                |
+| 504 | Timeout                  | Model potrzebuje więcej czasu, zwiększ timeout  |
 
 ### Wzorzec retry z exponential backoff
 
@@ -725,7 +731,7 @@ async def robust_request(client: httpx.AsyncClient, payload: dict) -> dict:
     raise Exception(f"Nie udało się po {MAX_RETRIES} próbach")
 ```
 
----
+______________________________________________________________________
 
 ## Wzorce z translatora — co warto skopiować
 
@@ -734,6 +740,7 @@ Translator (`apps/gemini_translator/`) to gotowy przykład aplikacji zbudowanej 
 ### 1. Klasa klienta API (api_client.py)
 
 Translator ma dedykowaną klasę `GeminiAPIClient` z:
+
 - **Lazy initialization** klienta HTTP (tworzy się przy pierwszym użyciu)
 - **Health check** przed rozpoczęciem pracy
 - **Osobne metody** dla tekstu (`generate`) i obrazów (`generate_with_image`)
@@ -783,7 +790,7 @@ Modele Gemini (szczególnie Pro z myśleniem) mogą generować odpowiedzi nawet 
 timeout = httpx.Timeout(300.0, connect=30.0)
 ```
 
----
+______________________________________________________________________
 
 ## Budowanie własnej aplikacji — checklist
 
@@ -878,7 +885,7 @@ class AIClient:
         await self.client.aclose()
 ```
 
----
+______________________________________________________________________
 
 ## Kompatybilność z bibliotekami OpenAI
 
@@ -962,7 +969,7 @@ print(response.content)
 
 **Zależności**: `pip install langchain-openai`
 
----
+______________________________________________________________________
 
 ## FAQ
 
@@ -977,26 +984,29 @@ Tak, serwer musi działać w tle (`uv run start.py`). **Wyjątek**: Translator m
 ### Jak zmienić port serwera?
 
 Edytuj `.env`:
+
 ```
 PORT=9999
 ```
+
 I ustaw `proxy_url` w swojej aplikacji na `http://127.0.0.1:9999`.
 
 ### Czym się różni format OpenAI od natywnego Gemini?
 
-| Cecha | OpenAI format | Natywny Gemini |
-|-------|---------------|----------------|
-| Endpoint | `/v1/chat/completions` | `/v1beta/models/{model}:generateContent` |
-| Wiadomości | `messages: [{role, content}]` | `contents: [{role, parts}]` |
-| System prompt | `role: "system"` | Osobne pole `systemInstruction` |
-| Odpowiedź | `choices[0].message.content` | `candidates[0].content.parts[0].text` |
-| Kompatybilność | OpenAI SDK, LangChain, etc. | Tylko natywne zapytania |
+| Cecha          | OpenAI format                 | Natywny Gemini                           |
+| -------------- | ----------------------------- | ---------------------------------------- |
+| Endpoint       | `/v1/chat/completions`        | `/v1beta/models/{model}:generateContent` |
+| Wiadomości     | `messages: [{role, content}]` | `contents: [{role, parts}]`              |
+| System prompt  | `role: "system"`              | Osobne pole `systemInstruction`          |
+| Odpowiedź      | `choices[0].message.content`  | `candidates[0].content.parts[0].text`    |
+| Kompatybilność | OpenAI SDK, LangChain, etc.   | Tylko natywne zapytania                  |
 
 **Rekomendacja**: Używaj formatu OpenAI — jest prostszy i kompatybilny z ekosystemem.
 
 ### Czy serwer działa jak zwykłe API OpenAI?
 
 Tak, w 95% przypadków. Główne różnice:
+
 - Dodatkowe pole `reasoning_content` (myślenie modelu)
 - Inne nazwy modeli (`gemini-*` zamiast `gpt-*`)
 - Brak kilku rzadkich parametrów (np. `logprobs`)
@@ -1009,6 +1019,7 @@ curl http://127.0.0.1:8888/health
 ```
 
 Albo z CLI:
+
 ```bash
 curl http://127.0.0.1:8888/
 ```

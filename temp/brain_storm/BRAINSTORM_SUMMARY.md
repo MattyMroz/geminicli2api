@@ -1,7 +1,8 @@
 # BRAINSTORM — PODSUMOWANIE
+
 ## geminicli2api v2.0
 
----
+______________________________________________________________________
 
 ### Stan projektu (7/10)
 
@@ -22,39 +23,39 @@ OpenAI-compatible + native Gemini endpoints. Zintegrowany translator SRT.
 
 ### Co naprawiono w tej sesji
 
-1. Usunięto 7 wycofanych modeli (404 z Google API)
-2. Dodano timeouty (connect=30s, read=300s, stream=600s)
-3. Request ID tracking (UUID[:8]) na wszystkich logach
-4. JSON error responses zamiast plain text
-5. Write lock na subs.save() w translatorze
-6. shutil.copy2 baseline copy przed tłumaczeniem
-7. MAX_RETRIES 100→10 w translatorze
-8. onboard_user timeout 120s (był infinite loop)
-9. systemInstruction poprawnie mapowane (role: "user")
+01. Usunięto 7 wycofanych modeli (404 z Google API)
+02. Dodano timeouty (connect=30s, read=300s, stream=600s)
+03. Request ID tracking (UUID[:8]) na wszystkich logach
+04. JSON error responses zamiast plain text
+05. Write lock na subs.save() w translatorze
+06. shutil.copy2 baseline copy przed tłumaczeniem
+07. MAX_RETRIES 100→10 w translatorze
+08. onboard_user timeout 120s (był infinite loop)
+09. systemInstruction poprawnie mapowane (role: "user")
 10. thinkingConfig tylko dla modeli z thinking support
 11. removesuffix zamiast rstrip (fixing "gemini-2.5-flas" bug)
 12. Password masking w logach
 
 ### Top 5 priorytetów
 
-| # | Priorytet | Czas | Wpływ |
-|---|-----------|------|-------|
-| 1 | Fix race conditions (token refresh/save in lock) | 2h | Krytyczny |
-| 2 | Replace requests → httpx (async native) | 4h | Wydajność |
-| 3 | Unit testy (50+ testów) | 8h | Jakość |
-| 4 | Docker containerization | 4h | Deployment |
-| 5 | Web UI dashboard | 2 tyg | UX |
+| #   | Priorytet                                        | Czas  | Wpływ      |
+| --- | ------------------------------------------------ | ----- | ---------- |
+| 1   | Fix race conditions (token refresh/save in lock) | 2h    | Krytyczny  |
+| 2   | Replace requests → httpx (async native)          | 4h    | Wydajność  |
+| 3   | Unit testy (50+ testów)                          | 8h    | Jakość     |
+| 4   | Docker containerization                          | 4h    | Deployment |
+| 5   | Web UI dashboard                                 | 2 tyg | UX         |
 
 ### Kluczowe metryki
 
-| Metryka | Wartość |
-|---------|---------|
-| Pliki źródłowe | 16 |
-| LOC | ~2910 |
-| Modele bazowe | 6 |
-| Warianty | 20 |
-| Konta OAuth | 3 |
-| Pokrycie testami | ~5% |
+| Metryka            | Wartość   |
+| ------------------ | --------- |
+| Pliki źródłowe     | 16        |
+| LOC                | ~2910     |
+| Modele bazowe      | 6         |
+| Warianty           | 20        |
+| Konta OAuth        | 3         |
+| Pokrycie testami   | ~5%       |
 | Testy integracyjne | 2 skrypty |
 
 ### Architektura (warstwy)
@@ -77,6 +78,6 @@ CLI → FastAPI → Auth → Router → Transformer → API Client → Google Co
 - **v3.0** (1-3 mies): Admin dashboard, caching, rate limiting, metrics
 - **v4.0** (3-6 mies): Docker, Web UI translator, multi-provider, SDK
 
----
+______________________________________________________________________
 
 *Pełna wersja: temp/brain_storm/BRAINSTORM.md (~1000 linii)*

@@ -48,6 +48,7 @@ uv run start.py --translate   # lub: uv run start.py -t
 ```
 
 Translator:
+
 1. Automatycznie uruchomi serwer proxy (jeśli nie działa)
 2. Sformatuje pliki wejściowe (TXT → SRT z chunkowaniem)
 3. Przetłumaczy asynchronicznie (domyślnie 20 równoległych requestów)
@@ -55,13 +56,13 @@ Translator:
 
 ## Komendy
 
-| Komenda | Skrót | Opis |
-|---------|-------|------|
-| `uv run start.py` | — | Uruchom serwer proxy (port 8888) |
-| `uv run start.py --add-account` | `-a` | Dodaj konto Google (OAuth flow) |
-| `uv run start.py --translate` | `-t` | Uruchom translator CLI |
-| `uv run start.py --list-models` | `-l` | Wyświetl listę wszystkich dostępnych modeli |
-| `uv run start.py --help` | `-h` | Pomoc |
+| Komenda                         | Skrót | Opis                                        |
+| ------------------------------- | ----- | ------------------------------------------- |
+| `uv run start.py`               | —     | Uruchom serwer proxy (port 8888)            |
+| `uv run start.py --add-account` | `-a`  | Dodaj konto Google (OAuth flow)             |
+| `uv run start.py --translate`   | `-t`  | Uruchom translator CLI                      |
+| `uv run start.py --list-models` | `-l`  | Wyświetl listę wszystkich dostępnych modeli |
+| `uv run start.py --help`        | `-h`  | Pomoc                                       |
 
 > **Tip**: Używaj skrótów dla szybszego wywołania, np. `uv run start.py -t` zamiast `uv run start.py --translate`.
 
@@ -229,23 +230,23 @@ geminicli2api/
 
 ### Modele bazowe
 
-| Model | Opis |
-|-------|------|
-| `gemini-2.0-flash` | Starszy, szybki multimodalny |
-| `gemini-2.5-flash` | Szybki, dobry do testów |
-| `gemini-2.5-flash-lite` | Lekka wersja Flash — najszybszy |
-| `gemini-2.5-pro` | Najlepszy do tłumaczeń |
-| `gemini-3-flash-preview` | Preview nowej generacji Flash |
-| `gemini-3-pro-preview` | Preview najsilniejszego modelu |
+| Model                    | Opis                            |
+| ------------------------ | ------------------------------- |
+| `gemini-2.0-flash`       | Starszy, szybki multimodalny    |
+| `gemini-2.5-flash`       | Szybki, dobry do testów         |
+| `gemini-2.5-flash-lite`  | Lekka wersja Flash — najszybszy |
+| `gemini-2.5-pro`         | Najlepszy do tłumaczeń          |
+| `gemini-3-flash-preview` | Preview nowej generacji Flash   |
+| `gemini-3-pro-preview`   | Preview najsilniejszego modelu  |
 
 ### Warianty
 
 Każdy model bazowy (oprócz `gemini-2.0-flash` i `gemini-2.5-flash-lite`) ma warianty thinking:
 
-| Sufiks | Opis |
-|--------|------|
-| `-search` | Z wyszukiwaniem Google (grounding) |
-| `-nothinking` | Wyłączony tryb myślenia (szybsze odpowiedzi) |
+| Sufiks         | Opis                                              |
+| -------------- | ------------------------------------------------- |
+| `-search`      | Z wyszukiwaniem Google (grounding)                |
+| `-nothinking`  | Wyłączony tryb myślenia (szybsze odpowiedzi)      |
 | `-maxthinking` | Maksymalny budżet myślenia (najlepsze odpowiedzi) |
 
 Przykłady: `gemini-2.5-pro-search`, `gemini-2.5-flash-nothinking`, `gemini-3-pro-preview-maxthinking`
@@ -257,14 +258,14 @@ Pełna lista via API: `GET /v1/models`
 
 Konfiguracja w pliku `.env`:
 
-| Zmienna | Domyślnie | Opis |
-|---------|-----------|------|
-| `GEMINI_AUTH_PASSWORD` | `123456` | Hasło do autentykacji API |
-| `HOST` | `127.0.0.1` | Adres serwera |
-| `PORT` | `8888` | Port serwera |
-| `OAUTH_CALLBACK_PORT` | `8080` | Port callback OAuth |
-| `GOOGLE_APPLICATION_CREDENTIALS` | `oauth_creds.json` | Ścieżka do pliku credentials (legacy) |
-| `GEMINI_CREDENTIALS` | — | JSON credentials bezpośrednio w zmiennej (opcjonalnie) |
+| Zmienna                          | Domyślnie          | Opis                                                   |
+| -------------------------------- | ------------------ | ------------------------------------------------------ |
+| `GEMINI_AUTH_PASSWORD`           | `123456`           | Hasło do autentykacji API                              |
+| `HOST`                           | `127.0.0.1`        | Adres serwera                                          |
+| `PORT`                           | `8888`             | Port serwera                                           |
+| `OAUTH_CALLBACK_PORT`            | `8080`             | Port callback OAuth                                    |
+| `GOOGLE_APPLICATION_CREDENTIALS` | `oauth_creds.json` | Ścieżka do pliku credentials (legacy)                  |
+| `GEMINI_CREDENTIALS`             | —                  | JSON credentials bezpośrednio w zmiennej (opcjonalnie) |
 
 ## Autentykacja API
 

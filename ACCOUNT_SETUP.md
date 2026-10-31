@@ -34,6 +34,7 @@ Każdy plik `accounts/account_N.json` musi zawierać pole `project_id`.
 Jest ono zapisywane automatycznie po onboardingu.
 
 Przykład poprawnego pliku:
+
 ```json
 {
   "client_id": "...",
@@ -44,7 +45,7 @@ Przykład poprawnego pliku:
 }
 ```
 
----
+______________________________________________________________________
 
 ## Kolejność działań przy dodawaniu nowego konta
 
@@ -52,13 +53,13 @@ Przykład poprawnego pliku:
 2. `uv run test_accounts.py N` — sprawdź czy konto działa
 3. Jeśli wymagana weryfikacja — otwórz podany link, zweryfikuj telefon, powtórz test
 
----
+______________________________________________________________________
 
 ## Typowe błędy
 
-| Błąd | Przyczyna | Rozwiązanie |
-|------|-----------|-------------|
-| `Wymagana weryfikacja konta Google` | Konto nie zweryfikowane | Otwórz link z testu w przeglądarce |
-| `Brak cloudaicompanionProject w odpowiedzi` | Konto nie onboardowane | Uruchom `uv run start.py -a` dla tego konta |
-| `brak refresh_token` | Uszkodzony plik JSON | Usuń plik i dodaj konto od nowa przez `-a` |
-| `403 Forbidden` (inne) | Przekroczony limit lub zbanowane konto | Sprawdź konto w Google Cloud Console |
+| Błąd                                        | Przyczyna                              | Rozwiązanie                                 |
+| ------------------------------------------- | -------------------------------------- | ------------------------------------------- |
+| `Wymagana weryfikacja konta Google`         | Konto nie zweryfikowane                | Otwórz link z testu w przeglądarce          |
+| `Brak cloudaicompanionProject w odpowiedzi` | Konto nie onboardowane                 | Uruchom `uv run start.py -a` dla tego konta |
+| `brak refresh_token`                        | Uszkodzony plik JSON                   | Usuń plik i dodaj konto od nowa przez `-a`  |
+| `403 Forbidden` (inne)                      | Przekroczony limit lub zbanowane konto | Sprawdź konto w Google Cloud Console        |

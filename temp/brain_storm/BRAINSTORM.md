@@ -1,35 +1,38 @@
 # 🧠 BRAINSTORM — geminicli2api v2.0
+
 # Kompleksowa analiza projektu, architektura, plany rozwoju
+
 # Data: 2026-02-15
+
 # Autor: AI Assistant (Copilot)
 
----
+______________________________________________________________________
 
 ## SPIS TREŚCI
 
-1.  [PROJEKT — WIZJA I MISJA](#1-projekt--wizja-i-misja)
-2.  [ANALIZA OBECNEGO STANU](#2-analiza-obecnego-stanu)
-3.  [ARCHITEKTURA SYSTEMU](#3-architektura-systemu)
-4.  [SERWER PROXY — DEEP DIVE](#4-serwer-proxy--deep-dive)
-5.  [TRANSLATOR — DEEP DIVE](#5-translator--deep-dive)
-6.  [SYSTEM AUTENTYKACJI I KONT](#6-system-autentykacji-i-kont)
-7.  [MODELE I ICH WARIANTY](#7-modele-i-ich-warianty)
-8.  [OBSŁUGA BŁĘDÓW I ODPORNOŚĆ](#8-obsługa-błędów-i-odporność)
-9.  [WYDAJNOŚĆ I WSPÓŁBIEŻNOŚĆ](#9-wydajność-i-współbieżność)
-10. [BEZPIECZEŃSTWO](#10-bezpieczeństwo)
+01. [PROJEKT — WIZJA I MISJA](#1-projekt--wizja-i-misja)
+02. [ANALIZA OBECNEGO STANU](#2-analiza-obecnego-stanu)
+03. [ARCHITEKTURA SYSTEMU](#3-architektura-systemu)
+04. [SERWER PROXY — DEEP DIVE](#4-serwer-proxy--deep-dive)
+05. [TRANSLATOR — DEEP DIVE](#5-translator--deep-dive)
+06. [SYSTEM AUTENTYKACJI I KONT](#6-system-autentykacji-i-kont)
+07. [MODELE I ICH WARIANTY](#7-modele-i-ich-warianty)
+08. [OBSŁUGA BŁĘDÓW I ODPORNOŚĆ](#8-obs%C5%82uga-b%C5%82%C4%99d%C3%B3w-i-odporno%C5%9B%C4%87)
+09. [WYDAJNOŚĆ I WSPÓŁBIEŻNOŚĆ](#9-wydajno%C5%9B%C4%87-i-wsp%C3%B3%C5%82bie%C5%BCno%C5%9B%C4%87)
+10. [BEZPIECZEŃSTWO](#10-bezpiecze%C5%84stwo)
 11. [TESTOWANIE](#11-testowanie)
 12. [ZNANE PROBLEMY I TECH DEBT](#12-znane-problemy-i-tech-debt)
-13. [ROADMAP — KRÓTKOTERMINOWA (v2.1)](#13-roadmap--krótkoterminowa-v21)
-14. [ROADMAP — ŚREDNIOTERMINOWA (v3.0)](#14-roadmap--średnioterminowa-v30)
-15. [ROADMAP — DŁUGOTERMINOWA (v4.0+)](#15-roadmap--długoterminowa-v40)
-16. [POMYSŁY NA NOWE FUNKCJE](#16-pomysły-na-nowe-funkcje)
-17. [ALTERNATYWNE PODEJŚCIA](#17-alternatywne-podejścia)
-18. [PORÓWNANIE Z INNYMI PROJEKTAMI](#18-porównanie-z-innymi-projektami)
+13. [ROADMAP — KRÓTKOTERMINOWA (v2.1)](#13-roadmap--kr%C3%B3tkoterminowa-v21)
+14. [ROADMAP — ŚREDNIOTERMINOWA (v3.0)](#14-roadmap--%C5%9Brednioterminowa-v30)
+15. [ROADMAP — DŁUGOTERMINOWA (v4.0+)](#15-roadmap--d%C5%82ugoterminowa-v40)
+16. [POMYSŁY NA NOWE FUNKCJE](#16-pomys%C5%82y-na-nowe-funkcje)
+17. [ALTERNATYWNE PODEJŚCIA](#17-alternatywne-podej%C5%9Bcia)
+18. [PORÓWNANIE Z INNYMI PROJEKTAMI](#18-por%C3%B3wnanie-z-innymi-projektami)
 19. [DEPLOYMENT I HOSTING](#19-deployment-i-hosting)
 20. [DOKUMENTACJA I DX](#20-dokumentacja-i-dx)
 21. [PODSUMOWANIE I WNIOSKI](#21-podsumowanie-i-wnioski)
 
----
+______________________________________________________________________
 
 ## 1. PROJEKT — WIZJA I MISJA
 
@@ -58,56 +61,56 @@ co umożliwia darmowe korzystanie z najnowszych modeli Gemini.
 
 ### 1.4 Kluczowe metryki sukcesu
 
-| Metryka                      | Obecna wartość | Cel   |
-|------------------------------|---------------|-------|
-| Modele bazowe                | 6             | 6+    |
-| Warianty (search/thinking)   | 20            | 20+   |
-| Konta OAuth                  | 3             | 10+   |
-| Czas odpowiedzi (flash)     | ~1–3s         | <2s   |
-| Uptime (no crashes)          | ~95%          | 99%   |
-| Testy automatyczne           | 2 skrypty     | 50+   |
+| Metryka                    | Obecna wartość | Cel  |
+| -------------------------- | -------------- | ---- |
+| Modele bazowe              | 6              | 6+   |
+| Warianty (search/thinking) | 20             | 20+  |
+| Konta OAuth                | 3              | 10+  |
+| Czas odpowiedzi (flash)    | ~1–3s          | \<2s |
+| Uptime (no crashes)        | ~95%           | 99%  |
+| Testy automatyczne         | 2 skrypty      | 50+  |
 
----
+______________________________________________________________________
 
 ## 2. ANALIZA OBECNEGO STANU
 
 ### 2.1 Co działa dobrze
 
-1. **Podstawowy flow działa** — requesty OpenAI → Gemini → odpowiedź
-2. **Multi-account rotation** — 3 konta, round-robin, thread-safe (Lock)
-3. **Streaming** — SSE prawidłowo proxy'owane
-4. **Translator** — batch SRT translation z concurrent requests
-5. **CLI** — `start.py` z argparse, `--translate`, `--add-account`, `--list-models`
-6. **Thinking/Search warianty** — dynamiczne generowanie `-search`, `-nothinking`, `-maxthinking`
-7. **System prompty** — poprawnie mapowane na Gemini `systemInstruction`
-8. **Obsługa obrazów** — inline base64 images w chat completions
-9. **Error handling** — JSON error responses, request_id tracking
+01. **Podstawowy flow działa** — requesty OpenAI → Gemini → odpowiedź
+02. **Multi-account rotation** — 3 konta, round-robin, thread-safe (Lock)
+03. **Streaming** — SSE prawidłowo proxy'owane
+04. **Translator** — batch SRT translation z concurrent requests
+05. **CLI** — `start.py` z argparse, `--translate`, `--add-account`, `--list-models`
+06. **Thinking/Search warianty** — dynamiczne generowanie `-search`, `-nothinking`, `-maxthinking`
+07. **System prompty** — poprawnie mapowane na Gemini `systemInstruction`
+08. **Obsługa obrazów** — inline base64 images w chat completions
+09. **Error handling** — JSON error responses, request_id tracking
 10. **Graceful shutdown** — sigint handler w translatorze
 
 ### 2.2 Co wymaga poprawy
 
-1. **Brak testów jednostkowych** — tylko integracyjne skrypty
-2. **Globals w auth.py** — unsynchronized global state
-3. **datetime.utcfromtimestamp** — deprecated od Python 3.12
-4. **Token refresh poza lockiem** — race condition w accounts_manager
-5. **Busy-wait polling** — streaming uses `queue.Queue` + `asyncio.sleep(0.01)`
-6. **Brak requests.Session** — każdy request tworzy nowe połączenie TCP
-7. **Catch-all route** — gemini_routes łapie wszystko co nie pasuje
-8. **Brak rate limiting** — serwer nie limituje incoming requests
-9. **Brak metryki** — brak Prometheus/OpenTelemetry
+01. **Brak testów jednostkowych** — tylko integracyjne skrypty
+02. **Globals w auth.py** — unsynchronized global state
+03. **datetime.utcfromtimestamp** — deprecated od Python 3.12
+04. **Token refresh poza lockiem** — race condition w accounts_manager
+05. **Busy-wait polling** — streaming uses `queue.Queue` + `asyncio.sleep(0.01)`
+06. **Brak requests.Session** — każdy request tworzy nowe połączenie TCP
+07. **Catch-all route** — gemini_routes łapie wszystko co nie pasuje
+08. **Brak rate limiting** — serwer nie limituje incoming requests
+09. **Brak metryki** — brak Prometheus/OpenTelemetry
 10. **Brak cache'owania** — te same prompty lecą za każdym razem
 
 ### 2.3 Statystyki kodu
 
-| Komponent              | Pliki | LOC (szacunkowo) |
-|------------------------|-------|-------------------|
-| server/                | 9     | ~1850             |
-| apps/gemini_translator | 7     | ~750              |
-| tests/                 | 2     | ~110              |
-| config/docs            | 3     | ~200              |
-| **Łącznie**            | **21**| **~2910**         |
+| Komponent              | Pliki  | LOC (szacunkowo) |
+| ---------------------- | ------ | ---------------- |
+| server/                | 9      | ~1850            |
+| apps/gemini_translator | 7      | ~750             |
+| tests/                 | 2      | ~110             |
+| config/docs            | 3      | ~200             |
+| **Łącznie**            | **21** | **~2910**        |
 
----
+______________________________________________________________________
 
 ## 3. ARCHITEKTURA SYSTEMU
 
@@ -190,33 +193,33 @@ openai_transformers.py → config.py, models.py
 
 ### 3.4 Przepływ requestu — krok po kroku (OpenAI endpoint)
 
-1. Klient wysyła `POST /v1/chat/completions` z JSON payload
-2. FastAPI parsuje request do `OpenAIChatCompletionRequest` (Pydantic)
-3. `authenticate_user()` weryfikuje credentials (Bearer/Basic/Key/Header)
-4. `openai_request_to_gemini()` konwertuje format OpenAI → Gemini
-   - System messages → `systemInstruction`
-   - User/assistant → contents
-   - Images → `inlineData`
-   - Thinking config → `thinkingConfig`
-   - Search → `tools: [googleSearch]`
-5. `build_gemini_payload_from_openai()` opakowuje w strukturę `{model, request}`
-6. `send_gemini_request()`:
-   - Generuje `request_id` (UUID[:8])
-   - Pobiera credentials (`get_credentials()` → AccountsManager round-robin)
-   - Uruchamia `asyncio.to_thread(_try_send_request_with_creds, ...)`
-   - Retry na 403 z następnym kontem
-7. `_try_send_request_with_creds()`:
-   - Refresh token jeśli expired
-   - Pobiera `project_id` (cache / API discovery)
-   - Onboarding (jednorazowy per account)
-   - `requests.post()` do Google CodeAssist API
-   - Timeout: connect=30s, read=300s (non-stream) / 600s (stream)
-8. Odpowiedź:
-   - Non-streaming: `_handle_non_streaming_response()` → JSON
-   - Streaming: `_handle_streaming_response()` → SSE generator
-9. Powrót do routera:
-   - Non-streaming: `gemini_response_to_openai()` konwertuje format
-   - Streaming: `gemini_stream_chunk_to_openai()` dla każdego chunk'a
+01. Klient wysyła `POST /v1/chat/completions` z JSON payload
+02. FastAPI parsuje request do `OpenAIChatCompletionRequest` (Pydantic)
+03. `authenticate_user()` weryfikuje credentials (Bearer/Basic/Key/Header)
+04. `openai_request_to_gemini()` konwertuje format OpenAI → Gemini
+    - System messages → `systemInstruction`
+    - User/assistant → contents
+    - Images → `inlineData`
+    - Thinking config → `thinkingConfig`
+    - Search → `tools: [googleSearch]`
+05. `build_gemini_payload_from_openai()` opakowuje w strukturę `{model, request}`
+06. `send_gemini_request()`:
+    - Generuje `request_id` (UUID[:8])
+    - Pobiera credentials (`get_credentials()` → AccountsManager round-robin)
+    - Uruchamia `asyncio.to_thread(_try_send_request_with_creds, ...)`
+    - Retry na 403 z następnym kontem
+07. `_try_send_request_with_creds()`:
+    - Refresh token jeśli expired
+    - Pobiera `project_id` (cache / API discovery)
+    - Onboarding (jednorazowy per account)
+    - `requests.post()` do Google CodeAssist API
+    - Timeout: connect=30s, read=300s (non-stream) / 600s (stream)
+08. Odpowiedź:
+    - Non-streaming: `_handle_non_streaming_response()` → JSON
+    - Streaming: `_handle_streaming_response()` → SSE generator
+09. Powrót do routera:
+    - Non-streaming: `gemini_response_to_openai()` konwertuje format
+    - Streaming: `gemini_stream_chunk_to_openai()` dla każdego chunk'a
 10. FastAPI zwraca JSON/SSE do klienta
 
 ### 3.5 Przepływ requestu — Translator
@@ -242,7 +245,7 @@ start.py --translate
        └→ Etap 3: TextRefactor — SRT → TXT w output_txt/
 ```
 
----
+______________________________________________________________________
 
 ## 4. SERWER PROXY — DEEP DIVE
 
@@ -251,6 +254,7 @@ start.py --translate
 **Odpowiedzialność**: Centralna konfiguracja — ścieżki, stałe, modele, OAuth.
 
 **Kluczowe elementy**:
+
 - `BASE_MODELS` — lista 6 zweryfikowanych modeli
 - `SUPPORTED_MODELS` — BASE + search + thinking warianty (20 łącznie)
 - `_has_thinking_support()` — centralna logika: które modele wspierają thinking
@@ -260,11 +264,13 @@ start.py --translate
 - `DEFAULT_SAFETY_SETTINGS` — 11 kategorii, wszystkie BLOCK_NONE
 
 **Wzorce**:
+
 - Generatory wariantów (`_generate_search_variants()`, `_generate_thinking_variants()`)
   dynamicznie tworzą modele pochodne z BASE_MODELS
 - Sorted output: `SUPPORTED_MODELS = sorted(all_models, key=lambda x: x["name"])`
 
 **Potencjalne ulepszenia**:
+
 - Przeniesienie stałych OAuth (CLIENT_ID/SECRET) do .env
 - Walidacja modeli przy starcie (API health check)
 - Lazy loading modeli zamiast at-import-time
@@ -275,19 +281,22 @@ start.py --translate
 **Odpowiedzialność**: Aplikacja FastAPI, startup/shutdown, CORS.
 
 **Kluczowe elementy**:
+
 - `lifespan()` async context manager — startup i shutdown
 - Startup: AccountsManager, get_credentials, onboard_user
-- CORS: allow_origins=["*"] (dev-friendly, prod-risky)
+- CORS: allow_origins=["\*"] (dev-friendly, prod-risky)
 - Routers: openai_router (pierwszy), gemini_router (catch-all ostatni)
 - Root endpoint `/` z info o projekcie
 - Health check `/health`
 - Options handler dla CORS preflight
 
 **Wzorce**:
+
 - Lifespan context manager (FastAPI 0.109+)
 - GlobalAccountsManager instance (module-level singleton)
 
 **Potencjalne ulepszenia**:
+
 - Przenieść startup logic do osobnego `startup.py`
 - Dodać middleware: request logging, rate limiting, metrics
 - Dodać shutdown hooks: close connections, flush buffers
@@ -298,6 +307,7 @@ start.py --translate
 **Odpowiedzialność**: Autentykacja requestów + OAuth flow + credentials management.
 
 **Kluczowe elementy**:
+
 - `authenticate_user()` — 4 metody auth (Bearer, Basic, Key, Header)
 - `get_credentials()` — waterfall: AccountsManager → memory → env → file → OAuth
 - `onboard_user()` — setupUser via CodeAssist API, per-account tracking
@@ -306,11 +316,13 @@ start.py --translate
 - `_OAuthCallbackHandler` — HTTP server na port 8080 dla callback
 
 **Wzorce**:
+
 - Per-account tracking via `_onboarded_accounts: set` (identity-based hashing)
 - Waterfall pattern: try method A → try method B → try method C
 - Monkeypatching: `oauthlib...validate_token_parameters = lambda p: None`
 
 **Problemy**:
+
 - Global state (`credentials`, `user_project_id`, `onboarding_complete`) bez Lock
 - `datetime.utcfromtimestamp()` — deprecated Python 3.12+
 - `_onboarded_accounts` uses `id(creds)` — not stable across rotations
@@ -321,6 +333,7 @@ start.py --translate
 **Odpowiedzialność**: Multi-account OAuth management z round-robin.
 
 **Kluczowe elementy**:
+
 - `_accounts: List[dict]` — lista kont `{file, creds, project_id}`
 - `_current_index` — round-robin counter
 - `_thread_lock: threading.Lock` — thread-safe sync rotation
@@ -330,11 +343,13 @@ start.py --translate
 - `_load_single_account()` — load JSON, normalize fields, auto-refresh
 
 **Wzorce**:
+
 - Round-robin: `_current_index = (idx + 1) % len(accounts)`
 - Thread-safe rotation: `with self._thread_lock:`
 - Auto-refresh on load: expired tokens refreshed immediately
 
 **Problemy**:
+
 - Token refresh OUTSIDE lock → race condition
 - `_save_account()` OUTSIDE lock → concurrent writes
 - `datetime.utcfromtimestamp()` — deprecated
@@ -345,6 +360,7 @@ start.py --translate
 **Odpowiedzialność**: Core HTTP communication z Google CodeAssist API.
 
 **Kluczowe elementy**:
+
 - `send_gemini_request()` — async, retry with account rotation
 - `_try_send_request_with_creds()` — single attempt with given creds
 - `_handle_streaming_response()` — SSE proxy z thread + queue
@@ -355,12 +371,14 @@ start.py --translate
 - Request ID tracking: UUID[:8] prefix na wszystkich logach
 
 **Wzorce**:
+
 - `asyncio.to_thread()` — blocking `requests.post` w thread pool
 - Streaming: background thread reads `iter_lines()`, pushes to `queue.Queue`
 - Async generator polls queue z `asyncio.sleep(0.01)`
 - Retry on 403 with next account
 
 **Problemy**:
+
 - `requests` library — synchronous, no connection pooling
 - Busy-wait polling: `asyncio.sleep(0.01)` = ~100 polls/sec
 - Thread per streaming request — no pool
@@ -371,6 +389,7 @@ start.py --translate
 **Odpowiedzialność**: Dwukierunkowa konwersja OpenAI ↔ Gemini format.
 
 **Kluczowe elementy**:
+
 - `openai_request_to_gemini()` — full conversion:
   - System messages → `systemInstruction`
   - Content parts (text, image_url, inline markdown images)
@@ -384,14 +403,16 @@ start.py --translate
 - `gemini_stream_chunk_to_openai()` — streaming chunk conversion
 
 **Wzorce**:
+
 - Regex-based inline image extraction: `r'!\[[^\]]*\]\(([^)]+)\)'`
 - data: URI parsing for base64 images
 - Conditional thinking config based on model capabilities
 
 **Problemy**:
+
 - Dupllikacja logiki image parsing (3x ten sam regex)
 - Brak walidacji incoming data
-- \n\n join dla content_parts — może złamać formatowanie
+- \\n\\n join dla content_parts — może złamać formatowanie
 - No caching of compiled regexes
 
 ### 4.7 Plik: `server/openai_routes.py` (~240 LOC)
@@ -399,6 +420,7 @@ start.py --translate
 **Odpowiedzialność**: Endpointy OpenAI-compatible.
 
 **Kluczowe elementy**:
+
 - `POST /v1/chat/completions` — main endpoint
   - Streaming: generator function, SSE format
   - Non-streaming: direct JSON response
@@ -406,6 +428,7 @@ start.py --translate
 - `GET /v1/models` — lista modeli w formacie OpenAI
 
 **Wzorce**:
+
 - Streaming via `StreamingResponse` + async generator
 - `[DONE]` sentinel na końcu streamu
 
@@ -414,15 +437,17 @@ start.py --translate
 **Odpowiedzialność**: Native Gemini API proxy.
 
 **Kluczowe elementy**:
+
 - `GET /v1beta/models` — lista modeli
 - `/{full_path:path}` — catch-all proxy
 - `_extract_model_from_path()` — parser URL
 
 **Problemy**:
+
 - Catch-all route łapie WSZYSTKO — nawet favicon.ico, robots.txt
 - Może konflikować z przyszłymi endpointami
 
----
+______________________________________________________________________
 
 ## 5. TRANSLATOR — DEEP DIVE
 
@@ -449,13 +474,13 @@ GeminiTranslator
 
 ### 5.2 Tryby pracy
 
-| Tryb      | Input            | Output        | Opis                    |
-|-----------|------------------|---------------|-------------------------|
-| `text`    | .srt             | .srt          | Standard SRT translation|
-| `image`   | .png/.jpg        | .srt          | Image → text via vision |
-| `manga`   | .txt + .png      | .srt          | Manga page translation  |
-| `subtitle`| .srt             | .srt          | Subtitle-specific       |
-| `ocr`     | folder of images | .txt          | Batch OCR               |
+| Tryb       | Input            | Output | Opis                     |
+| ---------- | ---------------- | ------ | ------------------------ |
+| `text`     | .srt             | .srt   | Standard SRT translation |
+| `image`    | .png/.jpg        | .srt   | Image → text via vision  |
+| `manga`    | .txt + .png      | .srt   | Manga page translation   |
+| `subtitle` | .srt             | .srt   | Subtitle-specific        |
+| `ocr`      | folder of images | .txt   | Batch OCR                |
 
 ### 5.3 Format tokenów tłumaczeniowych
 
@@ -467,6 +492,7 @@ Output: ◍◍1. Cześć świecie ◍◍◍◍ to jest druga linia @@
 ```
 
 Tokeny:
+
 - `◍◍N.` — numer linii (prefix)
 - `◍◍◍◍` — separator wewnątrz linii (= newline w SRT)
 - `@@` — separator między liniami
@@ -499,18 +525,18 @@ MAX_RETRIES=10, INITIAL_BACKOFF=1.0, MAX_BACKOFF=60.0
 
 ### 5.6 Potencjalne ulepszenia
 
-1. **Resume/checkpoint** — zapisuj postęp do `.progress.json`
-2. **Smart grouping** — grupuj krótkie linie razem, długie osobno
-3. **Glossary** — słownik pojęć do zachowania spójności
-4. **Post-processing** — walidacja jakości tłumaczenia
-5. **Streaming** — strumieniowe tłumaczenie dla szybszego feedback'u
-6. **Parallel files** — wiele plików jednocześnie (teraz sekwencyjnie per file)
-7. **Cache** — identyczne grupy = cache hit
-8. **Dry-run** — preview bez zapisywania
-9. **Language detection** — auto-detect source language
+01. **Resume/checkpoint** — zapisuj postęp do `.progress.json`
+02. **Smart grouping** — grupuj krótkie linie razem, długie osobno
+03. **Glossary** — słownik pojęć do zachowania spójności
+04. **Post-processing** — walidacja jakości tłumaczenia
+05. **Streaming** — strumieniowe tłumaczenie dla szybszego feedback'u
+06. **Parallel files** — wiele plików jednocześnie (teraz sekwencyjnie per file)
+07. **Cache** — identyczne grupy = cache hit
+08. **Dry-run** — preview bez zapisywania
+09. **Language detection** — auto-detect source language
 10. **Multi-target** — tłumacz na wiele języków jednocześnie
 
----
+______________________________________________________________________
 
 ## 6. SYSTEM AUTENTYKACJI I KONT
 
@@ -558,33 +584,33 @@ Onboarding (jednorazowy per account):
 
 ### 6.4 Scenariusze awaryjne
 
-| Scenariusz                 | Obecne zachowanie              | Idealne zachowanie              |
-|---------------------------|--------------------------------|--------------------------------|
-| Token expired              | Auto-refresh → continue       | OK ✓                           |
-| Refresh failed             | Warning log, use stale token  | Remove account, use next       |
-| All accounts 403          | Return last 403 to client     | Queue request, retry later     |
-| OAuth callback timeout    | Server hangs on port 8080     | Timeout + helpful message      |
-| Network down              | ConnectionError, 502 response | Retry with backoff             |
-| Onboarding timeout        | Exception after 120s          | OK ✓                           |
-| New model not onboarded   | 403 → next account            | Auto-onboard new project       |
+| Scenariusz              | Obecne zachowanie             | Idealne zachowanie         |
+| ----------------------- | ----------------------------- | -------------------------- |
+| Token expired           | Auto-refresh → continue       | OK ✓                       |
+| Refresh failed          | Warning log, use stale token  | Remove account, use next   |
+| All accounts 403        | Return last 403 to client     | Queue request, retry later |
+| OAuth callback timeout  | Server hangs on port 8080     | Timeout + helpful message  |
+| Network down            | ConnectionError, 502 response | Retry with backoff         |
+| Onboarding timeout      | Exception after 120s          | OK ✓                       |
+| New model not onboarded | 403 → next account            | Auto-onboard new project   |
 
----
+______________________________________________________________________
 
 ## 7. MODELE I ICH WARIANTY
 
 ### 7.1 Modele bazowe (zweryfikowane)
 
-| Model                   | Input Tokens | Output Tokens | Thinking | Status |
-|------------------------|-------------|---------------|----------|--------|
-| `gemini-2.0-flash`      | 1,048,576   | 8,192         | ✗        | ✓ 200  |
-| `gemini-2.5-flash`      | 1,048,576   | 65,535        | ✓        | ✓ 200  |
-| `gemini-2.5-flash-lite` | 1,048,576   | 65,535        | ✗        | ✓ 200  |
-| `gemini-2.5-pro`        | 1,048,576   | 65,535        | ✓        | ✓ 200  |
-| `gemini-3-flash-preview`| 1,048,576   | 65,535        | ✓        | ✓ 200* |
-| `gemini-3-pro-preview`  | 1,048,576   | 65,535        | ✓        | 429**  |
+| Model                    | Input Tokens | Output Tokens | Thinking | Status  |
+| ------------------------ | ------------ | ------------- | -------- | ------- |
+| `gemini-2.0-flash`       | 1,048,576    | 8,192         | ✗        | ✓ 200   |
+| `gemini-2.5-flash`       | 1,048,576    | 65,535        | ✓        | ✓ 200   |
+| `gemini-2.5-flash-lite`  | 1,048,576    | 65,535        | ✗        | ✓ 200   |
+| `gemini-2.5-pro`         | 1,048,576    | 65,535        | ✓        | ✓ 200   |
+| `gemini-3-flash-preview` | 1,048,576    | 65,535        | ✓        | ✓ 200\* |
+| `gemini-3-pro-preview`   | 1,048,576    | 65,535        | ✓        | 429\*\* |
 
-*gemini-3-flash-preview: działa ale ograniczona pojemność
-**gemini-3-pro-preview: brak pojemności (Google capacity limit)
+\*gemini-3-flash-preview: działa ale ograniczona pojemność
+\*\*gemini-3-pro-preview: brak pojemności (Google capacity limit)
 
 ### 7.2 System wariantów
 
@@ -598,17 +624,18 @@ base-model
 ```
 
 Wyjątki:
+
 - `gemini-2.0-flash` — bez thinking (brak wsparcia)
 - `gemini-2.5-flash-lite` — bez thinking (brak wsparcia)
 
 ### 7.3 Budżety thinkingowe
 
-| Model                    | nothinking | default | maxthinking |
-|--------------------------|------------|---------|-------------|
-| `gemini-2.5-flash`       | 0          | -1 (auto) | 24,576    |
-| `gemini-2.5-pro`         | 128        | -1 (auto) | 32,768    |
-| `gemini-3-flash-preview` | 0          | -1 (auto) | 24,576    |
-| `gemini-3-pro-preview`   | 128        | -1 (auto) | 45,000    |
+| Model                    | nothinking | default   | maxthinking |
+| ------------------------ | ---------- | --------- | ----------- |
+| `gemini-2.5-flash`       | 0          | -1 (auto) | 24,576      |
+| `gemini-2.5-pro`         | 128        | -1 (auto) | 32,768      |
+| `gemini-3-flash-preview` | 0          | -1 (auto) | 24,576      |
+| `gemini-3-pro-preview`   | 128        | -1 (auto) | 45,000      |
 
 ### 7.4 Reasoning effort mapping (OpenAI → Gemini)
 
@@ -619,7 +646,7 @@ medium  → thinking_budget = -1 (auto)
 high    → thinking_budget = max
 ```
 
----
+______________________________________________________________________
 
 ## 8. OBSŁUGA BŁĘDÓW I ODPORNOŚĆ
 
@@ -684,7 +711,7 @@ Wszystkie błędy zwracane jako JSON:
 4. **Health monitoring** — periodic ping to Google API
 5. **Alert system** — notify when all accounts exhausted
 
----
+______________________________________________________________________
 
 ## 9. WYDAJNOŚĆ I WSPÓŁBIEŻNOŚĆ
 
@@ -742,23 +769,23 @@ Wszystkie błędy zwracane jako JSON:
 6. **Response caching** — identyczne prompty = cache hit
 7. **Request batching** — queue + batch send to Google
 
----
+______________________________________________________________________
 
 ## 10. BEZPIECZEŃSTWO
 
 ### 10.1 Obecne mechanizmy
 
-| Mechanizm                | Status | Szczegóły                       |
-|--------------------------|--------|---------------------------------|
-| Auth password             | ✓      | Domyślne "123456", via env     |
-| Password masking in logs  | ✓      | `****` + last 4 chars          |
-| OAuth tokens in files     | ✓      | accounts/*.json (gitignored)   |
-| CORS wide open            | ⚠️     | allow_origins=["*"]            |
-| No HTTPS                  | ⚠️     | Tylko HTTP (localhost OK)      |
-| No rate limiting          | ⚠️     | DoS possible                   |
-| Hardcoded CLIENT_SECRET   | ⚠️     | W config.py (ale Google's)    |
-| No input validation       | ⚠️     | Pydantic bazowy + trust proxy |
-| .gitignore accounts       | ✓      | accounts/*.json excluded       |
+| Mechanizm                | Status | Szczegóły                     |
+| ------------------------ | ------ | ----------------------------- |
+| Auth password            | ✓      | Domyślne "123456", via env    |
+| Password masking in logs | ✓      | `****` + last 4 chars         |
+| OAuth tokens in files    | ✓      | accounts/\*.json (gitignored) |
+| CORS wide open           | ⚠️     | allow_origins=["\*"]          |
+| No HTTPS                 | ⚠️     | Tylko HTTP (localhost OK)     |
+| No rate limiting         | ⚠️     | DoS possible                  |
+| Hardcoded CLIENT_SECRET  | ⚠️     | W config.py (ale Google's)    |
+| No input validation      | ⚠️     | Pydantic bazowy + trust proxy |
+| .gitignore accounts      | ✓      | accounts/\*.json excluded     |
 
 ### 10.2 Rekomendowane ulepszenia
 
@@ -766,7 +793,7 @@ Wszystkie błędy zwracane jako JSON:
 2. **HTTPS** — certbot / mkcert for localhost
 3. **Silne hasło** — wymuszone via env, nie domyślne "123456"
 4. **CORS restriction** — whitelist origins w produkcji
-5. **Token encryption** — encrypt accounts/*.json at rest
+5. **Token encryption** — encrypt accounts/\*.json at rest
 6. **Audit log** — kto, kiedy, jaki model, ile tokenów
 7. **Request sanitization** — limit payload size, validate inputs
 8. **Secret management** — Vault / encrypted .env
@@ -795,19 +822,19 @@ Threat: Google account suspension
   → Risk: Medium (ToS compliance unclear)
 ```
 
----
+______________________________________________________________________
 
 ## 11. TESTOWANIE
 
 ### 11.1 Obecny stan
 
-| Typ testu         | Pliki              | Pokrycie | Status |
-|--------------------|--------------------|----------|--------|
-| Integracyjne       | test_concurrency.py| ~5%      | ✓      |
-| Model verification | test_all_models.py | ~2%      | ✓      |
-| Jednostkowe        | —                  | 0%       | ✗      |
-| E2E translator     | —                  | 0%       | ✗      |
-| Perf/load          | —                  | 0%       | ✗      |
+| Typ testu          | Pliki               | Pokrycie | Status |
+| ------------------ | ------------------- | -------- | ------ |
+| Integracyjne       | test_concurrency.py | ~5%      | ✓      |
+| Model verification | test_all_models.py  | ~2%      | ✓      |
+| Jednostkowe        | —                   | 0%       | ✗      |
+| E2E translator     | —                   | 0%       | ✗      |
+| Perf/load          | —                   | 0%       | ✗      |
 
 ### 11.2 Plan testowania
 
@@ -897,59 +924,62 @@ Fixtures:
   - mock_google_api: mock responses
 ```
 
----
+______________________________________________________________________
 
 ## 12. ZNANE PROBLEMY I TECH DEBT
 
 ### 12.1 Krityczne
 
-| #   | Problem                                | Plik                    | Wpływ        |
-|-----|----------------------------------------|-------------------------|-------------|
-| K1  | Token refresh outside Lock             | accounts_manager.py:70  | Race condition|
-| K2  | Globals without sync                   | auth.py (global vars)   | Data race   |
+| #   | Problem                    | Plik                   | Wpływ          |
+| --- | -------------------------- | ---------------------- | -------------- |
+| K1  | Token refresh outside Lock | accounts_manager.py:70 | Race condition |
+| K2  | Globals without sync       | auth.py (global vars)  | Data race      |
 
 ### 12.2 Wysokie
 
-| #   | Problem                                | Plik                    | Wpływ        |
-|-----|----------------------------------------|-------------------------|-------------|
-| H1  | No requests.Session (no conn pool)     | google_api_client.py    | Performance |
-| H2  | Busy-wait streaming poll               | google_api_client.py    | CPU waste   |
-| H3  | Catch-all route                        | gemini_routes.py        | Routing bugs|
+| #   | Problem                            | Plik                 | Wpływ        |
+| --- | ---------------------------------- | -------------------- | ------------ |
+| H1  | No requests.Session (no conn pool) | google_api_client.py | Performance  |
+| H2  | Busy-wait streaming poll           | google_api_client.py | CPU waste    |
+| H3  | Catch-all route                    | gemini_routes.py     | Routing bugs |
 
 ### 12.3 Średnie
 
-| #   | Problem                                | Plik                    | Wpływ        |
-|-----|----------------------------------------|-------------------------|-------------|
-| M1  | datetime.utcfromtimestamp deprecated    | auth.py, accounts_mgr   | Depr warning|
-| M2  | Duplicated image regex 3x              | openai_transformers.py  | Maintenance |
-| M3  | Port 8080 hardcoded for OAuth          | auth.py                 | Port conflict|
-| M4  | No input payload size limit            | openai_routes.py        | DoS risk    |
+| #   | Problem                              | Plik                   | Wpływ         |
+| --- | ------------------------------------ | ---------------------- | ------------- |
+| M1  | datetime.utcfromtimestamp deprecated | auth.py, accounts_mgr  | Depr warning  |
+| M2  | Duplicated image regex 3x            | openai_transformers.py | Maintenance   |
+| M3  | Port 8080 hardcoded for OAuth        | auth.py                | Port conflict |
+| M4  | No input payload size limit          | openai_routes.py       | DoS risk      |
 
 ### 12.4 Niskie
 
-| #   | Problem                                | Plik                    | Wpływ        |
-|-----|----------------------------------------|-------------------------|-------------|
-| L1  | oauthlib validation monkeypatch        | auth.py                 | Fragile     |
-| L2  | No structured logging (JSON)           | everywhere              | Log parsing |
-| L3  | Console print mixed with logging       | translator.py           | Inconsistent|
+| #   | Problem                          | Plik          | Wpływ        |
+| --- | -------------------------------- | ------------- | ------------ |
+| L1  | oauthlib validation monkeypatch  | auth.py       | Fragile      |
+| L2  | No structured logging (JSON)     | everywhere    | Log parsing  |
+| L3  | Console print mixed with logging | translator.py | Inconsistent |
 
 ### 12.5 Plan naprawy
 
 **Sprint 1 (P0 — blockers)**:
+
 - [ ] K1: Move token refresh inside `_thread_lock` in accounts_manager
 - [ ] K2: Add `_auth_lock = threading.Lock()` for global state in auth.py
 
 **Sprint 2 (P1 — performance)**:
+
 - [ ] H1: Replace `requests` with `httpx` or use `requests.Session`
 - [ ] H2: Rewrite streaming with `asyncio.Queue` + sentinel pattern
 - [ ] H3: Explicit routes instead of catch-all
 
 **Sprint 3 (P2 — cleanup)**:
+
 - [ ] M1: Replace `datetime.utcfromtimestamp` with `datetime.fromtimestamp(ts, tz=UTC)`
 - [ ] M2: Extract image parsing to helper function
 - [ ] M3: Make OAuth callback port configurable
 
----
+______________________________________________________________________
 
 ## 13. ROADMAP — KRÓTKOTERMINOWA (v2.1)
 
@@ -958,38 +988,44 @@ Fixtures:
 **Timeline: 2–4 tygodnie**
 
 1. **Fix critical race conditions**
+
    - Token refresh in lock (K1)
    - Auth globals synchronization (K2)
    - Estimated: 2h
 
 2. **Replace requests with httpx**
+
    - Server-side: httpx.AsyncClient with connection pooling
    - Remove asyncio.to_thread (httpx is natively async)
    - Streaming: native async iteration
    - Estimated: 4h
 
 3. **Unit tests**
+
    - config.py: 100% coverage
    - openai_transformers.py: 80%+ coverage
    - auth.py: mock-based tests
    - Estimated: 8h
 
 4. **Structured logging**
+
    - JSON format with structlog
    - Request ID, model, latency, tokens in every log
    - Estimated: 3h
 
 5. **Fix deprecated APIs**
+
    - datetime.utcfromtimestamp → fromtimestamp(ts, tz=UTC)
    - Estimated: 30min
 
 6. **Config validation**
+
    - Pydantic settings model
    - .env.example file
    - Startup validation
    - Estimated: 2h
 
----
+______________________________________________________________________
 
 ## 14. ROADMAP — ŚREDNIOTERMINOWA (v3.0)
 
@@ -998,6 +1034,7 @@ Fixtures:
 **Timeline: 1–3 miesiące**
 
 1. **Admin Dashboard (Web UI)**
+
    ```
    ┌─────────────────────────────────────┐
    │ geminicli2api Dashboard             │
@@ -1022,24 +1059,28 @@ Fixtures:
    ```
 
 2. **Request Queue System**
+
    - In-memory queue (asyncio.Queue)
    - Priority: pro > flash > lite
    - Backpressure: reject when queue full
    - Metrics: queue depth, wait time
 
 3. **Response Caching**
+
    - Key: hash(model + messages + config)
    - Storage: SQLite / shelve
    - TTL: configurable (default 24h)
    - Cache-Control header support
 
 4. **Plugin System**
+
    - Pre-request hooks
    - Post-response hooks
    - Custom auth providers
    - Model routing rules
 
 5. **Metrics & Monitoring**
+
    - Prometheus metrics endpoint
    - Request latency histogram
    - Token usage counters
@@ -1047,18 +1088,20 @@ Fixtures:
    - Grafana dashboards
 
 6. **Rate Limiting**
+
    - Per-IP limits
    - Per-model limits
    - Token-based budgets
    - Sliding window algorithm
 
 7. **Multi-language Translator**
+
    - Auto-detect source language
    - Support 50+ target languages
    - Custom prompt templates per language pair
    - Quality scoring
 
----
+______________________________________________________________________
 
 ## 15. ROADMAP — DŁUGOTERMINOWA (v4.0+)
 
@@ -1067,6 +1110,7 @@ Fixtures:
 **Timeline: 3–6 miesięcy**
 
 1. **Docker / Docker Compose**
+
    ```yaml
    services:
      proxy:
@@ -1080,6 +1124,7 @@ Fixtures:
    ```
 
 2. **Web-based Translator UI**
+
    - React / Svelte frontend
    - Drag & drop file upload
    - Real-time translation progress
@@ -1087,6 +1132,7 @@ Fixtures:
    - Glossary management
 
 3. **Multi-provider Support**
+
    - Google Gemini (current)
    - Google AI Studio (API keys)
    - Anthropic Claude (via Vertex)
@@ -1094,24 +1140,28 @@ Fixtures:
    - Local models (Ollama integration)
 
 4. **Account Marketplace**
+
    - Sell/share proxy access
    - Token-based billing
    - Usage dashboard per user
    - API key management (not just password)
 
 5. **Auto-scaling**
+
    - Multiple proxy instances
    - Load balancer (nginx / caddy)
    - Shared account pool (Redis)
    - Health-based routing
 
 6. **CLI Enhancement**
+
    - Interactive TUI (textual/rich)
    - Config wizard
    - Real-time server monitoring
    - Log tailing
 
 7. **SDK / Library**
+
    ```python
    from geminicli2api import GeminiClient
 
@@ -1120,7 +1170,7 @@ Fixtures:
    print(response.text)
    ```
 
----
+______________________________________________________________________
 
 ## 16. POMYSŁY NA NOWE FUNKCJE
 
@@ -1165,55 +1215,55 @@ Fixtures:
 4. **Active learning** — ask user to validate uncertain translations
 5. **Bilingual summary** — generate summary in both languages
 
----
+______________________________________________________________________
 
 ## 17. ALTERNATYWNE PODEJŚCIA
 
 ### 17.1 Architektura
 
-| Podejście              | Pros                        | Cons                        | Wybrany? |
-|------------------------|-----------------------------|-----------------------------|----------|
-| FastAPI + requests     | Prosty, działa              | No async, no pooling        | ✓ (teraz)|
-| FastAPI + httpx        | Async native, HTTP/2        | Minor migration effort      | → v2.1   |
-| aiohttp                | Mature async                | Different API, less popular  | ✗        |
-| Go (net/http)          | Performance, goroutines     | Rewrite, no Python ecosystem| ✗        |
-| Node.js (Express)      | Async native, npm ecosystem | Rewrite, less suited        | ✗        |
-| Rust (actix-web)       | Maximum performance         | Rewrite, steep learning     | ✗        |
+| Podejście          | Pros                        | Cons                         | Wybrany?  |
+| ------------------ | --------------------------- | ---------------------------- | --------- |
+| FastAPI + requests | Prosty, działa              | No async, no pooling         | ✓ (teraz) |
+| FastAPI + httpx    | Async native, HTTP/2        | Minor migration effort       | → v2.1    |
+| aiohttp            | Mature async                | Different API, less popular  | ✗         |
+| Go (net/http)      | Performance, goroutines     | Rewrite, no Python ecosystem | ✗         |
+| Node.js (Express)  | Async native, npm ecosystem | Rewrite, less suited         | ✗         |
+| Rust (actix-web)   | Maximum performance         | Rewrite, steep learning      | ✗         |
 
 ### 17.2 Google API Access
 
-| Metoda                   | Darmowy? | Stabilny? | Ryzyko?  | Wybrany? |
-|--------------------------|----------|-----------|----------|----------|
-| CodeAssist (CLI proxy)   | ✓        | ~         | Medium   | ✓ (teraz)|
-| AI Studio API keys       | ✓ (free) | ✓         | Low      | Fallback |
-| Vertex AI                | ✗ (paid) | ✓         | Low      | ✗        |
-| Web scraping             | ✓        | ✗         | High     | ✗        |
-| Extension API            | ✓        | ~         | Medium   | Consider |
+| Metoda                 | Darmowy? | Stabilny? | Ryzyko? | Wybrany?  |
+| ---------------------- | -------- | --------- | ------- | --------- |
+| CodeAssist (CLI proxy) | ✓        | ~         | Medium  | ✓ (teraz) |
+| AI Studio API keys     | ✓ (free) | ✓         | Low     | Fallback  |
+| Vertex AI              | ✗ (paid) | ✓         | Low     | ✗         |
+| Web scraping           | ✓        | ✗         | High    | ✗         |
+| Extension API          | ✓        | ~         | Medium  | Consider  |
 
 ### 17.3 Translator Backend
 
-| Podejście              | Pros                          | Cons                        |
-|------------------------|-------------------------------|-----------------------------|
-| Per-file sequential    | Simple, predictable           | Slow                        |
-| Per-group concurrent   | Fast, good parallelism        | Complex error handling      |
-| Batch API              | Efficient, one request        | Latency, token limits       |
-| Streaming + parse      | Real-time feedback            | Complex parsing             |
-| Queue-based            | Backpressure, priority        | Infrastructure complexity   |
+| Podejście            | Pros                   | Cons                      |
+| -------------------- | ---------------------- | ------------------------- |
+| Per-file sequential  | Simple, predictable    | Slow                      |
+| Per-group concurrent | Fast, good parallelism | Complex error handling    |
+| Batch API            | Efficient, one request | Latency, token limits     |
+| Streaming + parse    | Real-time feedback     | Complex parsing           |
+| Queue-based          | Backpressure, priority | Infrastructure complexity |
 
----
+______________________________________________________________________
 
 ## 18. PORÓWNANIE Z INNYMI PROJEKTAMI
 
 ### 18.1 Konkurenci
 
-| Projekt               | Opis                          | Differences                     |
-|-----------------------|-------------------------------|--------------------------------|
-| gemini-cli            | Official Google CLI            | No API, just CLI chat          |
-| litellm               | Universal LLM proxy            | Paid models, no OAuth trick    |
-| one-api               | OpenAI-compatible proxy        | Supports many providers        |
-| OpenRouter             | Commercial LLM router          | Paid, multi-provider           |
-| ollama                | Local model serving            | Local only, different scope    |
-| lm-studio             | Local model UI + server        | Local only, GUI-focused        |
+| Projekt    | Opis                    | Differences                 |
+| ---------- | ----------------------- | --------------------------- |
+| gemini-cli | Official Google CLI     | No API, just CLI chat       |
+| litellm    | Universal LLM proxy     | Paid models, no OAuth trick |
+| one-api    | OpenAI-compatible proxy | Supports many providers     |
+| OpenRouter | Commercial LLM router   | Paid, multi-provider        |
+| ollama     | Local model serving     | Local only, different scope |
+| lm-studio  | Local model UI + server | Local only, GUI-focused     |
 
 ### 18.2 Unikalna wartość geminicli2api
 
@@ -1224,7 +1274,7 @@ Fixtures:
 5. **Thinking control** — fine-grained thinking budget management
 6. **Search grounding** — Google Search as tool, not available elsewhere free
 
----
+______________________________________________________________________
 
 ## 19. DEPLOYMENT I HOSTING
 
@@ -1241,11 +1291,11 @@ Process: foreground terminal
 ### 19.2 Opcje deployment'u
 
 | Opcja               | Difficulty | Cost   | Persistence | Remote Access |
-|---------------------|-----------|--------|-------------|---------------|
-| Local terminal       | Easy      | Free   | No          | No            |
-| Systemd service      | Medium    | Free   | Yes         | Local only    |
+| ------------------- | ---------- | ------ | ----------- | ------------- |
+| Local terminal      | Easy       | Free   | No          | No            |
+| Systemd service     | Medium     | Free   | Yes         | Local only    |
 | Docker              | Medium     | Free   | Yes         | Configurable  |
-| Docker + Cloudflare  | Medium    | Free   | Yes         | Yes (tunnel)  |
+| Docker + Cloudflare | Medium     | Free   | Yes         | Yes (tunnel)  |
 | VPS (Hetzner/DO)    | Medium     | ~5€/mo | Yes         | Yes           |
 | Railway / Render    | Easy       | ~7€/mo | Yes         | Yes           |
 | Home server         | Hard       | Free   | Yes         | With DDNS     |
@@ -1300,14 +1350,14 @@ EXPOSE 8888
 CMD ["uv", "run", "start.py"]
 ```
 
----
+______________________________________________________________________
 
 ## 20. DOKUMENTACJA I DX
 
 ### 20.1 Istniejąca dokumentacja
 
 | Dokument     | Status  | Jakość |
-|-------------|---------|--------|
+| ------------ | ------- | ------ |
 | README.md    | ✓       | 8/10   |
 | Code docs    | Partial | 6/10   |
 | API docs     | Auto    | 7/10   |
@@ -1351,7 +1401,7 @@ GEMINI_AUTH_PASSWORD=change_me_to_strong_password
 # GOOGLE_CLOUD_PROJECT=my-project-123
 ```
 
----
+______________________________________________________________________
 
 ## 21. PODSUMOWANIE I WNIOSKI
 
@@ -1376,20 +1426,21 @@ GEMINI_AUTH_PASSWORD=change_me_to_strong_password
 
 ### 21.3 Architektoniczne decyzje do podjęcia
 
-| Decyzja                    | Opcje                | Rekomendacja        |
-|----------------------------|---------------------|---------------------|
-| HTTP library               | requests vs httpx   | httpx (async)       |
-| Logging                    | stdlib vs structlog | structlog (JSON)    |
-| Config                     | dataclass vs pydantic| pydantic-settings  |
-| DB (cache/TM)              | SQLite vs Redis     | SQLite (simple)     |
-| Frontend                   | React vs Svelte     | Svelte (simple)     |
-| Deployment                 | Docker vs systemd   | Docker              |
-| CI                         | GH Actions vs none  | GH Actions          |
-| Auth                       | Password vs API keys| API keys (per user) |
+| Decyzja       | Opcje                 | Rekomendacja        |
+| ------------- | --------------------- | ------------------- |
+| HTTP library  | requests vs httpx     | httpx (async)       |
+| Logging       | stdlib vs structlog   | structlog (JSON)    |
+| Config        | dataclass vs pydantic | pydantic-settings   |
+| DB (cache/TM) | SQLite vs Redis       | SQLite (simple)     |
+| Frontend      | React vs Svelte       | Svelte (simple)     |
+| Deployment    | Docker vs systemd     | Docker              |
+| CI            | GH Actions vs none    | GH Actions          |
+| Auth          | Password vs API keys  | API keys (per user) |
 
 ### 21.4 Końcowa ocena projektu
 
 **Mocne strony**:
+
 - Innowacyjny koncept (darmowe Gemini API)
 - Czysta architektura warstwowa
 - Działający multi-account z rotation
@@ -1397,6 +1448,7 @@ GEMINI_AUTH_PASSWORD=change_me_to_strong_password
 - Zintegrowany translator
 
 **Słabe strony**:
+
 - Brak testów jednostkowych
 - Synchronous HTTP library (requests)
 - Race conditions w auth/accounts
@@ -1407,7 +1459,7 @@ GEMINI_AUTH_PASSWORD=change_me_to_strong_password
 
 **Potencjał**: **9/10** — unikalny na rynku, duże możliwości rozwoju
 
----
+______________________________________________________________________
 
 ## APPENDIX A: PEŁNA LISTA PLIKÓW
 
@@ -1503,16 +1555,16 @@ uv run mypy server/
 
 ## APPENDIX C: ENVIRONMENT VARIABLES
 
-| Variable                     | Default          | Opis                        |
-|------------------------------|------------------|-----------------------------|
-| `HOST`                       | 127.0.0.1        | Server bind address         |
-| `PORT`                       | 8888             | Server port                 |
-| `GEMINI_AUTH_PASSWORD`       | 123456           | API access password         |
+| Variable                         | Default          | Opis                       |
+| -------------------------------- | ---------------- | -------------------------- |
+| `HOST`                           | 127.0.0.1        | Server bind address        |
+| `PORT`                           | 8888             | Server port                |
+| `GEMINI_AUTH_PASSWORD`           | 123456           | API access password        |
 | `GOOGLE_APPLICATION_CREDENTIALS` | oauth_creds.json | Legacy single-account file |
-| `GEMINI_CREDENTIALS`        | —                | Inline credentials JSON     |
-| `GOOGLE_CLOUD_PROJECT`      | —                | Override GCP project ID     |
+| `GEMINI_CREDENTIALS`             | —                | Inline credentials JSON    |
+| `GOOGLE_CLOUD_PROJECT`           | —                | Override GCP project ID    |
 
----
+______________________________________________________________________
 
 *Wygenerowano: 2026-02-15*
 *Wersja projektu: 2.0.0*
