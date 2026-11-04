@@ -314,7 +314,7 @@ workspace/temp/*
 !workspace/temp/.gitkeep
 
 # GitHub Copilot customizations (personal)
-.github/
+.github/*
 
 # Local test scripts
 test_all_models.py
@@ -329,6 +329,7 @@ test_all_models.py
 !.claude/
 !.claude/settings.json
 !.claude/commands/
+!.github/workflows/
 !.worktrees/
 !.worktrees/.gitkeep
 !.vscode/
